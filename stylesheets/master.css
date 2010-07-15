@@ -1,0 +1,10 @@
+/* main vs. area */
+#svgarea, #canvasarea { float: left; margin-right: 2em; }
+svg, canvas { border: 1px solid silver; }
+
+/* toolbars */
+.color { float: left; width: 2em; height: 2em; }
+.brush { float: left; background: black; margin-right: 1em; }
+.tool {float: left; margin-right: 1em; }
+
+.textToolbar { height: 2em; }

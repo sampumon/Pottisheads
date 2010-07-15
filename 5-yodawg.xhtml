@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" type="text/css" href="stylesheets/master.css" />
+	<title>Yo dawg</title>
+	
+	
+	<script type="text/javascript" src="javascripts/jquery-1.3.2.min.js"></script>
+
+	<script type="text/javascript" src="javascripts/canvas_to_svg.js"></script>
+	<script type="text/javascript" src="javascripts/svg_to_canvas.js"></script>
+
+	<script type="text/javascript" src="javascripts/mouse.js"></script>
+	<script type="text/javascript" src="javascripts/pixel_toolbar.js"></script>
+	<script type="text/javascript" src="javascripts/pixel_canvas.js"></script>
+
+	<script type="text/javascript" src="javascripts/random.js"></script>
+	<script type="text/javascript" src="javascripts/vector_svg.js"></script>
+	
+	<script type="text/javascript">
+		var svg = null;
+		var canvas = null;
+		
+		window.onload = function() {
+			canvas = document.getElementById("canvas");
+			svg = document.getElementById("svg");
+			
+			PixelCanvas.init(canvas);
+			var canvastool = document.getElementById("canvasarea").getElementsByClassName("toolbar")[0];
+			activatePixelToolbar(canvastool, PixelCanvas);
+
+			VectorSVG.init(svg);
+		}
+	</script>
+	
+</head>
+
+<body>
+    <h1>Yo dawg, we herd you like SVG</h1>
+		
+	<p>So we put SVG to yo Canvas and Canvas to yo SVG, so you can SVG while you Canvas and Canvas while you SVG</p>
+	
+	<div id="svgarea">
+		<h2>SVG</h2>
+		
+		<div class="textToolbar">
+			<a class="tool" href="javascript:VectorSVG.addCircle();">Circle</a>
+			<a class="tool" href="javascript:CanvasToSVG.convert(canvas, svg);">Import canvas</a>
+			<a class="tool" href="javascript:VectorSVG.clearCanvas();">clear</a>
+		</div>
+		
+		<svg id="svg" width="600" height="400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" />
+	</div>
+
+	<div id="canvasarea">
+		<h2>Canvas</h2>
+		
+		<div class="toolbar">
+			<div class="color" style="background: red;" />
+			<div class="color" style="background: green;" />
+			<div class="color" style="background: blue;" />
+			<div class="color" style="background: black;" />
+			<div class="color" style="background: white;" />
+			
+			<div class="brush" style="padding: 1em;" />
+			<div class="brush" style="padding: 0.5em; margin-top: 0.4em;" />
+			<div class="brush" style="padding: 0.1em; margin-top: 0.9em;" />
+			
+			<a class="tool" href="javascript:SVGToCanvas.convert(svg, canvas);">Import SVG</a>
+			<a class="tool" href="javascript:PixelCanvas.clearCanvas();">clear</a>
+		</div>
+		
+		<canvas id="canvas" width="600" height="400">NO CANVAS FOR YOU</canvas>
+	</div>
+		
+</body>
+</html>
+

@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" type="text/css" href="stylesheets/master.css" />
+	<title>SVG vs. Canvas on pixels</title>
+	
+	<script type="text/javascript" src="javascripts/pixel_svg.js"></script>
+	<script type="text/javascript" src="javascripts/pixel_canvas.js"></script>
+	<script type="text/javascript" src="javascripts/pixel_toolbar.js"></script>
+	<script type="text/javascript" src="javascripts/mouse.js"></script>
+
+	<script type="text/javascript">
+		window.onload = function() {
+			PixelSVG.init(document.getElementById("svg"));
+			PixelCanvas.init(document.getElementById("canvas"));
+
+			var svgtool = document.getElementById("svgarea").getElementsByClassName("toolbar")[0];
+			var canvastool = document.getElementById("canvasarea").getElementsByClassName("toolbar")[0];
+			activatePixelToolbar(svgtool, PixelSVG);
+			activatePixelToolbar(canvastool, PixelCanvas);
+		}
+	</script>
+</head>
+
+<body>
+    <h1>SVG vs. Canvas - PIXELDRAW</h1>
+	
+	<div id="svgarea">
+		<h2>SVG</h2>
+		
+		<div class="toolbar">
+			<div class="color" style="background: red;" />
+			<div class="color" style="background: green;" />
+			<div class="color" style="background: blue;" />
+			<div class="color" style="background: black;" />
+			<div class="color" style="background: white;" />
+
+			<div class="brush" style="padding: 1em;" />
+			<div class="brush" style="padding: 0.5em; margin-top: 0.4em;" />
+			<div class="brush" style="padding: 0.1em; margin-top: 0.9em;" />
+			<!-- yes the smallest one is hard to hit, we know! -->
+		</div>
+		
+		<svg id="svg" width="600" height="400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
+	</div>
+
+	<div id="canvasarea">
+		<h2>Canvas</h2>
+		
+		<div class="toolbar">
+			<div class="color" style="background: red;" />
+			<div class="color" style="background: green;" />
+			<div class="color" style="background: blue;" />
+			<div class="color" style="background: black;" />
+			<div class="color" style="background: white;" />
+			
+			<div class="brush" style="padding: 1em;" />
+			<div class="brush" style="padding: 0.5em; margin-top: 0.4em;" />
+			<div class="brush" style="padding: 0.1em; margin-top: 0.9em;" />
+		</div>
+		
+		<canvas id="canvas" width="600" height="400">NO CANVAS FOR YOU</canvas>
+	</div>
+		
+</body>
+</html>
+
