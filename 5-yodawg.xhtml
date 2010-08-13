@@ -59,7 +59,69 @@
 
 <body>
     <h1>Yo dawg, we herd you like SVG</h1>
-		
+	
+	<ol>
+   		<li>1. Draw pixel graphics with Canvas.</li>
+   		<li>2. Draw vector graphics with SVG.</li>
+   		<li>3. Interfaces between Canvas and SVG:
+         	<ol>
+				
+				<li>1. One-way only transfer from Canvas: canvas→svg , canvas→svg, …
+               		<ol>
+						<li>1. Canvas toDataURL. Can be used multiple times when no SVG data is written onto Canvas.</li>
+					</ol>
+				</li>
+         		
+				<li>2. One-way only transfer from SVG: svg→canvas, svg→canvas, …
+               		<ol>
+						<li>1. Our implementation. Canvas becomes write-only.</li>
+					</ol>
+				</li>
+         		
+				<li>3. Two-way transfer: svg→canvas→svg→canvas→svg, ..
+               		<ol>
+						<li>1. Canvas→SVG: 3a.</li>
+               			<li>2. SVG→Canvas complete (non-safe) transfer, including possibly non-secure elements:
+                     		<ol>
+								<li>1. SVG rastrerization server (with Imagemagick or similar).</li>
+							</ol>
+               			</li>
+						<li>3. SVG→Canvas security-safe (non-image and non-foreign) elements:
+                     		<ol>
+								<li>1. Our proposed SVG.toDataURL recommendation. No current client-side solution works two-way. We’re waiting for browser manufacturers.</li>
+                     			<li>2. SVG rasterization library (for Canvas), like CanVG [Canvg10].
+									<ol>
+										<li>1. BENCHMARK</li>
+									</ol>
+								</li>
+							</ol>
+						</li>
+					</ol>
+				</li>
+			</ol>
+		</li>
+	
+		<li>4. Exporting as PNG file
+    		<ol>
+				<li>1. SVG->PNG
+          			<ol>
+						<li>1. Our 2010 implementation (safe elements). (btw same as 3.c.iii.1)</li>
+          				<li>2. <a href="javascript:exportServerSide()">Serverside</a> (safe and non-safe elements). (btw same as 3.c.ii.1)</li>
+          				<li>3. canvg (safe elements). (btw same as 3.c.iii.2)</li>
+    				</ol>
+				</li>
+
+				<li>2. Canvas→PNG
+					<ol>
+						<li>1. Right-click→Save as… (btw if your browser supports it)</li>
+             			<li>2. Our implementation (SVG) → open data url in new tab/window</li>
+             			<li>3. 4.a</li>
+					</ol>
+				</li>
+			</ol>
+		</li>
+	</ol>
+
 	<p>So we put SVG to yo Canvas and Canvas to yo SVG, so you can SVG while you Canvas and Canvas while you SVG</p>
 	
 	<div id="svgarea">
