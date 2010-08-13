@@ -1,6 +1,7 @@
 var VectorSVG = {
 	svgNS: "http://www.w3.org/2000/svg",
 	xlinkNS: "http://www.w3.org/1999/xlink",
+	idCounter: 0,
 	target: null,
 	dragTarget: null,
 	prevMouse: null,
@@ -90,4 +91,22 @@ var VectorSVG = {
 
 		this.target.appendChild(circle);
 	},
+	
+	addImage: function(href, x, y) {
+		// must be careful with the namespaces
+		svgimg = document.createElementNS(this.svgNS, "image");
+		svgimg.setAttribute('id', 'image_' + this.idCounter++);
+		svgimg.setAttributeNS(this.xlinkNS, 'xlink:href', href);
+
+		svgimg.setAttribute('x', x ? x : 0);
+		svgimg.setAttribute('y', y ? y : 0);
+
+		// TODO: need prefetch or onload handler to get width&height?
+		// DOESN'T WORK: svgimg.width.baseVal.valueAsString
+		svgimg.setAttribute('width', '50%');
+		svgimg.setAttribute('height', '50%');
+
+		this.target.appendChild(svgimg);
+	}
+	
 }

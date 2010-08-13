@@ -53,4 +53,19 @@ var PixelCanvas = {
 	changeBrush: function(s) {
 		this.drawSize = s;
 	},
+	
+	drawImage: function(href, x, y) {
+		var ctx = this.targetCtx;
+		var img = new Image();
+		img.src = href;
+
+		img.onload = function() {
+			// no need to set width&height
+			ctx.drawImage(img, (x | 0), (y | 0));
+		}
+		
+		img.onerror = function() {
+			console.log("Can't draw image! Sorry!")
+		}
+	}
 };

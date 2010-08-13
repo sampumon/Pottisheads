@@ -1,7 +1,7 @@
 var SVGToCanvas = {
 	// works in webkit (and opera?)
 	convert: function (sourceSVG, targetCanvas, x,y) {
-		svg_xml = (new XMLSerializer()).serializeToString(sourceSVG);
+		var svg_xml = (new XMLSerializer()).serializeToString(sourceSVG);
 		var ctx = targetCanvas.getContext('2d');
 		var img = new Image();
 		img.src = "data:image/svg+xml;base64," + btoa(svg_xml);

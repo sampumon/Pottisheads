@@ -131,11 +131,13 @@
 		
 		<div class="textToolbar">
 			<a class="tool" href="javascript:VectorSVG.addCircle();">Circle</a>
-			<a class="tool" href="javascript:CanvasToSVG.convert(canvas, svg);">Import canvas</a>
+			<a class="tool" href="javascript:VectorSVG.addImage('gordo-small.png');">PNG Image</a>
+			<a class="tool" href="javascript:VectorSVG.addImage('gordo.svg');">SVG Image</a>
+			<a class="tool" href="javascript:CanvasToSVG.convert(canvas, svg);">Import Canvas</a>
 			<a class="tool" href="javascript:VectorSVG.clearCanvas();">clear</a>
 		</div>
 		
-		<svg id="svg" width="500" height="400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" />
+		<svg id="svg" width="500" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	</div>
 
 	<div id="canvasarea">
@@ -151,13 +153,17 @@
 			<div class="brush" style="padding: 1em;" />
 			<div class="brush" style="padding: 0.5em; margin-top: 0.4em;" />
 			<div class="brush" style="padding: 0.1em; margin-top: 0.9em;" />
+			<span class="tool" style="padding: 1em 0; margin: 0;"></span>
 			
 			<a class="tool" href="javascript:SVGToCanvas.convert(svg, canvas);">Import SVG (client)</a>
 			<a class="tool" href="javascript:SVGToCanvas.convertCanvg(svg, canvas);">Import SVG (canvg)</a>
+			<br />
+			<a class="tool" href="javascript:PixelCanvas.drawImage('gordo-small.png');">PNG Image</a>
+			<a class="tool" href="javascript:PixelCanvas.drawImage('gordo.svg');">SVG Image</a>
 			<a class="tool" href="javascript:PixelCanvas.clearCanvas();">clear</a>
 		</div>
 		
-		<canvas id="canvas" width="500" height="400">NO CANVAS FOR YOU</canvas>
+		<canvas id="canvas" width="500" height="300">NO CANVAS FOR YOU</canvas>
 	</div>
 		
 </body>
