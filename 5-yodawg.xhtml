@@ -33,6 +33,26 @@
 
 			VectorSVG.init(svg);
 		}
+		
+		function exportNewWindow() {
+			var canvasDataUrl = canvas.toDataURL();
+			var exportWindow = window.open(canvasDataUrl);
+		}
+		
+		function exportServerSide() {
+			if (typeof jQuery === 'undefined')
+				alert("SVGToCanvas: jQuery is not loaded");
+
+			var endpoint = "convert.php"
+			var svg_xml = (new XMLSerializer()).serializeToString(svg)
+
+			$.post(endpoint, { svg_xml: svg_xml },
+					   function(data) {
+						    window.open(data);
+						  });
+			
+			}
+		
 	</script>
 	
 </head>
