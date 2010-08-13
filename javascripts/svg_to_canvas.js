@@ -7,7 +7,7 @@ var SVGToCanvas = {
 		img.src = "data:image/svg+xml;base64," + btoa(svg_xml);
 
 		// TODO: opera needs pre-render to fire onload (but still fails)
-		document.body.appendChild(img);
+		// document.body.appendChild(img);
 		
 		img.onload = function() {
 			console.log("Exported image size " + img.width + "x" + img.height);

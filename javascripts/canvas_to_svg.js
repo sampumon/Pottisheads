@@ -19,6 +19,7 @@ var CanvasToSVG = {
 		svgimg.setAttribute('height', sourceCanvas.height);
 		// TODO: drag-drop should skip transparent pixels
 	
+		// MATSUL: kommentoin pois, en huomannut eroa, mikä tää on?
 		// pixel data needs to be saved because of firefox data:// url bug:
 		// http://markmail.org/message/o2kd3bnnv3vcbwb2
 		// svgimg.imageData = sourceCanvas.toDataURL();
