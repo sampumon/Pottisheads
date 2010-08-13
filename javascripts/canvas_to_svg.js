@@ -17,11 +17,12 @@ var CanvasToSVG = {
 		svgimg.setAttribute('y', y ? y : 0);
 		svgimg.setAttribute('width', sourceCanvas.width);
 		svgimg.setAttribute('height', sourceCanvas.height);
+		// TODO: drag-drop should skip transparent pixels
 	
 		// pixel data needs to be saved because of firefox data:// url bug:
 		// http://markmail.org/message/o2kd3bnnv3vcbwb2
-		svgimg.imageData = sourceCanvas.toDataURL();
-	
+		// svgimg.imageData = sourceCanvas.toDataURL();
+
 		targetSVG.appendChild(svgimg);
 	}
 }

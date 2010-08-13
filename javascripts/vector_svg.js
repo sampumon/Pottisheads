@@ -16,8 +16,9 @@ var VectorSVG = {
 	},
 
 	clearCanvas: function() {
-		while (this.target.children.length > 0)
-			this.target.removeChild(this.target.children[0]);
+		// safari has no .children for svg, so we use childNodes
+		while (this.target.childNodes.length > 0)
+			this.target.removeChild(this.target.childNodes[0]);		
 	},
 
 	mouseDown: function(e) {
