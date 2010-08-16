@@ -44,7 +44,7 @@ var SVGToCanvas = {
 	convertCanvg: function (sourceSVG, targetCanvas, x,y) {
 		// TODO: what's canvg's proposed method for getting svg string value?
 		var svg_xml = (new XMLSerializer()).serializeToString(sourceSVG);
-		canvg(targetCanvas, svg_xml);
+		canvg(targetCanvas, svg_xml, { ignoreMouse: true, ignoreAnimation: true });
 	},
 
 	exportCanvgAsNewWindow: function (sourceSVG) {

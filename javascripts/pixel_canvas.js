@@ -48,11 +48,11 @@ var PixelCanvas = {
 		this.targetCtx.fillRect (x - this.drawSize/2, y - this.drawSize/2, this.drawSize, this.drawSize);
 	},
 
-	drawRandomPixel: function(x, y) {
-		var x = Math.floor(Math.random() * 500) + 10;
-		var y = Math.floor(Math.random() * 300) + 10;
+	drawRandomPixel: function() {
+		var x = randomInt(this.target.width);
+		var y = randomInt(this.target.height);
 
-		this.drawPixel(x,y)
+		this.drawPixel(x,y);
 	},
 	
 	changeColor: function(c) {

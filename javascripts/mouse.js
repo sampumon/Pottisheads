@@ -1,5 +1,33 @@
+function getMouseCoords(e, parent)
+{
+	if (parent.nodeName == "svg") return getMouseCoordsSVG(e, parent);
+	else return getMouseCoordsMegaSuper(e, parent);
+}
+
+// mega&super thanks to Hillel Lubman!
+function getMouseCoordsSVG(evt, svg_elem)
+{
+	var matrix = svg_elem.getScreenCTM();
+	var point = svg_elem.createSVGPoint();
+	point.x = evt.clientX;
+	point.y = evt.clientY;
+	point = point.matrixTransform(matrix.inverse());
+
+	return point;
+}
+
+// does not work in firefox+svg (but does in canvas, naturally)
+function getMouseCoordsMegaSuper(e, parent) {
+	var x, y;
+	
+	x = e.pageX - (parent.offsetLeft || 0);
+	y = e.pageY - (parent.offsetTop || 0);
+
+	return { x: x, y: y }
+}
+
 // hopefully return the mouse coordinates inside parent element
-function getMouseCoords(e, parent) {
+function getMouseCoordsCrappy(e, parent) {
 	var x, y;
 	muna = parent;
 	

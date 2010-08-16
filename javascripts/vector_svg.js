@@ -14,6 +14,7 @@ var VectorSVG = {
 		this.target.onmousedown = this.mouseDown;
 		this.target.onmousemove = this.mouseMove;
 		this.target.onmouseup = this.mouseUp;
+		this.target.onclick = this.mouseClick;
 	},
 
 	clearCanvas: function() {
@@ -21,11 +22,18 @@ var VectorSVG = {
 		while (this.target.childNodes.length > 0)
 			this.target.removeChild(this.target.childNodes[0]);		
 	},
+	
+	mouseClick: function(e) {
+		// TODO: recognize drag and skip plotting new circle
+		var p = getMouseCoords(e, VectorSVG.target);
+		VectorSVG.addCircle(p.x, p.y);
+	},
 
 	mouseDown: function(e) {
 		if (e.target != VectorSVG.target) {
 			VectorSVG.dragTarget = e.target;
 			if (e.button == 0) VectorSVG.draggin = true;
+			// TODO! reasonable zoom!
 			if (e.button == 2) VectorSVG.zoomin = true;
 			
 			// initialize transforms
@@ -80,23 +88,22 @@ var VectorSVG = {
 	},
 
 	addCircle: function(x, y, r) {
-		
+		if (!r) var r = 40;
 		var circle = document.createElementNS(this.svgNS, "circle");
 		circle.setAttribute('style', "fill:" + randomRGB());
-		circle.setAttribute('cx', (x || r) - r/2);
-		circle.setAttribute('cy', (y || r) - r/2);
+		circle.setAttribute('cx', x);
+		circle.setAttribute('cy', y);
 		circle.setAttribute('r', r);
 
 		this.target.appendChild(circle);
 	},
 
-	addRandomCircle: function(x, y) {
-		var x = Math.floor(Math.random() * 500) + 10;
-		var y = Math.floor(Math.random() * 300) + 10;
+	addRandomCircle: function() {
+		var x = randomInt(this.target.width.baseVal.value);
+		var y = randomInt(this.target.height.baseVal.value);
+		var r = randomInt(90) + 10;
 
-		var r = Math.floor(Math.random() * 90) + 10;
-
-		this.addCircle(x,y,r)
+		this.addCircle(x, y, r)
 	},
 	
 	addImage: function(href, x, y) {
