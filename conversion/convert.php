@@ -22,5 +22,5 @@ file_put_contents($source_svg, $svg_xml);
 system("convert -background none ".$source_svg." ".$target_png);
 system("chmod a+r converted/*");
 
-echo $target_png;
+echo "conversion/" . $target_png;
 ?>
