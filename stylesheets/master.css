@@ -1,14 +1,23 @@
+/* 2010 demo list */
+#demolist { float: left; width: 500px; margin-right: 2em;}
+
 /* main vs. area */
-#svgarea, #canvasarea {margin-right: 2em; }
+#svgarea, #canvasarea { margin-left: 2em; }
 svg, canvas { border: 1px solid silver; }
 
 /* toolbars */
 .color { float: left; width: 2em; height: 2em; }
 .brush { float: left; background: black; margin-right: 1em; }
 .tool {float: left; margin-right: 1em; }
-
-.textToolbar { height: 2em; }
+.toolbar { height: 1.5em; }
 
 /* 2010 mind game */
-.will_break_canvas { background-color: pink; }
-.disabled { background-color: silver; }
+.might_break_canvas { background-color: #fed; }
+.will_break_canvas { background-color: orange; }
+.broken { background-color: silver; }
+
+/* list numbering to match google docs */
+ol { list-style-type: decimal; }
+ol ol { list-style-type: lower-alpha; }
+ol ol ol { list-style-type: lower-roman; }
+ol ol ol ol { list-style-type: decimal; }

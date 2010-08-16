@@ -32,8 +32,8 @@
 			svg = document.getElementById("svg");
 			
 			PixelCanvas.init(canvas);
-			var canvastool = document.getElementById("canvasarea").getElementsByClassName("toolbar")[0];
-			activatePixelToolbar(canvastool, PixelCanvas);
+			// var canvastool = document.getElementById("canvasarea").getElementsByClassName("toolbar")[0];
+			// activatePixelToolbar(canvastool, PixelCanvas);
 
 			VectorSVG.init(svg);
 			
@@ -45,13 +45,15 @@
 		
 		function break_now(klass) {
 			// TODO: efekti
-			$("." + klass).addClass("disabled");
+			$("." + klass).addClass("broken");
 		}
 
 		function will_break(klass) {
 			// TODO: efekti
 			$("." + klass).addClass("will_break_canvas");
-			$("." + klass).addClass("will_break_canvas");			
+			$("." + klass + " a").each(function(a) {
+				this.href += " break_now('will_read_canvas');";
+			})
 		}
 		]]>
 		
@@ -77,7 +79,7 @@
 	</ul>
 	
 	
-	<div style="float: left; width: 20em;">
+	<div id="demolist">
 		<ol>
 	   		<li><a href="javascript:alert('Click and drag canvas with your mouse!')">Draw pixel graphics with Canvas</a>
 				<ol>
@@ -119,7 +121,7 @@
 							<li>SVG→Canvas security-safe (non-image and non-foreign) elements:
 	                     		<ol>
 									<li><a href="javascript:alert('Dear browser manufacturers, please implement it!');">Our proposed SVG.toDataURL recommendation</a>. No current client-side solution works two-way. We’re waiting for browser manufacturers.</li>
-	                     			<li class="might_break_canvas"><a href="javascript:SVGToCanvas.convertCanvg(svg, canvas);">Canvg</a> (or other SVG rasterization library). Will make Canvas write-only only if the imported SVG has images from different origin.</li>
+	                     			<li class="might_break_canvas"><a href="javascript:SVGToCanvas.convertCanvg(svg, canvas);">Canvg</a> (or other SVG rasterization library). Will make Canvas write-only only if the imported SVG has images from different origin, or embedded svg images.</li>
 								</ol>
 							</li>
 						</ol>
@@ -157,36 +159,18 @@
 	</div>
 		
 	<div id="svgarea">
-		<h2>SVG</h2>
+		<h2>SVG (<a href="javascript:VectorSVG.clearCanvas();">clear</a>)</h2>
 		
-		<div class="textToolbar">
-			<a class="tool" href="javascript:VectorSVG.addCircle();">Circle</a>
-			<a class="tool" href="javascript:CanvasToSVG.convert(canvas, svg);">Import Canvas</a>
-			<a class="tool" href="javascript:VectorSVG.clearCanvas();">clear</a>
+		<div class="toolbar">
+			<a class="tool" href="javascript:VectorSVG.addCircle();">Circle TODO</a>
 		</div>
 		
 		<svg id="svg" width="500" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	</div>
 
 	<div id="canvasarea">
-		<h2>Canvas</h2>
-		
-		<div class="toolbar">
-			<div class="color" style="background: red;" />
-			<div class="color" style="background: green;" />
-			<div class="color" style="background: blue;" />
-			<div class="color" style="background: black;" />
-			<div class="color" style="background: white;" />
-			
-			<div class="brush" style="padding: 1em;" />
-			<div class="brush" style="padding: 0.5em; margin-top: 0.4em;" />
-			<div class="brush" style="padding: 0.1em; margin-top: 0.9em;" />
-			
-			<a class="tool" href="javascript:PixelCanvas.clearCanvas();">clear</a>
-		</div>
-		
-		<canvas id="canvas" width="500" height="300">NO CANVAS FOR YOU</canvas>
-		
+		<h2>Canvas (<a href="javascript:PixelCanvas.clearCanvas();">clear</a>)</h2>
+		<canvas id="canvas" width="500" height="300">NO CANVAS FOR YOU</canvas>		
 	</div>
 		
 </body>
