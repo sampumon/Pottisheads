@@ -25,5 +25,9 @@ var CanvasToSVG = {
 		// svgimg.imageData = sourceCanvas.toDataURL();
 
 		targetSVG.appendChild(svgimg);
-	}
+	},
+	
+	exportAsNewWindow: function (sourceCanvas) {
+		window.open(sourceCanvas.toDataURL());
+	},
 }

@@ -1,5 +1,7 @@
 var SVGToCanvas = {
-	// works in webkit (and opera?)
+	endpoint: "conversion/convert.php",
+
+	// works in webkit (and opera?)		
 	convert: function (sourceSVG, targetCanvas, x,y) {
 		var svg_xml = (new XMLSerializer()).serializeToString(sourceSVG);
 		var ctx = targetCanvas.getContext('2d');
@@ -21,8 +23,9 @@ var SVGToCanvas = {
 		
 	},
 
+
+
 	// needs (jquery and) a same-origin server?
-	endpoint: "convert.php",
 	convertServer: function (sourceSVG, targetCanvas, x,y) {
 		var svg_xml = (new XMLSerializer()).serializeToString(sourceSVG)
 	
@@ -42,6 +45,38 @@ var SVGToCanvas = {
 		// TODO: what's canvg's proposed method for getting svg string value?
 		var svg_xml = (new XMLSerializer()).serializeToString(sourceSVG);
 		canvg(targetCanvas, svg_xml);
-	}
+	},
 
+	exportCanvgAsNewWindow: function (sourceSVG) {
+		// TODO: what's canvg's proposed method for getting svg string value?
+		var svg_xml = (new XMLSerializer()).serializeToString(sourceSVG);
+		
+		var exportCanvas = document.createElement("canvas");	
+		document.body.appendChild(exportCanvas);
+		
+		canvg(exportCanvas, svg_xml);
+			
+		window.open(exportCanvas.toDataURL());
+		document.body.removeChild(exportCanvas);
+
+	},
+
+	exportServerSideAsNewWindow: function(sourceSVG) {
+		var svg_xml = (new XMLSerializer()).serializeToString(sourceSVG)
+
+		$.post(this.endpoint, { svg_xml: svg_xml },
+				   function(data) {
+					    window.open(data);
+					  });
+		
+		},
+
+	// works in webkit (and opera?)		
+	exportAsNewWindow: function (sourceSVG) {
+		var svg_xml = (new XMLSerializer()).serializeToString(sourceSVG);
+		//var img = new Image();
+		//img.src = "data:image/svg+xml;base64," + btoa(svg_xml);
+
+		window.open("data:image/svg+xml;base64," + btoa(svg_xml));
+	}
 }

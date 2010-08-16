@@ -1,5 +1,5 @@
 /* main vs. area */
-#svgarea, #canvasarea { float: left; margin-right: 2em; }
+#svgarea, #canvasarea {margin-right: 2em; }
 svg, canvas { border: 1px solid silver; }
 
 /* toolbars */
@@ -8,3 +8,7 @@ svg, canvas { border: 1px solid silver; }
 .tool {float: left; margin-right: 1em; }
 
 .textToolbar { height: 2em; }
+
+/* 2010 mind game */
+.will_break_canvas { background-color: pink; }
+.disabled { background-color: silver; }

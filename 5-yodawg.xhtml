@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="stylesheets/master.css" />
-	<title>Yo dawg</title>
+	<title></title>
 	
 	<script type="text/javascript" src="javascripts/jquery-1.3.2.min.js"></script>
 	
@@ -22,10 +22,12 @@
 	<script type="text/javascript" src="javascripts/vector_svg.js"></script>
 	
 	<script type="text/javascript">
+	<![CDATA[
 		var svg = null;
 		var canvas = null;
 		
 		window.onload = function() {
+
 			canvas = document.getElementById("canvas");
 			svg = document.getElementById("svg");
 			
@@ -34,26 +36,24 @@
 			activatePixelToolbar(canvastool, PixelCanvas);
 
 			VectorSVG.init(svg);
-		}
-		
-		function exportNewWindow() {
-			var canvasDataUrl = canvas.toDataURL();
-			var exportWindow = window.open(canvasDataUrl);
-		}
-		
-		function exportServerSide() {
-			if (typeof jQuery === 'undefined')
-				alert("SVGToCanvas: jQuery is not loaded");
-
-			var endpoint = "convert.php"
-			var svg_xml = (new XMLSerializer()).serializeToString(svg)
-
-			$.post(endpoint, { svg_xml: svg_xml },
-					   function(data) {
-						    window.open(data);
-						  });
 			
+			for (var i = 0; i < 3; i++) {
+				VectorSVG.addRandomCircle();
+				PixelCanvas.drawRandomPixel();
 			}
+		}
+		
+		function break_now(klass) {
+			// TODO: efekti
+			$("." + klass).addClass("disabled");
+		}
+
+		function will_break(klass) {
+			// TODO: efekti
+			$("." + klass).addClass("will_break_canvas");
+			$("." + klass).addClass("will_break_canvas");			
+		}
+		]]>
 		
 	</script>
 	
@@ -62,77 +62,105 @@
 <body>
     <h1>Yo dawg, we herd you like SVG</h1>
 	
-	<ol>
-   		<li>1. Draw pixel graphics with Canvas.</li>
-   		<li>2. Draw vector graphics with SVG.</li>
-   		<li>3. Interfaces between Canvas and SVG:
-         	<ol>
-				
-				<li>1. One-way only transfer from Canvas: canvas→svg , canvas→svg, …
-               		<ol>
-						<li>1. Canvas toDataURL. Can be used multiple times when no SVG data is written onto Canvas.</li>
-					</ol>
-				</li>
-         		
-				<li>2. One-way only transfer from SVG: svg→canvas, svg→canvas, …
-               		<ol>
-						<li>1. Our implementation. Canvas becomes write-only.</li>
-					</ol>
-				</li>
-         		
-				<li>3. Two-way transfer: svg→canvas→svg→canvas→svg, ..
-               		<ol>
-						<li>1. Canvas→SVG: 3a.</li>
-               			<li>2. SVG→Canvas complete (non-safe) transfer, including possibly non-secure elements:
-                     		<ol>
-								<li>1. SVG rastrerization server (with Imagemagick or similar).</li>
-							</ol>
-               			</li>
-						<li>3. SVG→Canvas security-safe (non-image and non-foreign) elements:
-                     		<ol>
-								<li>1. Our proposed SVG.toDataURL recommendation. No current client-side solution works two-way. We’re waiting for browser manufacturers.</li>
-                     			<li>2. SVG rasterization library (for Canvas), like CanVG [Canvg10].
-									<ol>
-										<li>1. BENCHMARK</li>
-									</ol>
-								</li>
-							</ol>
-						</li>
-					</ol>
-				</li>
-			</ol>
-		</li>
+	<h2>TODODO</h2>
+	<ul>
+		<li>deebeelle autocheckout</li>
+		<li>paperipohja silleen et se on (runko)</li>
+		<li>Numerointi JA viitteet (3.a.ii)</li>
+		<li>Export png new window warning</li>
+		<li>vaarapunaiset ja svg->svg tekee canvgista punaisen</li>
+		<li>BENCHMARK canvg</li>
+		<li>miksei toimi svg image -> svg firefoxissa?</li>
+		<li>btw ainoa syy miksi canvg on huono, niin jos svgssä on animaatiota, ei animaation nykyistä tilaa voi siirtää (canvakseen)</li>
+		<li>svg plot circles with left click ehkä</li>
+		<li>ie9 testaus</li>
+	</ul>
 	
-		<li>4. Exporting as PNG file
-    		<ol>
-				<li>1. SVG->PNG
-          			<ol>
-						<li>1. Our 2010 implementation (safe elements). (btw same as 3.c.iii.1)</li>
-          				<li>2. <a href="javascript:exportServerSide()">Serverside</a> (safe and non-safe elements). (btw same as 3.c.ii.1)</li>
-          				<li>3. canvg (safe elements). (btw same as 3.c.iii.2)</li>
-    				</ol>
-				</li>
-
-				<li>2. Canvas→PNG
-					<ol>
-						<li>1. Right-click→Save as… (btw if your browser supports it)</li>
-             			<li>2. Our implementation (SVG) → open data url in new tab/window</li>
-             			<li>3. 4.a</li>
-					</ol>
-				</li>
-			</ol>
-		</li>
-	</ol>
-
-	<p>So we put SVG to yo Canvas and Canvas to yo SVG, so you can SVG while you Canvas and Canvas while you SVG</p>
 	
+	<div style="float: left; width: 20em;">
+		<ol>
+	   		<li><a href="javascript:alert('Click and drag canvas with your mouse!')">Draw pixel graphics with Canvas</a>
+				<ol>
+					<li><a class="tool" href="javascript:PixelCanvas.drawImage('gordo-small.png');">Draw PNG Image</a></li>
+					<li><a class="tool" href="javascript:PixelCanvas.drawImage('gordo.svg');">Draw SVG Image</a></li>
+				</ol>
+			</li>
+	   		<li><a href="javascript:VectorSVG.addRandomCircle();">Draw vector graphics with SVG</a>
+				<ol>
+					<li><a class="tool" href="javascript:VectorSVG.addImage('gordo-small.png');">Draw PNG Image</a></li>
+					<li><a class="tool" href="javascript:VectorSVG.addImage('gordo.svg'); will_break('might_break_canvas');">Draw SVG Image</a></li>
+					
+				</ol>
+			</li>
+	   		<li>Interfaces between Canvas and SVG:
+	         	<ol>
+
+					<li>One-way only transfer from Canvas: canvas→svg , canvas→svg, …
+	               		<ol>
+							<li class="will_read_canvas"><a href="javascript:CanvasToSVG.convert(canvas, svg);">Canvas toDataURL</a>. Can be used multiple times when no SVG data is written onto Canvas.</li>
+						</ol>
+					</li>
+         		
+					<li>One-way only transfer from SVG: svg→canvas, svg→canvas, …
+	               		<ol>
+							<li class="will_break_canvas"><a href="javascript:SVGToCanvas.convert(svg, canvas); break_now('will_read_canvas');">Our client-side implementation</a>. Canvas becomes write-only.</li>
+						</ol>
+					</li>
+         		
+					<li>Two-way transfer: svg→canvas→svg→canvas→svg, ..
+	               		<ol>
+							<li class="will_read_canvas"><a href="javascript:CanvasToSVG.convert(canvas, svg);">Canvas toDataURL</a>. (same as TODO)</li>
+	               			<li>SVG→Canvas complete (non-safe) transfer, including possibly non-secure elements:
+	                     		<ol>
+									<li><a href="javascript:SVGToCanvas.convertServer(svg, canvas);">SVG rastrerization server</a> (with Imagemagick or similar).</li>
+									<li><a href="javascript:alert('Dear browser manufacturers, please implement it!');">Our proposed SVG.toDataURL recommendation</a>. No current client-side solution works two-way. We’re waiting for browser manufacturers.</li>
+								</ol>
+	               			</li>
+							<li>SVG→Canvas security-safe (non-image and non-foreign) elements:
+	                     		<ol>
+									<li><a href="javascript:alert('Dear browser manufacturers, please implement it!');">Our proposed SVG.toDataURL recommendation</a>. No current client-side solution works two-way. We’re waiting for browser manufacturers.</li>
+	                     			<li class="might_break_canvas"><a href="javascript:SVGToCanvas.convertCanvg(svg, canvas);">Canvg</a> (or other SVG rasterization library). Will make Canvas write-only only if the imported SVG has images from different origin.</li>
+								</ol>
+							</li>
+						</ol>
+					</li>
+				</ol>
+			</li>
+	
+
+			<li>Exporting as file
+	    		<ol>
+					<li>SVG->PNG
+	          			<ol>
+	          				<li><a href="javascript:SVGToCanvas.exportServerSideAsNewWindow(svg);">Serverside</a> (safe and non-safe elements). (btw same as 3.c.ii.1)</li>
+	          				<li><a href="javascript:SVGToCanvas.exportCanvgAsNewWindow(svg);">canvg (safe elements)</a>. (btw same as 3.c.iii.2)</li>
+	    				</ol>
+					</li>
+
+					<li>Canvas→PNG
+						<ol>
+							<li>Right-click→Save as… (if your browser supports it)</li>
+	             			<li class="will_read_canvas"><a href="javascript:CanvasToSVG.exportAsNewWindow(canvas);">open data url</a> in new tab/window</li>
+	             			<li>3. 4.a</li>
+						</ol>
+					</li>
+					
+					<li>SVG->SVG file
+						<ol>
+							<li><a href="javascript:SVGToCanvas.exportAsNewWindow(svg);">Serialize SVG as data url</a></li>
+							<li>TODO: SVGEDIT KÄSIN</li>
+						</ol>
+					</li>
+				</ol>
+			</li>
+		</ol>
+	</div>
+		
 	<div id="svgarea">
 		<h2>SVG</h2>
 		
 		<div class="textToolbar">
 			<a class="tool" href="javascript:VectorSVG.addCircle();">Circle</a>
-			<a class="tool" href="javascript:VectorSVG.addImage('gordo-small.png');">PNG Image</a>
-			<a class="tool" href="javascript:VectorSVG.addImage('gordo.svg');">SVG Image</a>
 			<a class="tool" href="javascript:CanvasToSVG.convert(canvas, svg);">Import Canvas</a>
 			<a class="tool" href="javascript:VectorSVG.clearCanvas();">clear</a>
 		</div>
@@ -153,17 +181,12 @@
 			<div class="brush" style="padding: 1em;" />
 			<div class="brush" style="padding: 0.5em; margin-top: 0.4em;" />
 			<div class="brush" style="padding: 0.1em; margin-top: 0.9em;" />
-			<span class="tool" style="padding: 1em 0; margin: 0;"></span>
 			
-			<a class="tool" href="javascript:SVGToCanvas.convert(svg, canvas);">Import SVG (client)</a>
-			<a class="tool" href="javascript:SVGToCanvas.convertCanvg(svg, canvas);">Import SVG (canvg)</a>
-			<br />
-			<a class="tool" href="javascript:PixelCanvas.drawImage('gordo-small.png');">PNG Image</a>
-			<a class="tool" href="javascript:PixelCanvas.drawImage('gordo.svg');">SVG Image</a>
 			<a class="tool" href="javascript:PixelCanvas.clearCanvas();">clear</a>
 		</div>
 		
 		<canvas id="canvas" width="500" height="300">NO CANVAS FOR YOU</canvas>
+		
 	</div>
 		
 </body>

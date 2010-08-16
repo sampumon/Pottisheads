@@ -20,6 +20,9 @@ var PixelCanvas = {
 	},
 	
 	mouseDown: function(e) {
+		if (e.button != 0 )
+			return;
+			
 		PixelCanvas.drawMode = true;
 
 		var mouse = getMouseCoords(e, PixelCanvas.target);
@@ -43,6 +46,13 @@ var PixelCanvas = {
 
 	drawPixel: function(x, y) {
 		this.targetCtx.fillRect (x - this.drawSize/2, y - this.drawSize/2, this.drawSize, this.drawSize);
+	},
+
+	drawRandomPixel: function(x, y) {
+		var x = Math.floor(Math.random() * 500) + 10;
+		var y = Math.floor(Math.random() * 300) + 10;
+
+		this.drawPixel(x,y)
 	},
 	
 	changeColor: function(c) {

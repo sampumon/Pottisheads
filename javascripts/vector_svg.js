@@ -79,9 +79,7 @@ var VectorSVG = {
 		);
 	},
 
-	addCircle: function(x, y) {
-		//var r = Math.floor(Math.random() * 90) + 10;
-		var r = 40;
+	addCircle: function(x, y, r) {
 		
 		var circle = document.createElementNS(this.svgNS, "circle");
 		circle.setAttribute('style', "fill:" + randomRGB());
@@ -90,6 +88,15 @@ var VectorSVG = {
 		circle.setAttribute('r', r);
 
 		this.target.appendChild(circle);
+	},
+
+	addRandomCircle: function(x, y) {
+		var x = Math.floor(Math.random() * 500) + 10;
+		var y = Math.floor(Math.random() * 300) + 10;
+
+		var r = Math.floor(Math.random() * 90) + 10;
+
+		this.addCircle(x,y,r)
 	},
 	
 	addImage: function(href, x, y) {
