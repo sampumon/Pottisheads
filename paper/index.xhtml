@@ -200,22 +200,158 @@
 			</div>
 		</div>
 		
-		<p>TODO: intro</p>
+		<p>Following two methods allow native, two-way interaction with SVG and Canvas.  A proposal for better and standardized implementation for SVG to Canvas is given in the TODO section of this paper after the security issues associated with it are presented.</p>
 		
 		<h3 class="title">
 			<a id="canvas_to_svg"/>
 			Canvas to SVG
 		</h3>
+		
+		<p>This method we presented last year [<a class="xref" href="#TRIVIAL09">TRIVIAL09</a>] and is provided here for completeness.</p>
+		  
+<pre class="programlisting">function <strong>importCanvas</strong>(sourceCanvas, targetSVG) {
+    var img_dataurl = sourceCanvas.toDataURL("image/png");
+    var svg_img = document.createElementNS(
+        "http://www.w3.org/2000/svg", "image");
 
+    svg_img.setAttributeNS(
+        "http://www.w3.org/1999/xlink", "xlink:href", img_dataurl);
+
+    targetSVG.appendChild(svg_img);
+}
+</pre>
+	
+		<p>TODO: Could not get comments to be parsed in XML ?, need to write short overview.</p>
+		
+				
 		<h3 class="title">
 			<a id="svg_to_canvas"/>
 			SVG to Canvas
 		</h3>
 
+		<p>The idea for our "SVG to Canvas" method is to make use of the web browser rendering of SVG.  As the SVG is rasterized in the screen, it should be possible to use those pixels directly in Canvas.  However, no direct interface exists (yes, see our SVG.toDataURL() API recommendation in section TODO), so we’ll use Canvas for the job.</p>
+
+<pre class="programlisting">function importSVG(sourceSVG, targetCanvas) {
+   // https://developer.mozilla.org/en/XMLSerializer
+   svg_xml = (new XMLSerializer()).serializeToString(sourceSVG);
+   var ctx = targetCanvas.getContext('2d');
+
+   // this is just a JavaScript (HTML) image
+   var img = new Image();
+   // http://en.wikipedia.org/wiki/SVG#Native_support
+   // https://developer.mozilla.org/en/DOM/window.btoa
+   img.src = "data:image/svg+xml;base64," + btoa(svg_xml);
+
+   img.onload = function() {
+       // after this, Canvas’ origin-clean is DIRTY
+       ctx.drawImage(img, 0, 0);
+   }
+}
+</pre>
+
+		<p>Web browsers only expose the SVG data in DOM, which can also be serialized to XML.  We used this in your last years implementation where we sent the serialized XML to server-side rasterizer, which returned a PNG image (with transparency).</p>
+
+		<p>Canvas allows to draw arbitrary images on it via the <code>drawImage</code>-function.  The Canvas specification for <code>drawImage()</code> says: "The image argument is an instance of either HTMLImageElement, HTMLCanvasElement, or HTMLVideoElement."  So any image that the browser supports, can be drawn on Canvas [<a class="xref" href="#CANVAS10">CANVAS10</a>].</p>
+
+		<p>All browsers support images with data URI [<a class="xref" href="#RFC2397">RFC2397</a>].  Currently, some browsers (Webkit) support SVG images as source for <code>img</code> elements [<a class="xref" href="#SVGimg10">SVGimg10</a>].  By combining these, we can transfer the serialized XML SVG data into a HTML Image element.  This HTML Image element can be used as an argument for the <code>drawImage()</code>-method of Canvas.</p>
+
+		<p>Currently (2010-08) this only works in Safari and Chrome.  Also, the "SVG to Canvas" transfer is write-only, as it triggers the <code>origin-clean</code> flag of Canvas as dirty, which causes that Canvas to be unreadable (until reloaded and cleared). This security issue will be discussed in the TODO section.</p>
+
 		<h3 class="title">
 			<a id="browser_compatibility"/>
 			Browser Compatibility
 		</h3>
+
+		<p>Support for the techniques used in the "Canvas to SVG" method are better and more consistent than for the "SVG to Canvas" methods, as can be seen from the table below.</p>
+		
+		<table>
+			<caption>Table 1: Browser compatibility for Canvas-SVG interaction</caption>
+			<thead>
+				<tr>
+					<th>Quirk / Browser</th>
+					<th>Safari 4.1 (Webkit)</th>
+					<th>Chrome TODO.TODO (Webkit)</th>
+					<th>Firefox 3.6.x</th>
+					<th>Opera 10.x.x (TODO?)</th>
+					<th>IE 9 Preview xxxx TODO</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr>
+					<td>XML-serialize dynamic SVG data</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>					
+				</tr>
+
+				<tr>
+					<td>Data URL in HTML <code>img</code> element</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>					
+				</tr>
+
+				<tr>
+					<td>SVG Image in HTML <code>img</code> element</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>					
+				</tr>
+
+				<tr>
+					<td>Non-standard <code>btoa()</code> base64 function</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>					
+				</tr>
+
+				<tr>
+					<td>SVG data URL for Canvas <code>drawImage</code></td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>					
+				</tr>
+
+				<tr>
+					<td>..above should set <code>origin-clean</code> as dirty</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>					
+				</tr>
+
+				<tr>
+					<td>Canvas.<code>toDataURL()</code></td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>					
+				</tr>
+
+				<tr>
+					<td>extra: Right-click on Canvas allows "Save as.."</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>
+					<td>a</td>					
+				</tr>
+
+			</tbody>
+		</table>
 	</div>
 	
 	
@@ -232,17 +368,73 @@
 			</div>
 		</div>
 		
-		
+		<p>Our "SVG to Canvas" approach has a security issue that could, however, be avoided as we argue in our <code>SVG.toDataURL()</code> proposal.</p>
+			
 		<h3 class="title">
 			<a id="same_origin"/>
 			Same Origin and Canvas Origin Policy
 		</h3>
 
+		<p>Web pages are composed of different elements coming from different origins.  Elements coming from the <em><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/origin-0.html#same-origin">same</a></em> origin are considered to be safe [<a class="xref" href="#Origin10">Origin10</a>].</p>
+		
+		<p>Canvas has powerful image reading and writing capabilities.  It would be trivial to use canvas as middleman for transfering a local image to a third-party just by loading image into Canvas element from <code>file://</code> -URL and then sending the pixel data from the Canvas element to any host with JavaScript.</p>
+		
+		<p>To prevent information leakage with Canvas, browsers are carefully protecting the usage of Canvas when the source for image data is not safe.  All Canvas elements are created as their origin-clean attribute set to <em>true</em>. When any of the actions that may potentially be used for using Canvas element to transfer content that violates the same origin policy, the <em>origin-clean</em> property is permanently set to <em>false</em>.</p>
+
+		<p>If methods that return the pixel data stored in canvas, such as <code>toDataURL()</code> or <code>getImageData()</code>, are called on the Canvas element whose origin-clean is <em>false</em>, then a <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#security-with-canvas-elements">DOMException 18, SECURITY_ERR</a></code> is raised [<a class="xref" href="#Canvas10">Canvas10</a>].</p>
+		
+		
 		<h3 class="title">
 			<a id="experimenting"/>
 			Experimenting with Origin-Clean and Canvas
 		</h3>
 
+		<p>To get better understanding of origin-clean behaviour, we evaluated following cases.</p>
+		
+		<h4>PNG and <code>drawImage()</code></h4>
+
+		<p>We test following two trivial cases first:</p>
+		
+		<p><strong>Case 1a:</strong> load a PNG image to the DOM, draw that on Canvas element with <code>drawImage()</code>-method.</p>
+
+		<p><strong>Case 1b:</strong> load a PNG image to the DOM, create an instance of JavaScript <code>Image</code>-object and draw that on Canvas element with <code>drawImage()</code>-method</p>
+
+		<p>In <em>1a</em> and <em>1b</em>, the Canvas element stays origin-clean as expected.  JavaScript <code>Image</code>-object, as long as the MIME type is <code>image/png</code> works also.  It seems like all MIME types other than <code>image/svg+xml</code> works this way.</p>
+
+		<p><strong>Case 1c:</strong> Load an image from local <code>file://</code>-URL and display it on HTML document loaded from <code>file://</code>-URL.  Then draw that image on Canvas element with <code>drawImage()</code>-method.</p>
+
+		<p>In <em>1c</em> the Canvas element is not origin-clean.  No data can be exported from Canvas, any attempts will cause a <code>SECURITY_ERR</code> exception. This the standard behavior that was <a href="https://developer.mozilla.org/En/Same-origin_policy_for_file:_URIs">changed lately</a> in all browsers, like in Mozilla Gecko [<a class="xref" href="#MozillaSameOrigin">MozillaSameOrigin</a>].</p>
+		
+		
+		<h4>PNG as Data URI</h4>
+		
+		<p>When a PNG is represented as data URI so that <code>img</code>-elements source attribute is set to data URI: <code>img.src = "data:image/png;base64,iVBORw0..."</code> and this <code>img</code>-element is rendered on Canvas with <code>drawImage()</code>-method, the canvas stays origin-clean.</p>
+		
+		
+		<h4>SVG to Canvas</h4>
+		
+		<p>If the source attribute of HTML <code>img</code>-element is set to "shapes.svg", and this image element is rendered on Canvas element, the origin-clean is set to <em>false</em> even if same origin policy should be satisfied.</p>
+		
+		<h4>SVG as Data URI</h4>
+		
+		<p>If the SVG is represented as a data URI: <code>"data:image/svg+xml;base64,dVAx..."</code> and this string is set as source attribute of a HTML image, which is then rendered on Canvas element, the origin-clean sets to <em>false</em>.</p>
+		
+		
+		
+		<h4>SVG with Safe Elements</h4>
+		
+		<p>This testing becomes more interesting if we do the same tests with a SVG that uses only safe elements, such as <code>&lt;rect&gt;</code> and <code>&lt;circle&gt;</code>.  Result will be that the Canvas origin-clean property sets permanently to <em>false</em>, even if all the elements can be considered as "safe" and <em>same</em> origin.</p>
+
+
+		<h3 class="title">
+			<a id="svg_conclusions"/>
+			Conclusions on SVG Security Issues
+		</h3>
+		
+		<p>So, why SVG is dangerous?  SVG can potentially contain content from multiple origins and browsers tend to blacklist any content with the MIME type <code>image/svg+xml</code> as multi-origin content without even testing the actual content.  A good summary of this is given in the comments of Webkit bug #29305 "<a href="https://bugs.webkit.org/show_bug.cgi?id=29305#c1">Canvas drawn with data URL image raises SECURITY_ERR when toDataUrl() called.</a>" on why browser needs to consider SVG as multi-origin content.</p>
+		
+		<p>SVG that contains only safe and same origin elements should however be rendered to make allow efficent use of SVG with Canvas.  In the next section we propose a recommendation for a <code>SVG.toDataURL()</code>-method that allows bitmap export of the vector elements in SVG.</p>
+		
 	</div>
 	
 	
@@ -264,7 +456,31 @@
 			<a id="svg_to_dataurl_api"/>
 			SVG.toDataURL() API
 		</h3>
+		
+		<p>Based on the use cases stated in the requirements for a complete drawing application in the web and the security discussion, we propose a following API to allow exporting of the bitmap content of the SVG.</p>
 
+<pre class="programlisting">SVG.toDataURL( [<abbr title="MIME type of the exported data">type</abbr>], [<abbr title="Export non-safe (image and foreignObject) elements">keepNonSafe</abbr>=false], [<abbr title="Export all drawn content, even if not visible.">keepOutsideViewport</abbr>=false] )
+</pre>
+
+		<dl>
+			<dt><dfn is="type">type</dfn></dt>
+			<dd>MIME type of the exported data.</dd>
+			<dd>Default: <code>image/svg+xml</code>.</dd>
+			<dd>Must support: <code>image/png</code>.</dd>
+
+			<dt><dfn is="keepNonSafe">keepNonSafe</dfn></dt>
+			<dd>Export non-safe (image and foreignObject) elements and set the Canvas <code>origin-clean</code> property to <em>false</em>.</dd>
+			<dd>Default: <code>false</code> (to keep origin-clean true)</dd>
+			
+			<dt><dfn is="keepOutsideViewport">keepOutsideViewport</dfn></dt>
+			<dd>Export all drawn content, even if not visible.</dd>
+			<dd>Default: <code>false</code>, export only visible viewport, similar to Canvas <code>toDataURL()</code></dd>
+			
+
+		</dl>
+
+
+		
 		<h3 class="title">
 			<a id="browser_manufacturers"/>
 			For Browser Manufacturers
@@ -471,7 +687,7 @@
 						<span class="title"><i>SVG-Edit Issue #70: Ability to save canvas as PNG</i>. </span>
 						<br/>
 						<span class="publisher">
-							<span class="publishername">SVG-Edit Issues</span>
+							<span class="publishername">SVG-Edit Project</span>
 						</span>
 						<br/>
 						<span class="url">
@@ -480,7 +696,88 @@
 
 					</p>
 				</div>
+
+
+				<div class="biblioentry">
+					<a id="CANVAS10"/>
+					<p>[<abbr class="abbrev">CANVAS10</abbr>] 
+								
+						<span class="title"><i>HTML5 Draft Standard 20: The canvas element</i>, August 2010.</span>
+						<br/>
+						<span class="publisher">
+							<span class="publishername">Web Hypertext Application Technology Working Group</span>
+						</span>
+						<br/>
+						<span class="url">
+							<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html">http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html</a>
+						</span>
+
+					</p>
+				</div>
+
+				<div class="biblioentry">
+					<a id="RFC2397"/>
+					<p>[<abbr class="abbrev">RFC2397</abbr>] 
+								
+						<span class="title"><i>RFC2397 The "data" URL scheme</i>, August 1998.</span>
+						<br/>
+						<span class="publisher">
+							<span class="publishername">The Internet Engineering Task Force (IETF)</span>
+						</span>
+						<br/>
+						<span class="url">
+							<a href="http://www6.ietf.org/rfc/rfc2397.txt">http://www6.ietf.org/rfc/rfc2397.txt</a>
+						</span>
+
+					</p>
+				</div>
 			
+				<div class="biblioentry">
+					<a id="SVGimg10"/>
+					<p>[<abbr class="abbrev">SVGimg10</abbr>] 
+								
+						<span class="title">Wikipedia <i>SVG: Native Support</i>.</span>
+						<br/>
+						<span class="url">
+							<a href="http://en.wikipedia.org/wiki/SVG#Native_support">http://en.wikipedia.org/wiki/SVG#Native_support</a>
+						</span>
+
+					</p>
+				</div>
+				
+				<div class="biblioentry">
+					<a id="Origin10"/>
+					<p>[<abbr class="abbrev">Origin10</abbr>] 
+								
+						<span class="title"><i>HTML5 Draft Standard 20: Origin</i>, August 2010.</span>
+						<br/>
+						<span class="publisher">
+							<span class="publishername">Web Hypertext Application Technology Working Group</span>
+						</span>
+						<br/>
+						<span class="url">
+							<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/origin-0.html#same-origin">http://www.whatwg.org/specs/web-apps/current-work/multipage/origin-0.html#same-origin</a>
+						</span>
+
+					</p>
+				</div>
+				
+				<div class="biblioentry">
+					<a id="MozillaSameOrigin"/>
+					<p>[<abbr class="abbrev">MozillaSameOrigin</abbr>] 
+								
+						<span class="title"><i>Same-origin policy for file: URIs</i></span>
+						<br/>
+						<span class="publisher">
+							<span class="publishername">Mozilla Developer Center</span>
+						</span>
+						<br/>
+						<span class="url">
+							<a href="https://developer.mozilla.org/En/Same-origin_policy_for_file:_URIs">https://developer.mozilla.org/En/Same-origin_policy_for_file:_URIs</a></span>
+
+					</p>
+				</div>
+							
 			</div>
 
 		</div>
