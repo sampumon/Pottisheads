@@ -59,14 +59,14 @@
 
   <div class="toc"><p><b>Table of Contents TODO</b></p>
   	<dl>
-  		<dt><span class="section"><a href="#L1T1">Level 1 Title 1</a></span></dt>
-  		<dt><span class="section"><a href="#L1T2">Level 1 Title 2</a></span></dt>
+  		<dt><span class="section"><a href="#introduction">Introduction</a></span></dt>
+  		<dt><span class="section"><a href="#motivation">Motivation: Complete Drawing Application</a></span></dt>
   		<dd>
   			<dl>
-  				<dt><span class="section"><a href="#L2T1">Level 2 Title 1</a></span></dt>
-				<dt><span class="bibliography"><a href="#Biblio">Bibliography</a></span></dt>
+  				<dt><span class="section"><a href="#requirements">Requirements for a Web Based Drawing Application</a></span></dt>
 			</dl>
   		</dd>
+		<dt><span class="bibliography"><a href="#Biblio">Bibliography</a></span></dt>
   	</dl>
   </div>
 
@@ -76,29 +76,66 @@
 			<div>
 				<div>
 					<h2 class="title" style="clear: both">
-						<a id="L1T1"/>
+						<a id="introduction"/>
 						Introduction
 					</h2>
 				</div>
 			</div>
 		</div>
 		
-		<p>At <a href="http://svgopen.org/2009/">SVG Open 2009</a> we presented a method of using the bitmap content of canvas element in SVG as an image element.  This was done by utilizing <code>canvas.toDataURL()</code>-method that returns a base64-coded pixel representation of the canvas drawing context as a PNG image.  This data URI can be set as source for a SVG Image element [<a class="xref" href="#TRIVIAL09">TRIVIAL09</a>].</p>
+		<p>At <a href="http://svgopen.org/2009/">SVG Open 2009</a> we presented a method of using the bitmap content of Canvas element in SVG as an image element.  This was done by utilizing <code>canvas.toDataURL()</code>-method that returns a base64-coded pixel representation of the canvas drawing context as a PNG image.  This data URI can be set as source for a SVG Image element.  In our demonstration we combined the best parts of SVG (vector drawing, native scene graph support) and Canvas (pixel drawing) in one trivial drawing application.  SVG to Canvas transfer was done in server-side, by rasterizing the image and then drawing that on a canvas element [<a class="xref" href="#TRIVIAL09">TRIVIAL09</a>].</p>
 		
+		<p>As the method for transferring Canvas to SVG was native in the browser (<code>toDataURL()</code>), the next step is obviously to do the same for SVG to Canvas instead of server-side conversion.  It would be tempting to use browsers native rendering, but unfortunately SVG does not support a <code>toDataURL()</code>-method.  There has been <a href="http://lists.w3.org/Archives/Public/public-svg-ig/2009OctDec/0004.html">some</a> <a href="http://lists.w3.org/Archives/Public/www-svg/2009Oct/0003.html">discussion</a> about adding same method to SVG, but this has some serious security issues that will be discussed in section TODO of this paper.</p>
 		
-		<p>	Text for presenting the unordered list </p>
+		<p>In this paper we will show an experimental method for using the browsers native rendering support to render SVG on Canvas.  We will also present a complete list of the possible methods for using SVG together with Canvas.  Evaluation of these methods and application fits is also given.  In addition, we present a list of recommendations for browser manufacturers to implement for improved support and adaptation of SVG and Canvas.</p>
+		
+	</div>
+
+
+	<div class="section" lang="en">
+		<div class="titlepage">
+			<div>
+				<div>
+					<h2 class="title" style="clear: both">
+						<a id="motivation"/>
+						Motivation: Complete Drawing Application
+					</h2>
+				</div>
+			</div>
+		</div>
+		
+		<p>Like in the paper we published last year, our motivation is drawing in the web: using the right techniques for the right things. (See "<a href="http://svgopen.org/2009/papers/54-SVG_vs_Canvas_on_Trivial_Drawing_Application/#d4e250">Combining existing components: SVG-Edit and CanvasPaint</a>")</p>
+		
+		<p>The need for interface between SVG and canvas is real and really required for efficent adaptation of SVG.  For example, SVG-edits <a href="http://code.google.com/p/svg-edit/issues/detail?id=70">issue #70</a>, "ability to save canvas as PNG" is currently solved with JavaScript+Canvas rendering workaround although a native implementation would be better [<a class="xref" href="#ISSUE70">ISSUE70</a>]. A list of rendering workarounds is given the TODO section of this paper.</p>
+		
+		<h3 class="title">
+			<a id="requirements"/>
+			Requirements for a Web Based Drawing Application
+		</h3>
+
+		<p>The following list shows requirements for a completely web based drawing application.  This list does not apply only for drawing applications: if every requirement would be supported natively by the browsers, it would make the adaptation of SVG and Canvas more popular.</p>
 
 		<div class="itemizedlist">
-			<ul type="bullet">	
-				<li style="list-style-type: disc"><p>first item</p></li>
-				<li style="list-style-type: disc"><p>second item</p></li>
-				<li style="list-style-type: disc"><p>third item</p></li>
-			</ul>
+			<ol>	
+				<li><p>Pixel drawing</p></li>
+				<li><p>Vector drawing</p></li>
+				<li><p>Interfaces</p>
+					<ol>
+						<li style="list-style-type: lower-alpha"><p>Bitmap export and import (Canvas to SVG)</p></li>
+						<li style="list-style-type: lower-alpha"><p>Vector rasterization and import (SVG to Canvas)</p></li>					
+					</ol>
+				</li>
+				<li><p>Exporting</p>
+					<ol>
+						<li style="list-style-type: lower-alpha"><p>Export vectors (SVG DOM)</p></li>
+						<li style="list-style-type: lower-alpha"><p>Export bitmap (Canvas bitmap)</p></li>					
+					</ol>
+				</li>
+			</ol>
 		</div>
-	
-		<p></p>
+
+		<p>Previous work shows the best technology fit for the requirements 1, 2 and 3.a, but used server-side rendering for 3.b requiring additional components.  In the next section we show and evaluate a method to use browsers native rendering of SVG to rasterize image in order to solve the interface requirement 3.b and exporting of rasterized image requirement 4.b.</p>
 	</div>
-	
 	
 	
 	<div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="L1T2"/>Title 2 level 1</h2></div></div></div>
@@ -201,21 +238,40 @@
 					<a id="TRIVIAL09"/>
 					<p>[<abbr class="abbrev">TRIVIAL09</abbr>] 
 			
-					<span class="author"><span class="firstname">Samuli</span> <span class="surname">Kaipiainen</span></span>
-					and
-					<span class="author"><span class="firstname">Matti</span> <span class="surname">Paksula</span></span>:
+						<span class="author"><span class="firstname">Samuli</span> <span class="surname">Kaipiainen</span></span>
+						and
+						<span class="author"><span class="firstname">Matti</span> <span class="surname">Paksula</span></span>:
 					
-					<span class="title"><i>SVG vs Canvas on Trivial Drawing Application</i>. </span>
-					<br/>
-					<span class="publisher">
-						<span class="publishername">Proceedings of the 7th International Conference on Scalable Vector Graphics</span>
-					</span>
-					<br/>
-					<span class="url">
-						<a href="http://svgopen.org/2009/papers/54-SVG_vs_Canvas_on_Trivial_Drawing_Application/">http://svgopen.org/2009/papers/54-SVG_vs_Canvas_on_Trivial_Drawing_Application/</a>
-					</span>
+						<span class="title"><i>SVG vs Canvas on Trivial Drawing Application</i>. </span>
+						<br/>
+						<span class="publisher">
+							<span class="publishername">Proceedings of the 7th International Conference on Scalable Vector Graphics</span>
+						</span>
+						<br/>
+						<span class="url">
+							<a href="http://svgopen.org/2009/papers/54-SVG_vs_Canvas_on_Trivial_Drawing_Application/">http://svgopen.org/2009/papers/54-SVG_vs_Canvas_on_Trivial_Drawing_Application/</a>
+						</span>
 
-				</p></div>
+					</p>
+				</div>
+
+				<div class="biblioentry">
+					<a id="ISSUE70"/>
+					<p>[<abbr class="abbrev">ISSUE70</abbr>] 
+								
+						<span class="title"><i>SVG-Edit Issue #70: Ability to save canvas as PNG</i>. </span>
+						<br/>
+						<span class="publisher">
+							<span class="publishername">SVG-Edit Issues</span>
+						</span>
+						<br/>
+						<span class="url">
+							<a href="http://code.google.com/p/svg-edit/issues/detail?id=70">http://code.google.com/p/svg-edit/issues/detail?id=70</a>
+						</span>
+
+					</p>
+				</div>
+			
 			</div>
 
 		</div>
