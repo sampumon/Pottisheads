@@ -486,6 +486,24 @@
 			<a id="browser_manufacturers"/>
 			For Browser Manufacturers
 		</h3>
+		
+			<p>In addition to <code>SVG.toDataURL()</code>-method presented above, we would like to see following improvments in browsers.</p>
+			
+			<h4>Safari, Chrome (Webkit) and Opera</h4>
+			
+			<p>Clicking Canvas with right-click should prompt for "save as" (PNG).  This is the easiest way to export anything that has been drawn on Canvas.</p>
+			
+			<h4>Firefox</h4>
+			
+			<p>Support for SVG files as source for <code>img</code>-element.</p>
+			
+			<h4>Opera</h4>
+			<p>Fix dynamic SVG in <code>img</code>-element support, what ever that means (TODO)</p>
+			
+			<h4>Internet Explorer</h4>
+			
+			<p>XMLSerializer (<a href="https://developer.mozilla.org/en/XMLSerializer">XMLSerializer</a>) is needed for the browser.</p>
+			
 
 	</div>
 
@@ -503,21 +521,85 @@
 			</div>
 		</div>
 		
+		<p>SVG 1.1 recommendation is seven years old, but still not very well supported [<a class="xref" href="#SvgSupport">SvgSupport</a>]. Good statistics on SVG support can be seen at <a href="http://www.codedread.com/svg-support.php">http://www.codedread.com/svg-support.php</a>.  To address the lacking support for SVG and the security issue presented above, a great number of projects has spawned trying to implement SVG rendering with other technologies.</p>
 		
-		<h3 class="title">
-			<a id="canvas_implementations"/>
-			Implementations with Canvas
-		</h3>
+		<p>Alternative technologies to render SVG are Canvas, Flash and VML. In the following list we have tried to gather all compatibility workarounds and other related projects of this field.  At the end of this section some notes on problems associated with the workarounds are given.</p>
+		
+		
+		<h4>CanVG</h4>
+		
+		<p><a href="http://code.google.com/p/canvg/">http://code.google.com/p/canvg/</a></p>
+		
+		<p>CanVG is the most feature complete SVG compatibility JavaScript library for browsers that support Canvas. The projects end goal is to support everything in the SVG specification. And currently CanVG is selected for the SVG-Edit to solve SVG rasterization.  We will evaluate the usage of CanVG later in this paper.</p>
 
-		<h3 class="title">
-			<a id="flash_implementations"/>
-			Implementations with Flash
-		</h3>
+		<h4>SVG Web</h4>
+		
+		<p><a href="http://code.google.com/p/svgweb/">http://code.google.com/p/svgweb/</a></p>
+		
+		<p>SVG Web renders SVG files with Adobe Flash.  At the time of writing it supports ~50% of the SVG 1.1 specification [SvgSupport TODO].</p>
+		
+		
+			
+		<h4>CakeJS</h4>
+		
+		<p><a href="http://code.google.com/p/cakejs/wiki/Documentation#SVGParser">http://code.google.com/p/cakejs/wiki/Documentation#SVGParser</a></p>
+		
+		<p>The Canvas Animation JavaScript library CakeJS has implemented SVG parser that converts SVG DOM to its own set of drawing commands that can be used to rasterize and animate SVG elements on Canvas.</p>
 
+
+		<h4>Raphaël, Dojox.gfx and SVGKit SVGCanvas</h4>
+
+		<p><a href="http://raphaeljs.com/">http://raphaeljs.com/</a><br/>
+			<a href="http://docs.dojocampus.org/dojox/gfx">http://docs.dojocampus.org/dojox/gfx</a><br/>
+			<a href="http://svgkit.sourceforge.net/SVGCanvas.html">http://svgkit.sourceforge.net/SVGCanvas.html</a></p>
+		
+		<p>Raphaël and dojox.gfx do not implement SVG compatibility, but rather provide own API that can be used for drawing vector graphics.  Raphaël is a JavaScript library that provides Canvas like API for drawing graphics.  It uses SVG for drawing graphics and falls back to VML if the browser does not support SVG).</p>
+		
+		<p>Dojox.gfx is an extension to the Dojo toolkit that similary to Raphaël uses SVG and VML, but also Silverlight and Canvas for drawing vector graphics.</p>
+		
+		<p>SVGKits SVGCanvas is also mentioned, because it provides Canvas API implementation that is rendered with SVG.</p>
+
+
+
+		<h4>Flanvas</h4>
+		
+		<p><a href="http://flanvas.com/">http://flanvas.com/</a></p>
+
+		<p>"Flanvas provides a way of interactive development similar to flex. The hope is that actionscript developers will find this to be an easy solution to use when flash is either too much, or not available."</p>
+		
+		<p>Flanvas parses SVG files and creates own representation of them that can be animated.  Support for SVG is still limited.</p>
+
+
+		<h4>Abandoned CanvaSVG</h4>
+		
+		<p><a href="http://web.archive.org/web/20070928172356/http%3a//fuchsia-design.com/CanvaSVG/">http://web.archive.org/web/20070928172356/http%3a//fuchsia-design.com/CanvaSVG/</a></p>
+		
+		<p>In order this listing to be more or less complete, it’s important to include already abandoned hack project to stress the fact that Canvas is very lucrative platform for developers to start implementing SVG support.</p>
+
+		<h4>PNG Rasterization</h4>
+		
+		<p>Static SVGs can also be rasterized as PNG images that are displayed instead of the SVG files.  This allows modifications still to be done on SVGs while providing full browser support. Wikipedia uses this technique to display their great amount of SVG images: <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Butterfly.svg/398px-Butterfly.svg.png">http://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Butterfly.svg/398px-Butterfly.svg.png</a>.</p>
+		
+		
 		<h3 class="title">
 			<a id="workaround_problems"/>
 			Problems with Workarounds
 		</h3>
+		
+		<p>There should not be any need to re-implement, but while native rendering support is missing, the following aspects should be considered.</p>
+		
+		<h4>Scene Graph is Missing with Canvas</h4>
+		
+		<p>In order to have interactivity with "vectorized" elements on Canvas, the implementation needs to keep track of the elements, their boundaries and ordering.  This brings some overhead as discussed in our previous paper [<a class="xref" href="#TRIVIAL09">TRIVIAL09</a>].</p>
+
+		<h4>Accessibility</h4>
+		
+		<p>More important than scene graph is the accessibility of the web.  Especially with workaround solutions where the source is not available as SVG, but only as a non-accessible bitmap the accessibility is very limited.</p>
+
+		<h4>Speed and Complexity</h4>
+		
+		<p>Not only the full support of SVG is quite complex task to complete with JavaScript and Canvas or Flash, but it is also more likely to be slower than a native implementation.</p>
+	
 		
 	</div>
 	
@@ -536,17 +618,23 @@
 			</div>
 		</div>
 		
+		<p>Based on the requirements stated above, here is our list of implementation recommendations for the current state of technologies. This is due to change in future, when better solutions become available.</p>
 
 		<h3 class="title">
 			<a id="guideline_demonstration"/>
 			Guideline and the Demonstration Page
 		</h3>
 
+		<p>In this page we... TODO</p>
+		
+		
 		<h3 class="title">
 			<a id="guideline_evaluation"/>
 			Guideline Evaluation
 		</h3>
 
+		<p>If any TODO</p>
+		
 	</div>
 	
 	<div class="section" lang="en">
@@ -697,6 +785,24 @@
 
 					</p>
 				</div>
+
+				<div class="biblioentry">
+					<a id="SvgSupport"/>
+					<p>[<abbr class="abbrev">SvgSupport</abbr>] 
+								
+						<span class="title"><i>SVG Support tables</i></span>
+						<br/>
+						<span class="publisher">
+							<span class="publishername">Codedread</span>
+						</span>
+						<br/>
+						<span class="url">
+							<a href="http://www.codedread.com/svg-support.php">http://www.codedread.com/svg-support.php</a></span>
+
+					</p>
+				</div>
+				
+
 							
 			</div>
 
