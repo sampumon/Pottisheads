@@ -62,33 +62,17 @@
 </head>
 
 <body>
-    <h1>Yo dawg, we herd you like SVG</h1>
-	
-	<h2>TODODO</h2>
-	<ul>
-		<li><strike>deebeelle autocheckout</strike></li>
-		<li>paperipohja silleen et se on (runko)</li>
-		<li><strike>Numerointi</strike> JA viitteet (3.a.ii)</li>
-		<li>Export png new window warning</li>
-		<li><strike>vaarapunaiset ja svg->svg tekee canvgista punaisen</strike></li>
-		<li>BENCHMARK canvg</li>
-		<li>miksei toimi svg image -> svg firefoxissa?</li>
-		<li>btw ainoa syy miksi canvg on huono, niin jos svgssä on animaatiota, ei animaation nykyistä tilaa voi siirtää (canvakseen)</li>
-		<li>svg plot circles with left click ehkä</li>
-		<li>ie9 testaus</li>
-		<li>Miksei toimi firefoxissa ainakin seuraava polku: piirrä canvakseen, importtaa toDataurlilla svgeehen, canvg canvas -> svg, ei tule mukana toDataurlilla siirrettyä, vaikka se on ok?</li>
-	</ul>
-	
+	<h1>Pottisheads' Final SVG vs. Canvas</h1>
 	
 	<div id="demolist">
 		<ol>
-	   		<li><a href="javascript:alert('Click and drag canvas with your mouse!')">Draw pixel graphics with Canvas</a>
+	   		<li><a href="javascript:alert('Click and drag the Canvas area with your mouse!')">Draw pixel graphics with Canvas</a>
 				<ol>
 					<li><a class="tool" href="javascript:PixelCanvas.drawImage('gordo-small.png');">Draw PNG Image</a></li>
 					<li><a class="tool" href="javascript:PixelCanvas.drawImage('gordo.svg');">Draw SVG Image</a></li>
 				</ol>
 			</li>
-	   		<li><a href="javascript:VectorSVG.addRandomCircle();">Draw vector graphics with SVG</a>
+	   		<li><a href="javascript:alert('Click that SVG area with your mouse!')">Draw vector graphics with SVG</a>
 				<ol>
 					<li><a class="tool" href="javascript:VectorSVG.addImage('gordo-small.png');">Draw PNG Image</a></li>
 					<li><a class="tool" href="javascript:VectorSVG.addImage('gordo.svg'); will_break('might_break_canvas');">Draw SVG Image</a></li>
@@ -133,7 +117,7 @@
 
 			<li>Exporting as file
 	    		<ol>
-					<li>SVG->PNG
+					<li>SVG→PNG
 	          			<ol>
 	          				<li><a href="javascript:SVGToCanvas.exportServerSideAsNewWindow(svg);">Serverside</a> (safe and non-safe elements). (btw same as 3.c.ii.1)</li>
 	          				<li><a href="javascript:SVGToCanvas.exportCanvgAsNewWindow(svg);">canvg (safe elements)</a>. (btw same as 3.c.iii.2)</li>
@@ -148,7 +132,7 @@
 						</ol>
 					</li>
 					
-					<li>SVG->SVG file
+					<li>SVG→SVG file
 						<ol>
 							<li><a href="javascript:SVGToCanvas.exportAsNewWindow(svg);">Serialize SVG as data url</a></li>
 							<li>TODO: SVGEDIT KÄSIN</li>
@@ -162,10 +146,6 @@
 	<div id="svgarea">
 		<h2>SVG (<a href="javascript:VectorSVG.clearCanvas();">clear</a>)</h2>
 		
-		<div class="toolbar">
-			<a class="tool" href="javascript:VectorSVG.addCircle();">Circle TODO</a>
-		</div>
-		
 		<svg id="svg" width="500" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	</div>
 
@@ -173,7 +153,24 @@
 		<h2>Canvas (<a href="javascript:PixelCanvas.clearCanvas();">clear</a>)</h2>
 		<canvas id="canvas" width="500" height="300">NO CANVAS FOR YOU</canvas>		
 	</div>
-		
+
+
+	<h2 style="clear: both;">TODODO</h2>
+	<ul>
+		<li><strike>deebeelle autocheckout</strike></li>
+		<li><strike>paperipohja silleen et se on (runko)</strike></li>
+		<li><strike>Numerointi</strike> JA viitteet (3.a.ii)</li>
+		<li>Export png new window warning</li>
+		<li><strike>vaarapunaiset ja svg→svg tekee canvgista punaisen</strike></li>
+		<li>BENCHMARK canvg</li>
+		<li>miksei toimi svg image → svg firefoxissa?</li>
+		<li>btw ainoa syy miksi canvg on huono, niin jos svgssä on animaatiota, ei animaation nykyistä tilaa voi siirtää (canvakseen)</li>
+		<li>svg plot circles with left click ehkä</li>
+		<li>ie9 testaus</li>
+		<li>Miksei toimi firefoxissa ainakin seuraava polku: piirrä canvakseen, importtaa toDataurlilla svgeehen, canvg canvas → svg, ei tule mukana toDataurlilla siirrettyä, vaikka se on ok?</li>
+	</ul>
+
+
 </body>
 </html>
 

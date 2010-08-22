@@ -12,83 +12,126 @@ var VectorSVG = {
 		this.target = target;
 
 		this.target.onmousedown = this.mouseDown;
-		this.target.onmousemove = this.mouseMove;
 		this.target.onmouseup = this.mouseUp;
-		this.target.onclick = this.mouseClick;
-	},
+		this.target.parentNode.onmousemove = this.mouseMove;
 
+		// as a neat trick, we add onclick to parent (div) of our svg element;
+		// thus, even safari captures events for empty svg areas!
+		// a 'backdrop' rectangle would be better, sorry about that.
+		this.target.parentNode.onclick = this.mouseClick;
+		
+		// second one is for FF
+		this.target.onmousewheel = this.mouseWheel;
+		this.target.addEventListener('DOMMouseScroll', this.mouseWheel, false);
+	},
+	
 	clearCanvas: function() {
 		// safari has no .children for svg, so we use childNodes
 		while (this.target.childNodes.length > 0)
 			this.target.removeChild(this.target.childNodes[0]);		
 	},
-	
+
 	mouseClick: function(e) {
-		// TODO: recognize drag and skip plotting new circle
-		var p = getMouseCoords(e, VectorSVG.target);
-		VectorSVG.addCircle(p.x, p.y);
+		var mouse = getMouseCoords(e, VectorSVG.target);
+
+		// if we were just draggin', skip circle plotting
+		if (VectorSVG.draggin) VectorSVG.draggin = false;
+		else VectorSVG.addCircle(mouse.x, mouse.y);
 	},
 
 	mouseDown: function(e) {
-		if (e.target != VectorSVG.target) {
-			VectorSVG.dragTarget = e.target;
-			if (e.button == 0) VectorSVG.draggin = true;
-			// TODO! reasonable zoom!
-			if (e.button == 2) VectorSVG.zoomin = true;
-			
-			// initialize transforms
-			if (!VectorSVG.dragTarget._translateX) VectorSVG.dragTarget._translateX = 0;
-			if (!VectorSVG.dragTarget._translateY) VectorSVG.dragTarget._translateY = 0;
-			if (!VectorSVG.dragTarget._scale) VectorSVG.dragTarget._scale = 1;
+		if (e.target == VectorSVG.target || e.button != 0) return;
 
-			VectorSVG.prevMouse = getMouseCoords(e, VectorSVG.target);
+		VectorSVG.dragTarget = e.target;
+		VectorSVG.prevMouse = getMouseCoords(e, VectorSVG.target);
+		VectorSVG.moveOnTop(VectorSVG.dragTarget);
 
-			// also move it on top (that's to the end of DOM)
-			VectorSVG.moveOnTop(e.target);
-		}
-
-		// always do this
 		e.preventDefault();
 	},
 	
 	mouseUp: function(e) {
-		if (e.button == 0) VectorSVG.draggin = false;
-		if (e.button == 2) VectorSVG.zoomin = false;
-		if (!(VectorSVG.draggin || VectorSVG.zoomin)) VectorSVG.dragTarget = null;
+		if (e.button != 0) return;
+		
+		VectorSVG.dragTarget = null;
+
 		e.preventDefault();
 	},
-
+	
 	mouseMove: function(e) {
 		var mouse = getMouseCoords(e, VectorSVG.target);
 
+		// acnowledge that dragging has commenced
+		if (VectorSVG.dragTarget) VectorSVG.draggin = true;
+
 		if (VectorSVG.draggin) {
-			VectorSVG.dragTarget._translateX += mouse.x - VectorSVG.prevMouse.x;
-			VectorSVG.dragTarget._translateY += mouse.y - VectorSVG.prevMouse.y;
+			VectorSVG.translate(VectorSVG.dragTarget,
+				mouse.x - VectorSVG.prevMouse.x, 
+				mouse.y - VectorSVG.prevMouse.y);
 		}
-
-		if (VectorSVG.zoomin) {
-			VectorSVG.dragTarget._scale -= (mouse.y - VectorSVG.prevMouse.y) / 10;
-		}
-
-		if (VectorSVG.dragTarget) VectorSVG.applyTransforms(VectorSVG.dragTarget);
 
 		VectorSVG.prevMouse = mouse;
+		
 		e.preventDefault();
+	},
+
+	mouseWheel: function(e) {
+		// allow page scrolling around circles
+		if (e.target != VectorSVG.target) {
+			var mouse = getMouseCoords(e, VectorSVG.target);
+			var wheel = getMouseWheel(e);
+
+			VectorSVG.scale(e.target, wheel / 10);
+
+			e.preventDefault();
+		}
+	},
+
+	translate: function(elem, x, y) {
+		if (!elem._translateX) elem._translateX = 0;
+		if (!elem._translateY) elem._translateY = 0;
+
+		elem._translateX += x;
+		elem._translateY += y;
+		
+		VectorSVG.applyTransforms(elem);
+	},
+
+	scale: function(elem, s, cx, cy) {
+		if (!elem._scale) elem._scale = 1;
+		elem._scale += elem._scale * s;
+
+		// center scaling on mouse (or target element center)
+		// TODO: centering on mouse don't work when mouse is moved after scaling
+		var bb = elem.getBBox();
+		elem._scaleTX = cx || (bb.x + bb.width / 2);
+		elem._scaleTY = cy || (bb.y + bb.height / 2);
+		
+		VectorSVG.applyTransforms(elem);
+	},
+
+	applyTransforms: function(elem) {
+		var tr = 'translate(' + (elem._translateX || 0) + ',' + (elem._translateY || 0) + ')';
+
+		if (elem._scale) tr +=
+			'translate(' + elem._scaleTX + ',' + elem._scaleTY + ')' +
+			'scale(' + elem._scale + ')' +
+			'translate(' + -elem._scaleTX + ',' + -elem._scaleTY + ')';
+
+		elem.setAttribute('transform', tr);
+
+		//console.log(elem.getAttribute('transform'));
+		//var c = elem.getCTM();
+		//console.log(c.a + " " + c.b + " " + c.c + " " + c.d + " " + c.e + " " + c.f);
 	},
 
 	moveOnTop: function(elem) {
 		this.target.appendChild(elem);
 	},
 	
-	applyTransforms: function(elem) {
-		elem.setAttribute('transform',
-			'translate(' + elem._translateX + ',' + elem._translateY + ')' +
-			'scale(' + elem._scale + ')'
-		);
-	},
-
 	addCircle: function(x, y, r) {
-		if (!r) var r = 40;
+		// randomize r if not given
+		if (!r) var r = randomInt(90) + 10;
+		
 		var circle = document.createElementNS(this.svgNS, "circle");
 		circle.setAttribute('style', "fill:" + randomRGB());
 		circle.setAttribute('cx', x);
@@ -101,9 +144,8 @@ var VectorSVG = {
 	addRandomCircle: function() {
 		var x = randomInt(this.target.width.baseVal.value);
 		var y = randomInt(this.target.height.baseVal.value);
-		var r = randomInt(90) + 10;
 
-		this.addCircle(x, y, r)
+		this.addCircle(x, y)
 	},
 	
 	addImage: function(href, x, y) {

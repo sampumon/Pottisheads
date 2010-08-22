@@ -26,7 +26,7 @@ var PixelCanvas = {
 		PixelCanvas.drawMode = true;
 
 		var mouse = getMouseCoords(e, PixelCanvas.target);
-		PixelCanvas.drawPixel(mouse.x, mouse.y);
+		PixelCanvas.drawRandomPixel(mouse.x, mouse.y);
 
 		e.preventDefault();
 	},
@@ -48,11 +48,11 @@ var PixelCanvas = {
 		this.targetCtx.fillRect (x - this.drawSize/2, y - this.drawSize/2, this.drawSize, this.drawSize);
 	},
 
-	drawRandomPixel: function() {
-		var x = randomInt(this.target.width);
-		var y = randomInt(this.target.height);
+	drawRandomPixel: function(x, y) {
+		this.changeColor(randomRGB());
+		this.changeBrush(10 + randomInt(20));
 
-		this.drawPixel(x,y);
+		this.drawPixel(x || randomInt(this.target.width), y || randomInt(this.target.height));
 	},
 	
 	changeColor: function(c) {

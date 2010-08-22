@@ -4,6 +4,7 @@
 /* main vs. area */
 #svgarea, #canvasarea { margin-left: 2em; }
 svg, canvas { border: 1px solid silver; }
+h2 a { color: gray; }
 
 /* toolbars */
 .color { float: left; width: 2em; height: 2em; }
