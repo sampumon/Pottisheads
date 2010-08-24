@@ -4,6 +4,10 @@
 	<title>From SVG to Canvas and Back</title>
 	<meta name="description" content="Abstract of the presentation"/>
 	<meta name="keywords" content="conference proceedings, keywords of the presentation"/>
+	<style type="text/css">
+		.fail { color: orange; }
+		.comment { color: gray; }
+	</style>
 </head>
 <body>
 	<div class="article" lang="en">
@@ -210,7 +214,7 @@
 		<p>This method we presented last year [<a class="xref" href="#TRIVIAL09">TRIVIAL09</a>] and is provided here for completeness.</p>
 		  
 <pre class="programlisting">function <strong>importCanvas</strong>(sourceCanvas, targetSVG) {
-    var img_dataurl = sourceCanvas.toDataURL("image/png");
+    var img_dataurl = sourceCanvas.<strong>toDataURL</strong>("image/png");
     var svg_img = document.createElementNS(
         "http://www.w3.org/2000/svg", "image");
 
@@ -231,20 +235,20 @@
 
 		<p>The idea for our "SVG to Canvas" method is to make use of the web browser rendering of SVG.  As the SVG is rasterized in the screen, it should be possible to use those pixels directly in Canvas.  However, no direct interface exists (yes, see our SVG.toDataURL() API recommendation in section TODO), so we’ll use Canvas for the job.</p>
 
-<pre class="programlisting">function importSVG(sourceSVG, targetCanvas) {
-   // https://developer.mozilla.org/en/XMLSerializer
-   svg_xml = (new XMLSerializer()).serializeToString(sourceSVG);
+<pre class="programlisting">function <strong>importSVG</strong>(sourceSVG, targetCanvas) {
+   <span class="comment">// https://developer.mozilla.org/en/XMLSerializer</span>
+   svg_xml = (new XMLSerializer()).<strong>serializeToString</strong>(sourceSVG);
    var ctx = targetCanvas.getContext('2d');
 
-   // this is just a JavaScript (HTML) image
+   <span class="comment">// this is just a JavaScript (HTML) image</span>
    var img = new Image();
-   // http://en.wikipedia.org/wiki/SVG#Native_support
-   // https://developer.mozilla.org/en/DOM/window.btoa
-   img.src = "data:image/svg+xml;base64," + btoa(svg_xml);
+   <span class="comment">// http://en.wikipedia.org/wiki/SVG#Native_support</span>
+   <span class="comment">// https://developer.mozilla.org/en/DOM/window.btoa</span>
+   img.src = "data:<strong>image/svg+xml</strong>;base64," + btoa(svg_xml);
 
    img.onload = function() {
-       // after this, Canvas’ origin-clean is DIRTY
-       ctx.drawImage(img, 0, 0);
+       <span class="comment">// after this, Canvas’ origin-clean is DIRTY</span>
+       ctx.<strong>drawImage</strong>(img, 0, 0);
    }
 }
 </pre>
@@ -264,7 +268,7 @@
 
 		<p>Support for the techniques used in the "Canvas to SVG" method are better and more consistent than for the "SVG to Canvas" methods, as can be seen from the table below.</p>
 		
-		<table>
+		<table width="80%">
 			<caption>Table 1: Browser compatibility for Canvas-SVG interaction</caption>
 			<thead>
 				<tr>
@@ -280,74 +284,74 @@
 			<tbody>
 				<tr>
 					<td>XML-serialize dynamic SVG data</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>					
+					<td>ok</td>
+					<td>ok</td>
+					<td>ok</td>
+					<td>ok</td>
+					<td class="fail">fail</td>
 				</tr>
 
 				<tr>
 					<td>Data URL in HTML <code>img</code> element</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>					
+					<td>ok</td>
+					<td>ok</td>
+					<td>ok</td>
+					<td>ok</td>
+					<td>ok</td>
 				</tr>
 
 				<tr>
 					<td>SVG Image in HTML <code>img</code> element</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>					
+					<td>ok</td>
+					<td>ok</td>
+					<td class="fail">fail</td>
+					<td class="fail">only static?</td>
+					<td></td>
 				</tr>
 
 				<tr>
 					<td>Non-standard <code>btoa()</code> base64 function</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>					
+					<td>ok</td>
+					<td>ok</td>
+					<td>ok</td>
+					<td>ok</td>
+					<td></td>
 				</tr>
 
 				<tr>
 					<td>SVG data URL for Canvas <code>drawImage</code></td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>					
+					<td>ok</td>
+					<td>ok</td>
+					<td class="fail">fail</td>
+					<td class="fail">fail</td>
+					<td></td>
 				</tr>
 
 				<tr>
-					<td>..above should set <code>origin-clean</code> as dirty</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>					
+					<td>...above should set <code>origin-clean</code> as dirty</td>
+					<td>ok</td>
+					<td>ok</td>
+					<td>ok</td>
+					<td>ok</td>
+					<td></td>
 				</tr>
 
 				<tr>
 					<td>Canvas.<code>toDataURL()</code></td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>					
+					<td>ok</td>
+					<td>ok</td>
+					<td>ok</td>
+					<td>ok</td>
+					<td>ok</td>
 				</tr>
 
 				<tr>
 					<td>extra: Right-click on Canvas allows "Save as.."</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>
-					<td>a</td>					
+					<td class="fail">not</td>
+					<td class="fail">not</td>
+					<td>ok</td>
+					<td class="fail">not</td>
+					<td>TODO</td>
 				</tr>
 
 			</tbody>
