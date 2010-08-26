@@ -55,8 +55,8 @@
 				this.href += " break_now('will_read_canvas');";
 			})
 		}
-		]]>
-		
+
+	]]>	
 	</script>
 	
 </head>
@@ -64,18 +64,36 @@
 <body>
 	<h1>Pottisheads' Final SVG vs. Canvas</h1>
 	
+	<dl>
+		<dt>Legend (based on background-color):</dt>
+		<dd class="broken">This won't work anymore, because Canvas' <code>origin-clean</code> is <var>false</var>. Maybe you broke it?</dd>
+		<dd class="will_break_canvas">Beware! This will set Canvas' <code>origin-clean</code> <var>false</var>, making Canvas read-only.</dd>
+		<dd class="might_break_canvas_legend">This <em>might</em> set Canvas' <code>origin-clean</code> <var>false</var>, depending on whether you're transferring images inside SVG data.</dd>
+	</dl>
+	
+	<div id="svgarea">
+		<h2>SVG (<a href="javascript:VectorSVG.clearCanvas();">clear</a>)</h2>
+		
+		<svg id="svg" width="500" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" />
+	</div>
+
+	<div id="canvasarea">
+		<h2>Canvas (<a href="javascript:PixelCanvas.clearCanvas();">clear</a>)</h2>
+		<canvas id="canvas" width="500" height="300">NO CANVAS FOR YOU</canvas>		
+	</div>
+
 	<div id="demolist">
 		<ol>
 	   		<li><a href="javascript:alert('Click and drag the Canvas area with your mouse!')">Draw pixel graphics with Canvas</a>
 				<ol>
-					<li><a class="tool" href="javascript:PixelCanvas.drawImage('gordo-small.png');">Draw PNG Image</a></li>
-					<li><a class="tool" href="javascript:PixelCanvas.drawImage('gordo.svg');">Draw SVG Image</a></li>
+					<li><a href="javascript:PixelCanvas.drawImage('gordo-small.png');">Draw PNG Image</a></li>
+					<li><a href="javascript:PixelCanvas.drawImage('gordo.svg');">Draw SVG Image</a></li>
 				</ol>
 			</li>
 	   		<li><a href="javascript:alert('Click that SVG area with your mouse!')">Draw vector graphics with SVG</a>
 				<ol>
-					<li><a class="tool" href="javascript:VectorSVG.addImage('gordo-small.png');">Draw PNG Image</a></li>
-					<li><a class="tool" href="javascript:VectorSVG.addImage('gordo.svg'); will_break('might_break_canvas');">Draw SVG Image</a></li>
+					<li><a href="javascript:VectorSVG.addImage('gordo-small.png');">Draw PNG Image</a></li>
+					<li><a href="javascript:VectorSVG.addImage('gordo.svg'); will_break('might_break_canvas');">Draw SVG Image</a></li>
 					
 				</ol>
 			</li>
@@ -143,17 +161,6 @@
 		</ol>
 	</div>
 		
-	<div id="svgarea">
-		<h2>SVG (<a href="javascript:VectorSVG.clearCanvas();">clear</a>)</h2>
-		
-		<svg id="svg" width="500" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" />
-	</div>
-
-	<div id="canvasarea">
-		<h2>Canvas (<a href="javascript:PixelCanvas.clearCanvas();">clear</a>)</h2>
-		<canvas id="canvas" width="500" height="300">NO CANVAS FOR YOU</canvas>		
-	</div>
-
 
 	<h2 style="clear: both;">TODODO</h2>
 	<ul>

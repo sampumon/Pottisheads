@@ -1,10 +1,21 @@
 /* 2010 demo list */
-#demolist { float: left; width: 500px; margin-right: 2em;}
+#demolist {
+	/* width: 500px; */
+	/*float: left;*/
+	margin-right: 2em;
+	/* this will fix the background-colors flooding over floats */
+	overflow: hidden;
+}
 
-/* main vs. area */
-#svgarea, #canvasarea { margin-left: 2em; }
+/* main vs. area for svg and canvas */
+#svgarea, #canvasarea {
+	float: right;
+	clear: right;
+	margin-left: 2em;
+}
 svg, canvas { border: 1px solid silver; }
 h2 a { color: gray; }
+body { margin-right: 1em; }
 
 /* toolbars */
 .color { float: left; width: 2em; height: 2em; }
@@ -13,7 +24,8 @@ h2 a { color: gray; }
 .toolbar { height: 1.5em; }
 
 /* 2010 mind game */
-.might_break_canvas { background-color: #fed; }
+.might_break_canvas,
+.might_break_canvas_legend { background-color: #fed; }
 .will_break_canvas { background-color: orange; }
 .broken { background-color: silver; }
 
