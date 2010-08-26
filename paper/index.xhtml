@@ -135,7 +135,7 @@
 		
 		<p>At <a href="http://svgopen.org/2009/">SVG Open 2009</a> we presented a method of using the bitmap content of Canvas element in SVG as an image element.  This was done by utilizing <code>canvas.toDataURL()</code>-method that returns a base64-coded pixel representation of the canvas drawing context as a PNG image.  This data URI can be set as source for a SVG Image element.  In our demonstration we combined the best parts of SVG (vector drawing, native scene graph support) and Canvas (pixel drawing) in one trivial drawing application.  SVG to Canvas transfer was done in server-side, by rasterizing the image and then drawing that on a canvas element [<a class="xref" href="#TRIVIAL09">TRIVIAL09</a>].</p>
 		
-		<p>As the method for transferring Canvas to SVG was native in the browser (<code>toDataURL()</code>), the next step is obviously to do the same for SVG to Canvas instead of server-side conversion.  It would be tempting to use browsers native rendering, but unfortunately SVG does not support a <code>toDataURL()</code>-method.  There has been <a href="http://lists.w3.org/Archives/Public/public-svg-ig/2009OctDec/0004.html">some</a> <a href="http://lists.w3.org/Archives/Public/www-svg/2009Oct/0003.html">discussion</a> about adding same method to SVG, but this has some serious security issues that will be discussed in section TODO of this paper.</p>
+		<p>As the method for transferring Canvas to SVG was native in the browser (<code>toDataURL()</code>), the next step is obviously to do the same for SVG to Canvas instead of server-side conversion.  It would be tempting to use browsers native rendering, but unfortunately SVG does not support a <code>toDataURL()</code>-method.  There has been <a href="http://lists.w3.org/Archives/Public/public-svg-ig/2009OctDec/0004.html">some</a> <a href="http://lists.w3.org/Archives/Public/www-svg/2009Oct/0003.html">discussion</a> about adding same method to SVG, but this has some serious security issues that will be discussed in the "<a href="#security_issues">Security Issues</a>" section of this paper.</p>
 		
 		<p>In this paper we will show an experimental method for using the browsers native rendering support to render SVG on Canvas.  We will also present a complete list of the possible methods for using SVG together with Canvas.  Evaluation of these methods and application fits is also given.  In addition, we present a list of recommendations for browser manufacturers to implement for improved support and adaptation of SVG and Canvas.</p>
 		
@@ -156,7 +156,7 @@
 		
 		<p>Like in the paper we published last year, our motivation is drawing in the web: using the right techniques for the right things. (See "<a href="http://svgopen.org/2009/papers/54-SVG_vs_Canvas_on_Trivial_Drawing_Application/#d4e250">Combining existing components: SVG-Edit and CanvasPaint</a>")</p>
 		
-		<p>The need for interface between SVG and canvas is real and really required for efficent adaptation of SVG.  For example, SVG-edits <a href="http://code.google.com/p/svg-edit/issues/detail?id=70">issue #70</a>, "ability to save canvas as PNG" is currently solved with JavaScript+Canvas rendering workaround although a native implementation would be better [<a class="xref" href="#ISSUE70">ISSUE70</a>]. A list of rendering workarounds is given the TODO section of this paper.</p>
+		<p>The need for interface between SVG and canvas is real and really required for efficent adaptation of SVG.  For example, SVG-edits <a href="http://code.google.com/p/svg-edit/issues/detail?id=70">issue #70</a>, "ability to save canvas as PNG" is currently solved with JavaScript+Canvas rendering workaround although a native implementation would be better [<a class="xref" href="#ISSUE70">ISSUE70</a>]. A list of rendering workarounds is given the "<a href="#workarounds">SVG Compatibility Workarounds</a>" section of this paper.</p>
 		
 		<h3 class="title">
 			<a id="requirements"/>
@@ -202,7 +202,7 @@
 			</div>
 		</div>
 		
-		<p>Following two methods allow native, two-way interaction with SVG and Canvas.  A proposal for better and standardized implementation for SVG to Canvas is given in the TODO section of this paper after the security issues associated with it are presented.</p>
+		<p>Following two methods allow native, two-way interaction with SVG and Canvas.  A proposal for better and standardized implementation for SVG to Canvas is given in the "<a href="#recommendations">Recommendations</a>" section of this paper after the security issues associated with it are presented.</p>
 		
 		<h3 class="title">
 			<a id="canvas_to_svg"/>
@@ -231,7 +231,7 @@
 			SVG to Canvas
 		</h3>
 
-		<p>The idea for our "SVG to Canvas" method is to make use of the web browser rendering of SVG.  As the SVG is rasterized in the screen, it should be possible to use those pixels directly in Canvas.  However, no direct interface exists (yes, see our SVG.toDataURL() API recommendation in section TODO), so we’ll use Canvas for the job.</p>
+		<p>The idea for our "SVG to Canvas" method is to make use of the web browser rendering of SVG.  As the SVG is rasterized in the screen, it should be possible to use those pixels directly in Canvas.  However, no direct interface exists (yes, see our SVG.toDataURL() API recommendation in section "<a href="#recommendations">Recommendations</a>"), so we’ll use Canvas for the job.</p>
 
 <pre class="programlisting">function <strong>importSVG</strong>(sourceSVG, targetCanvas) {
    <span class="comment">// https://developer.mozilla.org/en/XMLSerializer</span>
@@ -257,7 +257,7 @@
 
 		<p>All browsers support images with data URI [<a class="xref" href="#RFC2397">RFC2397</a>].  Currently, some browsers (Webkit) support SVG images as source for <code>img</code> elements [<a class="xref" href="#SVGimg10">SVGimg10</a>].  By combining these, we can transfer the serialized XML SVG data into a HTML Image element.  This HTML Image element can be used as an argument for the <code>drawImage()</code>-method of Canvas.</p>
 
-		<p>Currently (2010-08) this only works in Safari and Chrome.  Also, the "SVG to Canvas" transfer is write-only, as it triggers the <code>origin-clean</code> flag of Canvas as dirty, which causes that Canvas to be unreadable (until reloaded and cleared). This security issue will be discussed in the TODO section.</p>
+		<p>Currently (2010-08) this only works in Safari and Chrome.  Also, the "SVG to Canvas" transfer is write-only, as it triggers the <code>origin-clean</code> flag of Canvas as dirty, which causes that Canvas to be unreadable (until reloaded and cleared). This security issue will be discussed in the "<a href="#security_issues">Security Issues</a>" section.</p>
 
 		<h3 class="title">
 			<a id="browser_compatibility"/>
@@ -538,7 +538,7 @@
 		
 		<p><a href="http://code.google.com/p/svgweb/">http://code.google.com/p/svgweb/</a></p>
 		
-		<p>SVG Web renders SVG files with Adobe Flash.  At the time of writing it supports ~50% of the SVG 1.1 specification [SvgSupport TODO].</p>
+		<p>SVG Web renders SVG files with Adobe Flash.  At the time of writing it supports ~50% of the SVG 1.1 specification [<a class="xref" href="#SvgSupport">SvgSupport</a>].</p>
 		
 		
 			
