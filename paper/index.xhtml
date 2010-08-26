@@ -52,16 +52,14 @@
 					<hr/>
 					<p class="title"><b>Abstract</b></p>
 					<hr/>
-					<p>
-						Here is the text of the abstract
-					</p>
+					<p>In this paper we continue our previous work that was published at SVG Open 2009.  We identify requirements for using SVG and Canvas effectively by using a trivial drawing application as a starting point.  We will show that using browsers native rendering of SVG can be directly used as a bitmap export of SVG.  This method has security issues that are briefly explained.  Based on the feature requirements and security evaluation, we propose an API method for SVG elements that resembles the <code>toDataURL()</code>-method of Canvas. In addition, we propose a list of enhancements for browser manufacturers that were gathered during this work.  Lastly, we list and evaluate SVG compatibility workarounds and combine everything that was presented in this paper to an interactive demonstration page.</p>
 				</div>
 		   </div>
 		</div>
 		<hr/>
 	</div>
 
-  <div class="toc"><p><b>Table of Contents TODO</b></p>
+  <div class="toc"><p><b>Table of Contents TODO:check that it's final</b></p>
   	<dl>
   		<dt><span class="section"><a href="#introduction">Introduction</a></span></dt>
   		<dt><span class="section"><a href="#motivation">Motivation: Complete Drawing Application</a></span></dt>
@@ -629,7 +627,9 @@
 			Guideline and the Demonstration Page
 		</h3>
 
-		<p>In this page we... TODO</p>
+		<p>See our demonstration page. TODO.</p>
+		
+		<p>Our demonstration page shows a list of feature requirements for a complete drawing application with SVG and Canvas. Each of the requirements are implemented with most suitable methods.  As the method used might effect on the other methods (by making them no longer available for security reasons), the page shows the effects: if a method is no longer available, it is rendered as TODO in the feature list.  Refreshing the page resets the status.</p>
 		
 		
 		<h3 class="title">
@@ -647,13 +647,16 @@
 				<div>
 					<h2 class="title" style="clear: both">
 						<a id="conclusions"/>
-						Conclusions
-					</h2>
+						Conclusions</h2>						
 				</div>
 			</div>
 		</div>
 		
-		<p>CONC</p>
+
+		<p>The future web that is based on open web standards is not complete without fully supported vector graphics. Since the last SVG Open 2009, the popularity of SVG has not raised, but the support has become better, especially with the latest Internet Explorer 9 preview releases.</p>
+
+		<p>The list of compatibility libraries in this paper show that SVG a) SVG rendering support has to get better, and more interestingly  b) the interaction with different technologies, like Canvas needs to improve as well.  If browsers would support better interaction with SVG, with such features as our proposed <code>toDataURL()</code>-method, it would make SVG less isolated.  As SVG has powerful features, the security issues that come with SVG need to be understood. The current security model is too thight for effective interaction with SVG.</p>
+	
 	</div>
 	
 		
