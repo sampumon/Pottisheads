@@ -1,9 +1,9 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 	<link rel="stylesheet" type="text/css" href="styles.css"/>
 	<title>From SVG to Canvas and Back</title>
-	<meta name="description" content="Abstract of the presentation"/>
-	<meta name="keywords" content="conference proceedings, keywords of the presentation"/>
+	<meta name="description" content="In this paper we continue our previous work that was published at SVG Open 2009. By Pottisheads."/>
+	<meta name="keywords" content="svg canvas pottishead"/>
 	<style type="text/css">
 		.fail { color: orange; }
 		.comment { color: gray; }
@@ -29,7 +29,7 @@
 			 	  		<div class="personblurb"><p>Member of W3C SVG Interest Group<br/><br/>University of Helsinki, Department of Computer Science<br/>matti.paksula@cs.helsinki.fi</p></div>
 				 	</div>
 					<br/>
-	                <span class="org">
+	                <div class="org">
 	                    <span class="orgname">University of Helsinki</span><br/>
 	                    <span class="orgdiv">Department of Computer Science</span>
 
@@ -42,7 +42,7 @@
 
 <br/>
 	                    </p></div>
-	                </span>
+	                </div>
 
 				</div>
 			</div>
@@ -133,7 +133,7 @@
 			</div>
 		</div>
 		
-		<p>At <a href="http://svgopen.org/2009/">SVG Open 2009</a> we presented a method of using the bitmap content of Canvas element in SVG as an image element.  This was done by utilizing <code>canvas.toDataURL()</code>-method that returns a base64-coded pixel representation of the canvas drawing context as a PNG image.  This data URI can be set as source for a SVG Image element.  In our demonstration we combined the best parts of SVG (vector drawing, native scene graph support) and Canvas (pixel drawing) in one trivial drawing application.  SVG to Canvas transfer was done in server-side, by rasterizing the image and then drawing that on a canvas element [<a class="xref" href="#TRIVIAL09">TRIVIAL09</a>].</p>
+		<p>At <a href="http://svgopen.org/2009/">SVG Open 2009</a> we presented a method of using the bitmap content of Canvas element in SVG as an image element.  This was done by utilizing <code>canvas.toDataURL()</code>-method that returns a base64-coded pixel representation of the canvas drawing context as a PNG image.  This data URI can be set as source for a SVG Image element.  In our demonstration we combined the best parts of SVG (vector drawing, native scene graph support) and Canvas (pixel drawing) in one trivial drawing application.  SVG to Canvas transfer was done in server-side, by rasterizing the image and then drawing that on a canvas element [<a class="xref" href="#Trivial09">Trivial09</a>].</p>
 		
 		<p>As the method for transferring Canvas to SVG was native in the browser (<code>toDataURL()</code>), the next step is obviously to do the same for SVG to Canvas instead of server-side conversion.  It would be tempting to use browsers native rendering, but unfortunately SVG does not support a <code>toDataURL()</code>-method.  There has been <a href="http://lists.w3.org/Archives/Public/public-svg-ig/2009OctDec/0004.html">some</a> <a href="http://lists.w3.org/Archives/Public/www-svg/2009Oct/0003.html">discussion</a> about adding same method to SVG, but this has some serious security issues that will be discussed in the "<a href="#security_issues">Security Issues</a>" section of this paper.</p>
 		
@@ -156,7 +156,7 @@
 		
 		<p>Like in the paper we published last year, our motivation is drawing in the web: using the right techniques for the right things. (See "<a href="http://svgopen.org/2009/papers/54-SVG_vs_Canvas_on_Trivial_Drawing_Application/#d4e250">Combining existing components: SVG-Edit and CanvasPaint</a>")</p>
 		
-		<p>The need for interface between SVG and canvas is real and really required for efficent adaptation of SVG.  For example, SVG-edits <a href="http://code.google.com/p/svg-edit/issues/detail?id=70">issue #70</a>, "ability to save canvas as PNG" is currently solved with JavaScript+Canvas rendering workaround although a native implementation would be better [<a class="xref" href="#ISSUE70">ISSUE70</a>]. A list of rendering workarounds is given the "<a href="#workarounds">SVG Compatibility Workarounds</a>" section of this paper.</p>
+		<p>The need for interface between SVG and canvas is real and really required for efficent adaptation of SVG.  For example, SVG-edits <a href="http://code.google.com/p/svg-edit/issues/detail?id=70">issue #70</a>, "ability to save canvas as PNG" is currently solved with JavaScript+Canvas rendering workaround although a native implementation would be better [<a class="xref" href="#Issue70">Issue70</a>]. A list of rendering workarounds is given the "<a href="#workarounds">SVG Compatibility Workarounds</a>" section of this paper.</p>
 		
 		<h3 class="title">
 			<a id="requirements"/>
@@ -167,18 +167,18 @@
 
 		<div class="itemizedlist">
 			<ol>	
-				<li><p>Pixel drawing</p></li>
-				<li><p>Vector drawing</p></li>
-				<li><p>Interfaces</p>
+				<li>Pixel drawing</li>
+				<li>Vector drawing</li>
+				<li>Interfaces
 					<ol>
-						<li style="list-style-type: lower-alpha"><p>Bitmap export and import (Canvas to SVG)</p></li>
-						<li style="list-style-type: lower-alpha"><p>Vector rasterization and import (SVG to Canvas)</p></li>					
+						<li style="list-style-type: lower-alpha">Bitmap export and import (Canvas to SVG)</li>
+						<li style="list-style-type: lower-alpha">Vector rasterization and import (SVG to Canvas)</li>					
 					</ol>
 				</li>
-				<li><p>Exporting</p>
+				<li>Exporting
 					<ol>
-						<li style="list-style-type: lower-alpha"><p>Export vectors (SVG DOM)</p></li>
-						<li style="list-style-type: lower-alpha"><p>Export bitmap (Canvas bitmap)</p></li>					
+						<li style="list-style-type: lower-alpha">Export vectors (SVG DOM)</li>
+						<li style="list-style-type: lower-alpha">Export bitmap (Canvas bitmap)</li>					
 					</ol>
 				</li>
 			</ol>
@@ -202,17 +202,19 @@
 			</div>
 		</div>
 		
-		<p>Following two methods allow native, two-way interaction with SVG and Canvas.  A proposal for better and standardized implementation for SVG to Canvas is given in the "<a href="#recommendations">Recommendations</a>" section of this paper after the security issues associated with it are presented.</p>
+		<p>Following two methods allow native, two-way interaction between SVG and Canvas.  A proposal for better and standardized implementation for the SVG→Canvas direction is given in the "<a href="#recommendations">Recommendations</a>" section of this paper after the security issues associated with it are presented.</p>
 		
 		<h3 class="title">
 			<a id="canvas_to_svg"/>
 			Canvas to SVG
 		</h3>
 		
-		<p>This method we presented last year [<a class="xref" href="#TRIVIAL09">TRIVIAL09</a>] and is provided here for completeness.</p>
+		<p>This method we presented last year [<a class="xref" href="#Trivial09">Trivial09</a>] and is provided here for completeness.</p>
 		  
 <pre class="programlisting">function <strong>importCanvas</strong>(sourceCanvas, targetSVG) {
+    <span class="comment">// get base64 encoded png data url from Canvas</span>
     var img_dataurl = sourceCanvas.<strong>toDataURL</strong>("image/png");
+
     var svg_img = document.createElementNS(
         "http://www.w3.org/2000/svg", "image");
 
@@ -223,7 +225,7 @@
 }
 </pre>
 	
-		<p>TODO: Could not get comments to be parsed in XML ?, need to write short overview.</p>
+		<p>Here we transfer the base64 encoded data URL, given by Canvas.toDataURL, into an SVG Image element. That's all what is needed, and it works in all major browsers, including IE9.</p>
 		
 				
 		<h3 class="title">
@@ -231,40 +233,40 @@
 			SVG to Canvas
 		</h3>
 
-		<p>The idea for our "SVG to Canvas" method is to make use of the web browser rendering of SVG.  As the SVG is rasterized in the screen, it should be possible to use those pixels directly in Canvas.  However, no direct interface exists (yes, see our SVG.toDataURL() API recommendation in section "<a href="#recommendations">Recommendations</a>"), so we’ll use Canvas for the job.</p>
+			<p>The idea for our SVG→Canvas method is to make use of the web browser rendering of SVG.  As the SVG is rasterized in the screen, it should be possible to use those pixels directly in Canvas.  However, no direct interface exists (see section "<a href="#recommendations">Recommendations</a>"), so we’ll use Canvas for the job.</p>
 
 <pre class="programlisting">function <strong>importSVG</strong>(sourceSVG, targetCanvas) {
-   <span class="comment">// https://developer.mozilla.org/en/XMLSerializer</span>
-   svg_xml = (new XMLSerializer()).<strong>serializeToString</strong>(sourceSVG);
-   var ctx = targetCanvas.getContext('2d');
+    <span class="comment">// https://developer.mozilla.org/en/XMLSerializer</span>
+    svg_xml = (new XMLSerializer()).<strong>serializeToString</strong>(sourceSVG);
+    var ctx = targetCanvas.getContext('2d');
 
-   <span class="comment">// this is just a JavaScript (HTML) image</span>
-   var img = new Image();
-   <span class="comment">// http://en.wikipedia.org/wiki/SVG#Native_support</span>
-   <span class="comment">// https://developer.mozilla.org/en/DOM/window.btoa</span>
-   img.src = "data:<strong>image/svg+xml</strong>;base64," + btoa(svg_xml);
+    <span class="comment">// this is just a JavaScript (HTML) image</span>
+    var img = new Image();
+    <span class="comment">// http://en.wikipedia.org/wiki/SVG#Native_support</span>
+    <span class="comment">// https://developer.mozilla.org/en/DOM/window.btoa</span>
+    img.src = "data:<strong>image/svg+xml</strong>;base64," + btoa(svg_xml);
 
-   img.onload = function() {
-       <span class="comment">// after this, Canvas’ origin-clean is DIRTY</span>
-       ctx.<strong>drawImage</strong>(img, 0, 0);
-   }
+    img.onload = function() {
+        <span class="comment">// after this, Canvas’ origin-clean is DIRTY</span>
+        ctx.<strong>drawImage</strong>(img, 0, 0);
+    }
 }
 </pre>
 
 		<p>Web browsers only expose the SVG data in DOM, which can also be serialized to XML.  We used this in your last years implementation where we sent the serialized XML to server-side rasterizer, which returned a PNG image (with transparency).</p>
 
-		<p>Canvas allows to draw arbitrary images on it via the <code>drawImage</code>-function.  The Canvas specification for <code>drawImage()</code> says: "The image argument is an instance of either HTMLImageElement, HTMLCanvasElement, or HTMLVideoElement."  So any image that the browser supports, can be drawn on Canvas [<a class="xref" href="#CANVAS10">CANVAS10</a>].</p>
+		<p>Canvas allows to draw arbitrary images on it via the <code>drawImage</code>-function.  The Canvas specification for <code>drawImage()</code> says: "The image argument is an instance of either HTMLImageElement, HTMLCanvasElement, or HTMLVideoElement."  So any image that the browser supports, can be drawn on Canvas [<a class="xref" href="#Canvas10">Canvas10</a>].</p>
 
-		<p>All browsers support images with data URI [<a class="xref" href="#RFC2397">RFC2397</a>].  Currently, some browsers (Webkit) support SVG images as source for <code>img</code> elements [<a class="xref" href="#SVGimg10">SVGimg10</a>].  By combining these, we can transfer the serialized XML SVG data into a HTML Image element.  This HTML Image element can be used as an argument for the <code>drawImage()</code>-method of Canvas.</p>
+		<p>All browsers support images with data URI [<a class="xref" href="#RFC2397">RFC2397</a>].  Currently, some browsers (Webkit) support SVG images as a source for <code>img</code> elements [<a class="xref" href="#SVGimg10">SVGimg10</a>].  By combining these, we can transfer the serialized XML SVG data into a HTML Image element.  This HTML Image element can be used as an argument for the <code>drawImage()</code>-method of Canvas.</p>
 
-		<p>Currently (2010-08) this only works in Safari and Chrome.  Also, the "SVG to Canvas" transfer is write-only, as it triggers the <code>origin-clean</code> flag of Canvas as dirty, which causes that Canvas to be unreadable (until reloaded and cleared). This security issue will be discussed in the "<a href="#security_issues">Security Issues</a>" section.</p>
+		<p>Currently (2010-08) this only works in Safari and Chrome.  Also, the SVG→Canvas transfer is write-only, as it triggers the <code>origin-clean</code> flag of Canvas as dirty, which causes that Canvas to be unreadable (until reloaded and cleared). This security issue will be discussed in the "<a href="#security_issues">Security Issues</a>" section.</p>
 
 		<h3 class="title">
 			<a id="browser_compatibility"/>
 			Browser Compatibility
 		</h3>
 
-		<p>Support for the techniques used in the "Canvas to SVG" method are better and more consistent than for the "SVG to Canvas" methods, as can be seen from the table below.</p>
+		<p>Techniques used in the Canvas→SVG transfer are better and more consistently supported than for the SVG→Canvas transfer, as can be seen from the table below.</p>
 		
 		<table width="80%">
 			<caption>Table 1: Browser compatibility for Canvas-SVG interaction</caption>
@@ -326,7 +328,7 @@
 				</tr>
 
 				<tr>
-					<td>...above should set <code>origin-clean</code> as dirty</td>
+					<td style="white-space: nowrap;">...above should set <code>origin-clean</code> as dirty</td>
 					<td>ok</td>
 					<td>ok</td>
 					<td>ok</td>
@@ -344,7 +346,7 @@
 				</tr>
 
 				<tr>
-					<td>extra: Right-click on Canvas allows "Save as.."</td>
+					<td style="white-space: nowrap;">Right-click on Canvas allows "Save as..."</td>
 					<td class="fail">not</td>
 					<td class="fail">not</td>
 					<td>ok</td>
@@ -371,7 +373,7 @@
 			</div>
 		</div>
 		
-		<p>Our "SVG to Canvas" approach has a security issue that could, however, be avoided as we argue in our <code>SVG.toDataURL()</code> proposal.</p>
+		<p>TODO sampe tyytyväinen? Transferring data from SVG to Canvas has security issues, which we argue could be avoided with our <code>SVG.toDataURL()</code> proposal (section "<a href="#recommendations">Recommendations</a>").</p>
 			
 		<h3 class="title">
 			<a id="same_origin"/>
@@ -434,9 +436,9 @@
 			Conclusions on SVG Security Issues
 		</h3>
 		
-		<p>So, why SVG is dangerous?  SVG can potentially contain content from multiple origins and browsers tend to blacklist any content with the MIME type <code>image/svg+xml</code> as multi-origin content without even testing the actual content.  A good summary of this is given in the comments of Webkit bug #29305 "<a href="https://bugs.webkit.org/show_bug.cgi?id=29305#c1">Canvas drawn with data URL image raises SECURITY_ERR when toDataUrl() called.</a>" on why browser needs to consider SVG as multi-origin content.</p>
+		<p>So, why SVG is dangerous?  SVG can potentially contain content from multiple origins and browsers tend to blacklist any content with the MIME type <code>image/svg+xml</code> as multi-origin content without even testing the actual content.  A good summary of this is given in the comments of Webkit bug #29305 "<a href="https://bugs.webkit.org/show_bug.cgi?id=29305#c1">Canvas drawn with data URL image raises SECURITY_ERR when toDataUrl() called.</a>"</p>
 		
-		<p>SVG that contains only safe and same origin elements should however be rendered to make allow efficent use of SVG with Canvas.  In the next section we propose a recommendation for a <code>SVG.toDataURL()</code>-method that allows bitmap export of the vector elements in SVG.</p>
+		<p>SVG that contains only safe and same-origin elements should however be rendered to allow efficent use of SVG with Canvas.  In the next section we propose a recommendation for a <code>SVG.toDataURL()</code>-method that allows bitmap export of the vector elements in SVG.</p>
 		
 	</div>
 	
@@ -460,7 +462,7 @@
 			SVG.toDataURL() API
 		</h3>
 		
-		<p>Based on the use cases stated in the requirements for a complete drawing application in the web and the security discussion, we propose a following API to allow exporting of the bitmap content of the SVG.</p>
+		<p>Based on the use cases stated as our motivation (section <a href="#requirements">Requirements for a Web Based Drawing Application</a>), and the security discussion in previous section, we propose a following API to allow exporting the rendered bitmap content from SVG.</p>
 
 <pre class="programlisting">SVG.toDataURL( [<abbr title="MIME type of the exported data">type</abbr>], [<abbr title="Export non-safe (image and foreignObject) elements">keepNonSafe</abbr>=false], [<abbr title="Export all drawn content, even if not visible.">keepOutsideViewport</abbr>=false] )
 </pre>
@@ -472,12 +474,12 @@
 			<dd>Must support: <code>image/png</code>.</dd>
 
 			<dt><dfn is="keepNonSafe">keepNonSafe</dfn></dt>
-			<dd>Export non-safe (image and foreignObject) elements and set the Canvas <code>origin-clean</code> property to <em>false</em>.</dd>
-			<dd>Default: <code>false</code> (to keep origin-clean true)</dd>
+			<dd>Export non-safe (image and foreignObject) elements. This will set the Canvas <code>origin-clean</code> property to <em>false</em>, if this data is transferred to Canvas.</dd>
+			<dd>Default: <code>false</code> (to keep origin-clean <em>true</em>).</dd>
 			
 			<dt><dfn is="keepOutsideViewport">keepOutsideViewport</dfn></dt>
 			<dd>Export all drawn content, even if not visible.</dd>
-			<dd>Default: <code>false</code>, export only visible viewport, similar to Canvas <code>toDataURL()</code></dd>
+			<dd>Default: <code>false</code>, export only visible viewport, similar to Canvas <code>toDataURL()</code>.</dd>
 			
 
 		</dl>
@@ -489,7 +491,7 @@
 			For Browser Manufacturers
 		</h3>
 		
-			<p>In addition to <code>SVG.toDataURL()</code>-method presented above, we would like to see following improvments in browsers.</p>
+			<p>In addition to the <code>SVG.toDataURL()</code> method presented above, we would like to see following improvements in browsers.</p>
 			
 			<h4>Safari, Chrome (Webkit) and Opera</h4>
 			
@@ -497,14 +499,14 @@
 			
 			<h4>Firefox</h4>
 			
-			<p>Support for SVG files as source for <code>img</code>-element.</p>
+			<p>Support for SVG files as source for HTML <code>img</code> elements.</p>
 			
 			<h4>Opera</h4>
-			<p>Fix dynamic SVG in <code>img</code>-element support, what ever that means (TODO)</p>
+			<p>Fix dynamic SVG in <code>img</code> element support, what ever that means (TODO-SAMPE)</p>
 			
 			<h4>Internet Explorer</h4>
 			
-			<p>XMLSerializer (<a href="https://developer.mozilla.org/en/XMLSerializer">XMLSerializer</a>) is needed for the browser.</p>
+			<p>An XML serializer (<a href="https://developer.mozilla.org/en/XMLSerializer">XMLSerializer</a>) is needed for the browser to allow easy exporting of dynamic SVG data.</p>
 			
 
 	</div>
@@ -592,7 +594,7 @@
 		
 		<h4>Scene Graph is Missing with Canvas</h4>
 		
-		<p>In order to have interactivity with "vectorized" elements on Canvas, the implementation needs to keep track of the elements, their boundaries and ordering.  This brings some overhead as discussed in our previous paper [<a class="xref" href="#TRIVIAL09">TRIVIAL09</a>].</p>
+		<p>In order to have interactivity with "vectorized" elements on Canvas, the implementation needs to keep track of the elements, their boundaries and ordering.  This brings some overhead as discussed in our previous paper [<a class="xref" href="#Trivial09">Trivial09</a>].</p>
 
 		<h4>Accessibility</h4>
 		
@@ -675,8 +677,8 @@
 				</div>
 				
 				<div class="biblioentry">
-					<a id="TRIVIAL09"/>
-					<p>[<abbr class="abbrev">TRIVIAL09</abbr>] 
+					<a id="Trivial09"/>
+					<p>[<abbr class="abbrev">Trivial09</abbr>] 
 			
 						<span class="author"><span class="firstname">Samuli</span> <span class="surname">Kaipiainen</span></span>
 						and
@@ -696,8 +698,8 @@
 				</div>
 
 				<div class="biblioentry">
-					<a id="ISSUE70"/>
-					<p>[<abbr class="abbrev">ISSUE70</abbr>] 
+					<a id="Issue70"/>
+					<p>[<abbr class="abbrev">Issue70</abbr>] 
 								
 						<span class="title"><i>SVG-Edit Issue #70: Ability to save canvas as PNG</i>. </span>
 						<br/>
@@ -714,8 +716,8 @@
 
 
 				<div class="biblioentry">
-					<a id="CANVAS10"/>
-					<p>[<abbr class="abbrev">CANVAS10</abbr>] 
+					<a id="Canvas10"/>
+					<p>[<abbr class="abbrev">Canvas10</abbr>] 
 								
 						<span class="title"><i>HTML5 Draft Standard 20: The canvas element</i>, August 2010.</span>
 						<br/>
