@@ -4,14 +4,14 @@ var SVGToCanvas = {
 	base64dataURLencode: function(s) {
 		var b64 = "data:image/svg+xml;base64,";
 
-		if (btoa) b64 += btoa(s);
+		if (window.btoa) b64 += btoa(s);
 		else b64 += Base64.encode(s);
 		
 		return b64;
 	},
 	
 	xmlSerialize: function(SVGdom) {
-		if (XMLSerializer) {
+		if (window.XMLSerializer) {
 			console.log("using standard XMLSerializer.serializeToString")
 		 	return (new XMLSerializer()).serializeToString(SVGdom);
 		} else {
