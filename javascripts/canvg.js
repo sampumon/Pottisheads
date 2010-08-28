@@ -69,6 +69,7 @@ if(!Array.indexOf){
 			svg.Definitions = {};
 			svg.Styles = {};
 			svg.Animations = [];
+			svg.Images = [];
 			svg.ctx = ctx;
 			svg.ViewPort = new (function () {
 				this.viewPorts = [];
@@ -86,6 +87,14 @@ if(!Array.indexOf){
 			});
 		}
 		svg.init();
+		
+		// images loaded
+		svg.ImagesLoaded = function() { 
+			for (var i=0; i<svg.Images.length; i++) {
+				if (!svg.Images[i].loaded) return false;
+			}
+			return true;
+		}
 
 		// trim
 		svg.trim = function(s) { return s.replace(/^\s+|\s+$/g, ''); }
@@ -671,10 +680,14 @@ if(!Array.indexOf){
 							this.styles[name] = new svg.Property(name, value);
 						}
 					}
+				}	
+
+				// add id
+				if (this.attribute('id').hasValue()) {
+					if (svg.Definitions[this.attribute('id').value] == null) {
+						svg.Definitions[this.attribute('id').value] = this;
+					}
 				}
-				
-				// set id
-				if (this.attribute('id').hasValue()) svg.Definitions[this.attribute('id').value] = this;				
 			}
 		}
 		
@@ -1382,7 +1395,7 @@ if(!Array.indexOf){
 		// definitions element
 		svg.Element.defs = function(node) {
 			this.base = svg.Element.ElementBase;
-			this.base(node);			
+			this.base(node);	
 			
 			this.render = function(ctx) {
 				// NOOP
@@ -1773,25 +1786,14 @@ if(!Array.indexOf){
 			this.base = svg.Element.RenderedElementBase;
 			this.base(node);
 			
+			svg.Images.push(this);
 			this.img = document.createElement('img');
 			this.loaded = false;
-			
 			var that = this;
-			this.renderChildren = function(ctx) {
-				if (!this.loaded) {
-					var src = this.attribute('xlink:href').value;
-					this.img.onload = function() {
-						that.loaded = true;
-						that.drawImage(ctx);
-					}
-					this.img.src = src;					
-				}
-				else {
-					this.drawImage(ctx);
-				}
-			}
+			this.img.onload = function() { that.loaded = true; }
+			this.img.src = this.attribute('xlink:href').value;
 			
-			this.drawImage = function(ctx) {
+			this.renderChildren = function(ctx) {
 				var x = this.attribute('x').Length.toPixels('x');
 				var y = this.attribute('y').Length.toPixels('y');
 				
@@ -1875,8 +1877,17 @@ if(!Array.indexOf){
 				if (this.attribute('y').hasValue()) ctx.translate(0, this.attribute('y').Length.toPixels('y'));
 			}
 			
+			this.getDefinition = function() {
+				return this.attribute('xlink:href').Definition.getDefinition();
+			}
+			
+			this.path = function(ctx) {
+				var element = this.getDefinition();
+				if (element != null) element.path(ctx);
+			}
+			
 			this.renderChildren = function(ctx) {
-				var element = this.attribute('xlink:href').Definition.getDefinition();
+				var element = this.getDefinition();
 				if (element != null) element.render(ctx);
 			}
 		}
@@ -1945,32 +1956,44 @@ if(!Array.indexOf){
 			}
 			
 			// bind mouse
-			ctx.canvas.onclick = function(e) {
-				var p = mapXY(new svg.Point(e != null ? e.clientX : event.clientX, e != null ? e.clientY : event.clientY));
-				svg.Mouse.onclick(p.x, p.y);
-			}
-			ctx.canvas.onmousemove = function(e) {
-				var p = mapXY(new svg.Point(e != null ? e.clientX : event.clientX, e != null ? e.clientY : event.clientY));
-				svg.Mouse.onmousemove(p.x, p.y);
-			}
+			// SAMPE COMMENT OUT: don't steal mouse
+			// ctx.canvas.onclick = function(e) {
+			// 	var p = mapXY(new svg.Point(e != null ? e.clientX : event.clientX, e != null ? e.clientY : event.clientY));
+			// 	svg.Mouse.onclick(p.x, p.y);
+			// }
+			// ctx.canvas.onmousemove = function(e) {
+			// 	var p = mapXY(new svg.Point(e != null ? e.clientX : event.clientX, e != null ? e.clientY : event.clientY));
+			// 	svg.Mouse.onmousemove(p.x, p.y);
+			// }
 		
 			var dom = svg.parseXml(xml);
 			var e = svg.CreateElement(dom.documentElement);
 			
 			// set canvas size
-			if (e.attribute('width').hasValue()) {
-				ctx.canvas.width = e.attribute('width').Length.toPixels(ctx.canvas.parentNode.clientWidth);
-			}
-			if (e.attribute('height').hasValue()) {
-				ctx.canvas.height = e.attribute('height').Length.toPixels(ctx.canvas.parentNode.clientHeight);
-			}
+			// SAMPE COMMENT OUT: don't clear background
+			// if (e.attribute('width').hasValue()) {
+			// 	ctx.canvas.width = e.attribute('width').Length.toPixels(ctx.canvas.parentNode.clientWidth);
+			// }
+			// if (e.attribute('height').hasValue()) {
+			// 	ctx.canvas.height = e.attribute('height').Length.toPixels(ctx.canvas.parentNode.clientHeight);
+			// }
 			svg.ViewPort.SetCurrent(ctx.canvas.clientWidth, ctx.canvas.clientHeight);
 			
 			// render loop
-			ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
-			e.render(ctx);
+			var waitingForImages = true;
+			if (svg.ImagesLoaded()) {
+				// SAMPE COMMENT OUT: don't clear background
+				// ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
+				e.render(ctx);
+				waitingForImages = false;
+			}
 			svg.intervalID = setInterval(function() { 
 				var needUpdate = false;
+				
+				if (waitingForImages && svg.ImagesLoaded()) {
+					waitingForImages = false;
+					needUpdate = true;
+				}
 			
 				// need update from mouse events?
 				if (svg.opts == null || svg.opts['ignoreMouse'] != true) {
@@ -1986,7 +2009,8 @@ if(!Array.indexOf){
 
 				// render if needed
 				if (needUpdate) {
-					ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
+					// SAMPE COMMENT OUT: don't clear background
+					// ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
 					e.render(ctx);
 					svg.Mouse.runEvents(); // run and clear our events
 				}
