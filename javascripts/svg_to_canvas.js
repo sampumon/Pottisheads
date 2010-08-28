@@ -49,20 +49,20 @@ var SVGToCanvas = {
 		var svg_xml = this.xmlSerialize(sourceSVG);
 		var ctx = targetCanvas.getContext('2d');
 		var img = new Image();
+		// ff fails here, http://en.wikipedia.org/wiki/SVG#Native_support
 		img.src = this.base64dataURLencode(svg_xml);
 
-		// TODO: opera needs pre-render to fire onload (but still fails)
-		// document.body.appendChild(img);
-		
 		img.onload = function() {
 			console.log("Exported image size " + img.width + "x" + img.height);
-			// TODO: opera fails here, maybe it's a plan to prevent origin-dirtying?
+			// ie and opera fail here for svg input, maybe it's a plan to prevent origin-dirtying?
 			ctx.drawImage(img, (x | 0), (y | 0));
 		}
 		
 		img.onerror = function() {
 			// TODO: if export fails, don't set Canvas dirty in GUI
-			alert("Can't export! Maybe your browser doesn't support <a href='http://en.wikipedia.org/wiki/SVG#Native_support'>svg-in-img</a>?")
+			alert("Can't export! Maybe your browser doesn't support " +
+				"SVG in img element or SVG input for Canvas drawImage?\n" +
+				"http://en.wikipedia.org/wiki/SVG#Native_support")
 		}
 		
 	},
