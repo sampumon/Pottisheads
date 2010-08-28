@@ -117,5 +117,14 @@ var SVGToCanvas = {
 		var svg_xml = this.xmlSerialize(sourceSVG);
 
 		window.open(SVGToCanvas.base64dataURLencode(svg_xml));
+	},
+	
+	exportToImgIE: function (sourceSVG) {
+		var svg_xml = this.xmlSerialize(sourceSVG);
+		
+		var img = document.getElementById("ieImg");
+		img.setAttribute("src",SVGToCanvas.base64dataURLencode(svg_xml));
+
+
 	}
 }
