@@ -257,7 +257,7 @@
 
 		<p>Canvas allows to draw arbitrary images on it via the <code>drawImage</code>-function.  The Canvas specification for <code>drawImage()</code> says: "The image argument is an instance of either HTMLImageElement, HTMLCanvasElement, or HTMLVideoElement."  So any image that the browser supports, can be drawn on Canvas [<a class="xref" href="#Canvas10">Canvas10</a>].</p>
 
-		<p>All browsers support images with data URI [<a class="xref" href="#RFC2397">RFC2397</a>].  Currently, some browsers (Webkit) support SVG images as a source for <code>img</code> elements [<a class="xref" href="#SVGimg10">SVGimg10</a>].  By combining these, we can transfer the serialized XML SVG data into a HTML Image element.  This HTML Image element can be used as an argument for the <code>drawImage()</code>-method of Canvas.</p>
+		<p>All browsers support images with data URI [<a class="xref" href="#RFC2397">RFC2397</a>].  Currently, some browsers (Webkit) support SVG images as a source for <code>img</code> elements [<a class="xref" href="#SVGimg10">SVGimg10</a>].  This feature is also in the test suite for Internet Explorer 9 [<a class="xref" href="#MSDNTest">MSDNTest</a>]. By combining these, we can transfer the serialized XML SVG data into a HTML Image element.  This HTML Image element can be used as an argument for the <code>drawImage()</code>-method of Canvas.</p>
 
 		<p>Currently (2010-08) this only works in Safari and Chrome.  Also, the SVG→Canvas transfer is write-only, as it triggers the <code>origin-clean</code> flag of Canvas as dirty, which causes that Canvas to be unreadable (until reloaded and cleared). This security issue will be discussed in the "<a href="#security_issues">Security Issues</a>" section.</p>
 
@@ -309,6 +309,16 @@
 					<td>ok</td>
 				</tr>
 
+								
+				<tr>
+					<td>SVG Image for canvas <code>drawImage()</code>-method <sup><a href="http://samples.msdn.microsoft.com/ietestcenter/html5/canvas_harness.htm?url=canvas-images-drawImage-001">2</a></sup></td>
+					<td>ok</td>
+					<td>ok</td>
+					<td class="fail">fail</td>
+					<td class="fail">fail</td>
+					<td class="fail">fail</td>
+				</tr>
+
 				<tr>
 					<td>SVG Image in HTML <code>img</code> element</td>
 					<td>ok</td>
@@ -335,7 +345,7 @@
 					<td></td>
 					<td></td>
 				</tr>
-
+				
 				<tr>
 					<td>Canvas.<code>toDataURL()</code></td>
 					<td>ok</td>
@@ -818,6 +828,25 @@
 				</div>
 				
 
+				<div class="biblioentry">
+					<a id="MSDNTest"/>
+					<p>[<abbr class="abbrev">MSDNTest</abbr>] 
+								
+						<span class="title"><i>IE9 Testing Center, Canvas drawImage with SVG</i></span>
+						<br/>
+						<span class="publisher">
+							<span class="publishername">Microsoft</span>
+						</span>
+						<br/>
+						<span class="url">
+							<a href="http://samples.msdn.microsoft.com/ietestcenter/html5/canvas_harness.htm?url=canvas-images-drawImage-001
+">http://samples.msdn.microsoft.com/ietestcenter/html5/canvas_harness.htm?url=canvas-images-drawImage-001
+</a></span>
+
+					</p>
+				</div>
+
+				
 							
 			</div>
 
