@@ -162,17 +162,12 @@ pre.sh_sourceCode .sh_value {
 	body {
 		font-family: sans-serif;
 		font-size: 2.8em;
-		margin: 1.0em;
-		margin-right: 1em;
+		margin: 1em;
 	}
 	
 	h1 { font-size: 1.5em; }
 	h2 { font-size: 1.2em; }
 	h3 { font-size: 1.1em; }
-	
-	pre {
-		white-space: pre-wrap;
-	}
 	
 	img {
 		width: 100%;
@@ -227,6 +222,30 @@ pre.sh_sourceCode .sh_value {
 	li {
 		margin-top: 0.8em;
 	}
+
+	pre {
+		white-space: pre-wrap;
+	}
+	
+	.greet {
+		margin-top: 2em;
+		margin-bottom: 4em;
+	}
+	
+	.greet span {
+		color: white;
+		margin-right: 3em;
+	}
+	
+	.final {
+		background: rgb(24,95,153);
+		padding-top: 1em;
+		padding-bottom: 2em;
+		margin-left: -1em;
+		margin-right: -1em;
+		margin-bottom: -1em;
+	}
+	
 	</style>
 </head>
 
@@ -339,8 +358,8 @@ svg_img.setAttributeNS(
 	<ul>
 		<li>SVG can contain images from different origin, embedded SVG or even foreignObjects!
 			<ol>
-				<li>Some browsers completely prevent the Canvas.drawImage (Opera, IE9)</li>
-				<li>Others set Canvas' <code>origin-clean</code> as <em>dirty</em> and Canvas becomes <code>write-only</code></li>
+				<li>Some browsers completely prevent <code>Canvas.drawImage(svg_img)</code> (Opera, IE9)</li>
+				<li>Others set Canvas' <code>origin-clean</code> <em>dirty</em> and Canvas becomes <code>write-only</code></li>
 			</ol>
 		</li>
 	</ul>
@@ -389,39 +408,47 @@ SVG.toDataURL( [<abbr title="MIME type of the exported data">type</abbr>],
 </div>
 
 
-
-
 <div class="slide">
 	<h2>SVG.toDataURL.js library</h2>
 	
-	<p>It's possible to implement with JavaScript, while waiting for native browser support…</p>
+	<p>We can implement SVG.toDataURL with JavaScript (while waiting for native support…)</p>
 	
 	<p><code>SVG.toDataURL.js</code> provides: </p>
 		
 	<ul>
-		<li>Cross-browser SVG to XML serialization and base64 encoding (these for IE9)</li>
-		<li>Uses <code>canvg</code> for drawing SVG onto Canvas</li>
+		<li>Cross-browser SVG to XML serialization with base64 encoding (for IE9)</li>
+		<li>Uses <code>canvg</code> for drawing SVG onto Canvas (to circumvent security model)</li>
 	</ul>
 		
 <pre class="sh_javascript">
-// Adds functionality to SVG prototype
+// Adds .toDataURL() to SVG prototype
 SVGElement.prototype.toDataURL = function(type) { ... }
 
 // Easy SVG to PNG export
 var pngDataURL = mySVGelement.toDataURL("image/png");
+imgElement.setAttribute("src", pngDataURL);
 </pre>
 
 	<p><a href="http://github.com/sampula/SVG.toDataURL">http://github.com/sampula/SVG.toDataURL</a></p>
 
 	<h3>Compatibility</h3>
 	
-	<ul>
-		<li>Firefox</li>
-		<li>Safari</li>
-		<li>Chrome</li>
-		<li>Opera</li>
-		<li>Internet Explorer 9</li>
-	</ul>
+	<p>Works with current major browsers: Safari (4.1), Chrome (5.0), Firefox (3.6), Opera (10.60), IE9.</p>
+</div>
+
+
+<div class="final slide">
+
+	<h2>PARIS FINALE</h2>
+	
+	<marquee class="greet">
+		<span>Greets to…</span>
+		<span>Jeff/codedread</span>
+		<span>Doug/SVG-Whiz</span>
+		<span>Andreas/carto.net</span>
+		<span>Brad/Google</span>	
+		<span>Klaus Förster</span>
+	</marquee
 	
 </div>
 
