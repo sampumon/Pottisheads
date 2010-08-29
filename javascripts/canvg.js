@@ -1971,12 +1971,12 @@ if(!Array.indexOf){
 			
 			// set canvas size
 			// SAMPE COMMENT OUT: don't clear background
-			// if (e.attribute('width').hasValue()) {
-			// 	ctx.canvas.width = e.attribute('width').Length.toPixels(ctx.canvas.parentNode.clientWidth);
-			// }
-			// if (e.attribute('height').hasValue()) {
-			// 	ctx.canvas.height = e.attribute('height').Length.toPixels(ctx.canvas.parentNode.clientHeight);
-			// }
+			if (e.attribute('width').hasValue()) {
+				ctx.canvas.width = e.attribute('width').Length.toPixels(ctx.canvas.parentNode.clientWidth);
+			}
+			if (e.attribute('height').hasValue()) {
+				ctx.canvas.height = e.attribute('height').Length.toPixels(ctx.canvas.parentNode.clientHeight);
+			}
 			svg.ViewPort.SetCurrent(ctx.canvas.clientWidth, ctx.canvas.clientHeight);
 			
 			// render loop

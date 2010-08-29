@@ -12,10 +12,8 @@ var SVGToCanvas = {
 	
 	xmlSerialize: function(SVGdom) {
 		if (window.XMLSerializer) {
-			console.log("using standard XMLSerializer.serializeToString")
 		 	return (new XMLSerializer()).serializeToString(SVGdom);
 		} else {
-			console.log("using custom XMLSerializerForIE ^____^")
 			return SVGToCanvas.XMLSerializerForIE(SVGdom);
 		}
 	},
@@ -44,7 +42,8 @@ var SVGToCanvas = {
 		return out;
 	},
 
-	// works in webkit (and opera?)
+
+	// works in webkit
 	convert: function (sourceSVG, targetCanvas, x,y) {
 		var svg_xml = this.xmlSerialize(sourceSVG);
 		var ctx = targetCanvas.getContext('2d');
@@ -82,49 +81,63 @@ var SVGToCanvas = {
 		});
 	},
 
-	// does not work in ie without flashcanvas etc?
-	convertCanvg: function (sourceSVG, targetCanvas, x,y) {
+	// works in ff, opera and ie9
+	convertCanvg: function (sourceSVG, targetCanvas) {
 		// TODO: what's canvg's proposed method for getting svg string value?
 		var svg_xml = this.xmlSerialize(sourceSVG);
 		canvg(targetCanvas, svg_xml, { ignoreMouse: true, ignoreAnimation: true });
 	},
 
-	exportCanvgAsNewWindow: function (sourceSVG) {
-		// TODO: what's canvg's proposed method for getting svg string value?
+
+	// WON'T WORK; canvas' origin-clean is dirty
+	exportPNG: function (svg, callback) {
+		var canvas = document.createElement("canvas");
+		var ctx = canvas.getContext('2d');
+		var img = new Image();
+		// ff fails here, http://en.wikipedia.org/wiki/SVG#Native_support
+		var svg_xml = SVGtoDataURL.xmlSerialize(svg);
+		img.src = SVGtoDataURL.base64dataURLencode(svg_xml);
+
+		img.onload = function() {
+			console.log("Exported image size " + img.width + "x" + img.height);
+			// ie and opera fail here for svg input, maybe it's a plan to prevent origin-dirtying?
+			ctx.drawImage(img, 0, 0);
+			// SECURITY_ERR
+			callback(canvas.toDataURL());
+		}
+		
+		img.onerror = function() {
+			console.log(
+				"Can't export! Maybe your browser doesn't support " +
+				"SVG in img element or SVG input for Canvas drawImage?\n" +
+				"http://en.wikipedia.org/wiki/SVG#Native_support"
+			);
+		}
+	},
+
+	// works nicely
+	exportPNGcanvg: function (sourceSVG, callback) {
 		var svg_xml = this.xmlSerialize(sourceSVG);
 		
 		var exportCanvas = document.createElement("canvas");	
+		exportCanvas.setAttribute("style", "display: none;");
 		document.body.appendChild(exportCanvas);
 		
-		canvg(exportCanvas, svg_xml);
-			
-		window.open(exportCanvas.toDataURL());
+		canvg(exportCanvas, svg_xml, { ignoreMouse: true, ignoreAnimation: true });
+		png_dataurl = exportCanvas.toDataURL();
 		document.body.removeChild(exportCanvas);
-
+		
+		callback(png_dataurl);
 	},
 
-	exportServerSideAsNewWindow: function(sourceSVG) {
+	exportPNGserver: function(sourceSVG, callback) {
 		var svg_xml = this.xmlSerialize(sourceSVG);
-
-		$.post(this.endpoint, { svg_xml: svg_xml },
-				   function(data) {
-					    window.open(data);
-					  });
-		
-		},
-
-	exportAsNewWindow: function (sourceSVG) {
-		var svg_xml = this.xmlSerialize(sourceSVG);
-
-		window.open(SVGToCanvas.base64dataURLencode(svg_xml));
+		$.post(this.endpoint, { svg_xml: svg_xml }, callback);		
 	},
-	
-	exportToImgIE: function (sourceSVG) {
+
+	exportSVG: function (sourceSVG, callback) {
 		var svg_xml = this.xmlSerialize(sourceSVG);
-		
-		var img = document.getElementById("ieImg");
-		img.setAttribute("src",SVGToCanvas.base64dataURLencode(svg_xml));
-
-
-	}
+		svg_dataurl = SVGToCanvas.base64dataURLencode(svg_xml);
+		callback(svg_dataurl);
+	},
 }
