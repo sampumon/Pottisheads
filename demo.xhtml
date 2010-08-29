@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" type="text/css" href="stylesheets/master.css" />
+	<title></title>
+	
+	<script type="text/javascript" src="javascripts/jquery-1.3.2.min.js"></script>
+	
+	<script type="text/javascript" src="javascripts/rgbcolor.js"></script>
+	<script type="text/javascript" src="javascripts/canvg.js"></script>
+	
+	<script type="text/javascript" src="javascripts/pixel_toolbar.js"></script>
+	<script type="text/javascript" src="javascripts/pixel_canvas.js"></script>
+	<script type="text/javascript" src="javascripts/vector_svg.js"></script>
+
+	<script type="text/javascript" src="javascripts/canvas_to_svg.js"></script>
+	<script type="text/javascript" src="javascripts/svg_to_canvas.js"></script>
+
+	<script type="text/javascript" src="javascripts/mouse.js"></script>
+	<script type="text/javascript" src="javascripts/random.js"></script>
+	<script type="text/javascript" src="javascripts/base64.js"></script>
+
+	<script type="text/javascript" src="javascripts/svg_todataurl.js"></script>
+	
+	<script type="text/javascript">
+	<![CDATA[
+		var svg = null;
+		var canvas = null;
+		
+		window.onload = function() {
+
+			canvas = document.getElementById("canvas");
+			svg = document.getElementById("svg");
+			
+			PixelCanvas.init(canvas);
+			// var canvastool = document.getElementById("canvasarea").getElementsByClassName("toolbar")[0];
+			// activatePixelToolbar(canvastool, PixelCanvas);
+
+			VectorSVG.init(svg);
+			
+			for (var i = 0; i < 3; i++) {
+				VectorSVG.addRandomCircle();
+				PixelCanvas.drawRandomPixel();
+			}
+		}
+		
+		function export_img(data_url) {
+			$("#export_img").attr("src", data_url);
+		}
+		
+		function export_window(data_url) {
+			window.open(data_url);
+		}
+		
+		function break_now(klass) {
+			// TODO: efekti
+			$("." + klass).addClass("broken");
+		}
+
+		function will_break(klass) {
+			// TODO: efekti
+			$("." + klass).addClass("will_break_canvas");
+			$("." + klass + " a").each(function(a) {
+				this.href += " break_now('will_read_canvas');";
+			})
+		}
+
+	]]>	
+	</script>
+	
+</head>
+
+<body>
+	<h1>Pottisheads' Final SVG vs. Canvas</h1>
+	
+	<dl>
+		<dt>Legend (based on background-color):</dt>
+		<dd class="broken">This won't work anymore, because Canvas' <code>origin-clean</code> is <var>dirty</var>. Maybe you broke it?</dd>
+		<dd class="will_break_canvas">Beware! This will set Canvas' <code>origin-clean</code> <var>dirty</var>, making Canvas read-only.</dd>
+		<dd class="might_break_canvas_legend">This <em>might</em> set Canvas' <code>origin-clean</code> <var>dirty</var>, depending on whether you're transferring images inside SVG data.</dd>
+	</dl>
+	
+	<div id="svgarea">
+		<h2>SVG (<a href="javascript:VectorSVG.clearCanvas();">clear</a>)</h2>
+		
+		<svg id="svg" width="500" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" />
+	</div>
+
+	<div id="canvasarea">
+		<h2>Canvas (<a href="javascript:PixelCanvas.clearCanvas();">clear</a>)</h2>
+		<canvas id="canvas" width="500" height="300">NO CANVAS FOR YOU</canvas>		
+	</div>
+
+	<div id="demolist">
+		<ol>
+			<li>Canvas to SVG
+				<ul>
+					<li class="will_read_canvas"><a href="javascript:CanvasToSVG.convert(canvas, svg);">canvas.toDataURL("image/png");</a></li>
+				</ul>
+			</li>
+			
+			<li>SVG to Canvas
+				<ul>
+					<li><a href="javascript:alert('todo')">svg.toDataURL('image/png');</a>
+						<ul>
+							<li>Emluated with canvg</li>
+							<li>Works with all browsers</li>
+						</ul>
+					</li>
+					<li>
+						<a href="javascript:alert('todo')">Server-side conversion with Ajax</a>
+					</li>
+					<li class="will_break_canvas"><a href="javascript:SVGToCanvas.convert(svg, canvas); break_now('will_read_canvas');">Draw SVG to Canvas with canvas.drawImage()</a>
+						<ul>
+							<li>Canvas becomes write-only!</li>
+							<li>Works with: Chrome, Safari.</li>
+						</ul>
+					</li>
+				</ul>				
+			</li>
+			
+			<li>Export</li>
+			
+		</ol>
+	</div>
+	
+	<img id="export_img" alt="placeholder for exported svg/pixel data"/>
+
+</body>
+</html>
+
