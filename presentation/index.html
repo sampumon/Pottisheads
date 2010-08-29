@@ -254,24 +254,17 @@ pre.sh_sourceCode .sh_value {
 
 	<h2>Abstract</h2>
 
-	<ul>
-		<li>Canvas vs. SVG?</li>
-		<li>Combining Canvas and SVG</li>
-	</ul>
+	<p>TODO</p>
 	
 </div>
 
+<div class="slide">
+	<h2>Motivation</h2>
+	
+	<p>SVG is great for vectors (!), but we need a way to read rasterized bitmap data and manipulate it (Canvas!)</p>
 
+</div>
 
-
-SVGElement.prototype.muna = function(type) { 
-
-	var Base64 = function() {
-		alert("base64");
-	}
-
-	Base64();
-}
 
 <div class="slide">
 	<h2>Using canvas.toDataURL()</h2>
@@ -297,18 +290,11 @@ function importCanvas(sourceCanvas, targetSVG) {
 }
 </pre>
 
-</div>
 
-<div class="slide">
-	<h2>SVG can be embedded like this</h2>
-	
+	<p><a href="#">demo</a></p>
 </div>
 
 
-<div class="slide">
-	<h2>Security</h2>
-	
-</div>
 
 
 <div class="slide">
@@ -318,35 +304,138 @@ function importCanvas(sourceCanvas, targetSVG) {
 		<li>There is no .toDataURL() -method for SVG</li>
 		<li style="text-decoration: line-through;">Solution: Server-side rasterization from serialized SVG</li>
 	</ul>
+</div>
+
+
+
+<div class="slide">
+	<h2>SVG can be embedded like this</h2>
+
+	<ol>
+		<li>Serialize the SVG</li>
+		<li>Base64 encode and use canvas.drawImage(svg_data_url)</li>
+	</ol>
+	
+	<h3>Security issues!</h3>
+	
+	<ol>
+		<li>As SVG can contain anything, browsers prevent this</li>
+		<li>canvas <code>origin-clean</code> sets to false and becomes <code>read-only</code></li>
+	</ol>
+
+
+	<p><a href="#">See demo</a></p>
+	
+</div>
+
+
+<div class="slide">
+	<h2>Security</h2>
 	
 	<ul>
-		<li>Pre</li>
+		<li>SVG can contain an <code>Image</code>-element for example from <code>file://</code>-URL</li>
+		<li>No need to prevent safe elements, such as <code>rect</code> or <code>circle</code></li>
 	</ul>
 	
+</div>
+
+
+<div class="slide">
+	<h2>Proposal: SVG.toDataURL()</h2>
+	
 <pre class="sh_javascript">
-SVGElement.prototype.toDataURL = function(type) { ... }
+SVG.toDataURL( [<abbr title="MIME type of the exported data">type</abbr>],
+               [<abbr title="Export non-safe (image and foreignObject) elements">keepNonSafe</abbr>=false],
+               [<abbr title="Export all drawn content, even if not visible.">keepOutsideViewport</abbr>=false] )
 </pre>
 
-	<h3>What to put inside?</h3>
+		<dl>
+			<dt><dfn is="type">type</dfn></dt>
+			<dd>MIME type of the exported data.</dd>
+
+			<dd>Default: <code>image/svg+xml</code>.</dd>
+			<dd>Must support: <code>image/png</code>.</dd>
+
+			<dt><dfn is="keepNonSafe">keepNonSafe</dfn></dt>
+			<dd>Export non-safe (image and foreignObject) elements. This will set the Canvas <code>origin-clean</code> property to <em>false</em>, if this data is transferred to Canvas.</dd>
+
+			<dd>Default: <code>false</code> (to keep origin-clean <em>true</em>).</dd>
+			
+			<dt><dfn is="keepOutsideViewport">keepOutsideViewport</dfn></dt>
+			<dd>Export all drawn content, even if not visible.</dd>
+			<dd>Default: <code>false</code>, export only visible viewport, similar to Canvas <code>toDataURL()</code>.</dd>
+
+			
+
+		</dl>
+
+		
+	
+</div>
+
+
+
+
+<div class="slide">
+	<h2>Implemented with JavaScript</h2>
+
+	<h3>SVG.toDataURL.js</h3>
+	
+<pre class="sh_javascript">
+// Adds functionality to prototype
+SVGElement.prototype.toDataURL = function(type) { ... }
+
+// Easy SVG export
+var pngDataURL = mySVGelement.toDataURL("image/png");
+</pre>
+
+	<h3>What's inside <code>svg.toDataURL(type)</code> ?</h3>
 	
 	<ol>
 		<li>Serialize the SVG</li>
-		<li>Depending on <code>type</code>
-			<ol>
-				<li><code>image/png</code>
-					<ol>
-						<li>Draw svg-element to canvas</li>
-						<li>Use canvas toDataURL() that returns a png</li>
-					</ol>
+		<li>Then, depending on the <code>type</code>
+			<ul>
+				<li>When "<code>image/svg</code>"
+					<ul>
+						<li>Base64 encode the serialized SVG as data URL</li>
+					</ul>
 				</li>
-				<li><code>imgae/svg</code>
+
+				<li>When "<code>image/png</code>"
 					<ol>
-						<li>base64 encode as dataurl:svg+xml,asdf9askdf9</li>
-					</ol>
+						<li>Draw the SVG-element to a temporary Canvas
+							<ul>
+								<li>Emulation with Canvg</li>
+							</ul>
+						</li>
+						<li>Use <code>canvas.toDataURL()</code> that returns the PNG</li>
+						<li>Remove temporary canvas</li>
+	</ol>
 				</li>
-			</ol>
+
+			</ul>
 		</li>
 	</ol>
+	
+	<p><a href="#">demo</a></p>
+	
+	<h3>Compatibility</h3>
+	
+	<ul>
+		<li>Firefox TODO</li>
+		<li>Safari TODO</li>
+		<li>Chrome TODO</li>
+		<li>Opera TODO</li>
+		<li>Internet Explorer 9</li>
+	</ul>
+	
+	
+	
+	
+	<h3>Available from Github</h3>
+	
+	<p><a href="http://github.com/sampula/SVG.toDataURL">http://github.com/sampula/SVG.toDataURL</a></p>
+
 </div>
 
 
