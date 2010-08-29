@@ -382,12 +382,9 @@ SVG.toDataURL( [<abbr title="MIME type of the exported data">type</abbr>],
 			
 			<dt><dfn is="keepOutsideViewport"><code>keepOutsideViewport</code></dfn></dt>
 			<dd>Export all drawn content, even if not visible.</dd>
-
-			
-
 		</dl>
-
 		
+		<p><a href="#">demo</a></p>
 	
 </div>
 
@@ -397,13 +394,13 @@ SVG.toDataURL( [<abbr title="MIME type of the exported data">type</abbr>],
 <div class="slide">
 	<h2>SVG.toDataURL.js library</h2>
 	
-	<p>It's possible to implement right now, before native support.</p>
+	<p>It's possible to implement with JavaScript, while waiting for native browser support…</p>
 	
 	<p><code>SVG.toDataURL.js</code> provides: </p>
 		
 	<ul>
-		<li>Cross-browser serialization and base64 encode/decode (for IE9)</li>
-		<li>Uses <code>canvg</code> for drawing SVG on Canvas</li>
+		<li>Cross-browser SVG to XML serialization and base64 encoding (these for IE9)</li>
+		<li>Uses <code>canvg</code> for drawing SVG onto Canvas</li>
 	</ul>
 		
 <pre class="sh_javascript">
@@ -416,8 +413,6 @@ var pngDataURL = mySVGelement.toDataURL("image/png");
 
 	<p><a href="http://github.com/sampula/SVG.toDataURL">http://github.com/sampula/SVG.toDataURL</a></p>
 
-	<p><a href="#">demo</a></p>
-	
 	<h3>Compatibility</h3>
 	
 	<ul>

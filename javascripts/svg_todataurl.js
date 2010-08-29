@@ -1,9 +1,10 @@
 /**
-	Pottisheads' SVG toDataURL library
-	requires canvg: http://code.google.com/p/canvg/
+	Pottisheads' missing SVG toDataURL library
+	requires canvg for PNG exporting: http://code.google.com/p/canvg/
 	
 	USAGE
 	
+	0) include canvg's javascritp files
 	1) <script type="text/javascript" src="svg_todataurl.js"></script>
 	2) pngDataURL = mySVGelement.toDataURL("image/png");
 	
@@ -26,9 +27,6 @@
 		Export all drawn content, even if not visible.
 		Default: false, export only visible viewport, similar to Canvas toDataURL().
 */
-
-// inject svg prototype
-// SVGElement.prototype.toDataURL = function() { alert("1" + SVGtoDataURL.toDataURL) };
 
 var SVGtoDataURL = {	
 
