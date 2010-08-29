@@ -304,7 +304,7 @@
 					<td>SVG Image in HTML <code>img</code> element</td>
 					<td>ok</td>
 					<td>ok</td>
-					<td class="fail">fail</td>
+					<td class="fail">fail <sup><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=276431">1</a></sup></td>
 					<td>ok</td>
 					<td>ok</td>
 				</tr>
@@ -382,7 +382,7 @@
 			</div>
 		</div>
 		
-		<p>TODO sampe tyytyväinen? Transferring data from SVG to Canvas has security issues, which we argue could be avoided with our <code>SVG.toDataURL()</code> proposal (section "<a href="#recommendations">Recommendations</a>").</p>
+		<p>Transferring data from SVG to Canvas has security issues, which cause Canvas to become write-only. We argue that these issues could be avoided with our <code>SVG.toDataURL()</code> proposal (section "<a href="#recommendations">Recommendations</a>").</p>
 			
 		<h3 class="title">
 			<a id="same_origin"/>
@@ -395,7 +395,7 @@
 		
 		<p>To prevent information leakage with Canvas, browsers are carefully protecting the usage of Canvas when the source for image data is not safe.  All Canvas elements are created as their origin-clean attribute set to <em>true</em>. When any of the actions that may potentially be used for using Canvas element to transfer content that violates the same origin policy, the <em>origin-clean</em> property is permanently set to <em>false</em>.</p>
 
-		<p>If methods that return the pixel data stored in canvas, such as <code>toDataURL()</code> or <code>getImageData()</code>, are called on the Canvas element whose origin-clean is <em>false</em>, then a <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#security-with-canvas-elements">DOMException 18, SECURITY_ERR</a></code> is raised [<a class="xref" href="#Canvas10">Canvas10</a>].</p>
+		<p>If methods that return the pixel data stored in canvas, such as <code>toDataURL()</code> or <code>getImageData()</code>, are called on the Canvas element whose origin-clean is <em>false</em>, then a <code>DOMException 18 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#security-with-canvas-elements">SECURITY_ERR</a></code> is raised [<a class="xref" href="#Canvas10">Canvas10</a>].</p>
 		
 		
 		<h3 class="title">
@@ -445,7 +445,7 @@
 			Conclusions on SVG Security Issues
 		</h3>
 		
-		<p>So, why SVG is dangerous?  SVG can potentially contain content from multiple origins and browsers tend to blacklist any content with the MIME type <code>image/svg+xml</code> as multi-origin content without even testing the actual content.  A good summary of this is given in the comments of Webkit bug #29305 "<a href="https://bugs.webkit.org/show_bug.cgi?id=29305#c1">Canvas drawn with data URL image raises SECURITY_ERR when toDataUrl() called.</a>"</p>
+		<p>So, why SVG is dangerous?  SVG can potentially contain content from multiple origins and browsers tend to blacklist any content with the MIME type <code>image/svg+xml</code> as multi-origin content without even testing the actual content.  A good summary of this is given in the comments of <a href="https://bugs.webkit.org/show_bug.cgi?id=29305#c1">Webkit bug #29305</a>.</p>
 		
 		<p>SVG that contains only safe and same-origin elements should however be rendered to allow efficent use of SVG with Canvas.  In the next section we propose a recommendation for a <code>SVG.toDataURL()</code>-method that allows bitmap export of the vector elements in SVG.</p>
 		
@@ -510,9 +510,6 @@
 			
 			<p>Support for SVG files as source for HTML <code>img</code> elements.</p>
 			
-			<h4>Opera</h4>
-			<p>Fix dynamic SVG in <code>img</code> element support, what ever that means (TODO-SAMPE)</p>
-			
 			<h4>Internet Explorer</h4>
 			
 			<p>An XML serializer (<a href="https://developer.mozilla.org/en/XMLSerializer">XMLSerializer</a>) is needed for the browser to allow easy exporting of dynamic SVG data.</p>
@@ -566,7 +563,7 @@
 			<a href="http://docs.dojocampus.org/dojox/gfx">http://docs.dojocampus.org/dojox/gfx</a><br/>
 			<a href="http://svgkit.sourceforge.net/SVGCanvas.html">http://svgkit.sourceforge.net/SVGCanvas.html</a></p>
 		
-		<p>Raphaël and dojox.gfx do not implement SVG compatibility, but rather provide own API that can be used for drawing vector graphics.  Raphaël is a JavaScript library that provides Canvas like API for drawing graphics.  It uses SVG for drawing graphics and falls back to VML if the browser does not support SVG).</p>
+		<p>Raphaël and dojox.gfx do not implement SVG compatibility, but rather provide own API that can be used for drawing vector graphics.  Raphaël is a JavaScript library that provides Canvas like API for drawing graphics.  It uses SVG for drawing graphics and falls back to VML if the browser does not support SVG.</p>
 		
 		<p>Dojox.gfx is an extension to the Dojo toolkit that similary to Raphaël uses SVG and VML, but also Silverlight and Canvas for drawing vector graphics.</p>
 		
@@ -666,7 +663,7 @@
 
 		<p>The future web that is based on open web standards is not complete without fully supported vector graphics. Since the last SVG Open 2009, the popularity of SVG has not raised, but the support has become better, especially with the latest Internet Explorer 9 preview releases.</p>
 
-		<p>The list of compatibility libraries in this paper show that SVG a) SVG rendering support has to get better, and more interestingly  b) the interaction with different technologies, like Canvas needs to improve as well.  If browsers would support better interaction with SVG, with such features as our proposed <code>toDataURL()</code>-method, it would make SVG less isolated.  As SVG has powerful features, the security issues that come with SVG need to be understood. The current security model is too thight for effective interaction with SVG.</p>
+		<p>The list of compatibility libraries in this paper show that  a) SVG rendering support (TODO: "API support"?) has to get better, and more interestingly  b) the interaction with different technologies, like Canvas, needs to improve as well.  If browsers would support better interaction with SVG, with such features as our proposed <code>toDataURL()</code>-method, it would make SVG less isolated.  As SVG has powerful features, the security issues that come with SVG need to be understood. The current security model is too tight for effective interaction with SVG.</p>
 	
 	</div>
 	
