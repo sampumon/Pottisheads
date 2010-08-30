@@ -10,10 +10,18 @@ var VectorSVG = {
 	
 	init: function(target) {
 		this.target = target;
-
+		
+		// var backdrop = document.createElementNS(this.svgNS, "rect");
+		// backdrop.setAttribute('fill', "white");
+		// backdrop.setAttribute('x1', 0);
+		// backdrop.setAttribute('y1', 0);
+		// backdrop.setAttribute('width', this.target.width.baseVal.value);
+		// backdrop.setAttribute('height', this.target.height.baseVal.value);
+		// this.target.appendChild(backdrop);
+		
 		this.target.onmousedown = this.mouseDown;
 		this.target.onmouseup = this.mouseUp;
-		this.target.parentNode.onmousemove = this.mouseMove;
+		this.target.onmousemove = this.mouseMove;
 
 		// as a neat trick, we add onclick to parent (div) of our svg element;
 		// thus, even safari captures events for empty svg areas!
@@ -33,6 +41,8 @@ var VectorSVG = {
 
 	mouseClick: function(e) {
 		var mouse = getMouseCoords(e, VectorSVG.target);
+		// hackishly skip out-of-svg clicks
+		if (mouse.x < 0 || mouse.y < 0) return;
 
 		// if we were just draggin', skip circle plotting
 		if (VectorSVG.draggin) VectorSVG.draggin = false;

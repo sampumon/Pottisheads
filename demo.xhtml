@@ -8,8 +8,8 @@
 	
 	<script type="text/javascript" src="javascripts/jquery-1.3.2.min.js"></script>
 	
-	<script type="text/javascript" src="canvg/rgbcolor.js"></script>
-	<script type="text/javascript" src="canvg/canvg.js"></script>
+	<script type="text/javascript" src="javascripts/rgbcolor.js"></script>
+	<script type="text/javascript" src="javascripts/canvg.js"></script>
 	
 	<script type="text/javascript" src="javascripts/pixel_toolbar.js"></script>
 	<script type="text/javascript" src="javascripts/pixel_canvas.js"></script>
@@ -21,7 +21,7 @@
 	<script type="text/javascript" src="javascripts/mouse.js"></script>
 	<script type="text/javascript" src="javascripts/random.js"></script>
 
-	<script type="text/javascript" src="svg_todataurl/svg_todataurl.js"></script>
+	<script type="text/javascript" src="javascripts/svg_todataurl.js"></script>
 	
 	<script type="text/javascript">
 	<![CDATA[
@@ -53,6 +53,17 @@
 			window.open(data_url);
 		}
 		
+		function importImgToCanvas(img_src) {
+			var ctx = canvas.getContext('2d');
+			var img = new Image();
+			img.src = img_src;
+
+			img.onload = function() {
+				console.log("Exported image size " + img.width + "x" + img.height);
+				ctx.drawImage(img, 0, 0);
+			}			
+		}
+		
 		function break_now(klass) {
 			// TODO: efekti
 			$("." + klass).addClass("broken");
@@ -76,19 +87,36 @@
 	
 	<dl>
 		<dt>Legend (based on background-color):</dt>
-		<dd class="broken">This won't work anymore, because Canvas' <code>origin-clean</code> is <var>dirty</var>. Maybe you broke it?</dd>
-		<dd class="will_break_canvas">Beware! This will set Canvas' <code>origin-clean</code> <var>dirty</var>, making Canvas write-only.</dd>
-		<dd class="might_break_canvas_legend">This <em>might</em> set Canvas' <code>origin-clean</code> <var>dirty</var>, depending on whether you're transferring images inside SVG data.</dd>
+		<dd><span class="broken">This won't work anymore, because Canvas' <code>origin-clean</code> is <var>dirty</var>. Maybe you broke it?</span></dd>
+		<dd><span class="will_break_canvas">Beware! This will set Canvas' <code>origin-clean</code> <var>dirty</var>, making Canvas write-only.</span></dd>
+		<dd><span class="might_break_canvas_legend">This <em>might</em> set Canvas' <code>origin-clean</code> <var>dirty</var>, depending on whether you're transferring images inside SVG data.</span></dd>
 	</dl>
 	
 	<div id="svgarea">
-		<h2>SVG (<a href="javascript:VectorSVG.clearCanvas();">clear</a>)</h2>
-		
+		<h2>SVG</h2>
+
+		<div class="toolbar">
+			<a href="javascript:alert('Click that SVG area with your mouse!')">circle</a>
+			<a href="javascript:VectorSVG.addImage('gordo-small.png');">png image</a>
+			<a href="javascript:VectorSVG.addImage('gordo.svg'); will_break('might_break_canvas');">svg image</a>
+			<a class="will_read_canvas" href="javascript:CanvasToSVG.convert(canvas, svg);">import canvas</a>
+			<a href="javascript:VectorSVG.clearCanvas();">clear</a>
+		</div>
+
 		<svg id="svg" width="500" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	</div>
 
 	<div id="canvasarea">
-		<h2>Canvas (<a href="javascript:PixelCanvas.clearCanvas();">clear</a>)</h2>
+		<h2>Canvas</h2>
+
+		<div class="toolbar">
+	   		<a class="will_read_canvas" href="javascript:alert('Click and drag the Canvas area with your mouse!')">pixel</a>
+			<a class="will_read_canvas" href="javascript:PixelCanvas.drawImage('gordo-small.png');">png image</a>
+			<a class="will_read_canvas" href="javascript:PixelCanvas.drawImage('gordo.svg');">svg image</a>
+			<a class="might_break_canvas" href="javascript:SVGToCanvas.convertCanvg(svg, canvas);">import svg</a>
+			<a href="javascript:PixelCanvas.clearCanvas();">clear</a>
+		</div>
+
 		<canvas id="canvas" width="500" height="300">NO CANVAS FOR YOU</canvas>		
 	</div>
 
@@ -96,12 +124,22 @@
 		<ol>
 			<li>Canvas to SVG
 				<ul>
-					<li><a class="will_read_canvas" href="javascript:CanvasToSVG.convert(canvas, svg);">Canvas.toDataURL("image/png");</a></li>
+					<li><a class="will_read_canvas" href="javascript:CanvasToSVG.convert(canvas, svg);">Canvas.toDataURL("image/png");</a>
+						<ul>
+							<li>Works with all major browsers, including IE9.</li>
+						</ul>
+					</li>
 				</ul>
 			</li>
 			
 			<li>SVG to Canvas
 				<ul>
+					<li><a href="javascript:alert('Please use your operating system\'s screen capture function, capture the SVG area, save as svg_export.png, open developer console and call: importImgToCanvas(\'/path/to/svg_export.png\')')">Manual method</a>, works nicely
+						<ul>
+							<li>Works with all major browsers, including IE9.</li>
+							<li>This is the only way to capture <em>current</em> rendering state of SVG!</li>
+						</ul>
+						</li>
 					<li><a class="might_break_canvas" href="javascript:SVGToCanvas.convertCanvg(svg, canvas);">SVG.toDataURL('image/png');</a>
 						<ul>
 							<li>Emulated with <a href="http://code.google.com/p/canvg/">canvg</a>.</li>
@@ -118,10 +156,10 @@
 							<li>Works with Webkit (Chrome and Safari).</li>
 						</ul>
 					</li>
-				</ul>				
+				</ul>
 			</li>
 			
-			<li>Export</li>
+			<li>Export?</li>
 			
 		</ol>
 	</div>
