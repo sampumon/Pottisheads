@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="stylesheets/master.css" />
-	<title></title>
+	<title>From SVG to Canvas and Back</title>
 	
 	<script type="text/javascript" src="javascripts/jquery-1.3.2.min.js"></script>
 	
@@ -135,7 +135,12 @@
 							<li>SVG→Canvas security-safe (non-image and non-foreign) elements:
 	                     		<ol>
 									<li><a href="javascript:alert('Dear browser manufacturers, please implement it!');">Our proposed SVG.toDataURL recommendation</a>. No current client-side solution works two-way. We’re waiting for browser manufacturers.</li>
-	                     			<li class="might_break_canvas"><a href="javascript:SVGToCanvas.convertCanvg(svg, canvas);">Canvg</a> (or other SVG rasterization library). Will make Canvas write-only only if the imported SVG has images from different origin, or embedded svg images.</li>
+	                     			<li class="might_break_canvas"><a href="javascript:SVGToCanvas.convertCanvg(svg, canvas);">Canvg</a> (or other SVG rasterization library).
+		 								<ol>
+											<li>Will make Canvas write-only only if the imported SVG has images from different origin, or embedded svg images.</li>
+											<li>Canvg paints transparent areas from SVG as white, overwriting previous drawings on Canvas.</li>
+										</ol>
+									</li>
 								</ol>
 							</li>
 						</ol>

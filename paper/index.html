@@ -8,6 +8,12 @@
 	<style type="text/css">
 		.fail { color: orange; }
 		.comment { color: gray; }
+
+		/* list numbering to match google docs */
+		ol { list-style-type: decimal; }
+		ol ol { list-style-type: lower-alpha; }
+		ol ol ol { list-style-type: lower-roman; }
+		ol ol ol ol { list-style-type: decimal; }
 	</style>
 </head>
 <body>
@@ -172,14 +178,14 @@
 				<li>Vector drawing</li>
 				<li>Interfaces
 					<ol>
-						<li style="list-style-type: lower-alpha">Bitmap export and import (Canvas to SVG)</li>
-						<li style="list-style-type: lower-alpha">Vector rasterization and import (SVG to Canvas)</li>					
+						<li>Bitmap export and import (Canvas to SVG)</li>
+						<li>Vector rasterization and import (SVG to Canvas)</li>					
 					</ol>
 				</li>
 				<li>Exporting
 					<ol>
-						<li style="list-style-type: lower-alpha">Export vectors (SVG DOM)</li>
-						<li style="list-style-type: lower-alpha">Export bitmap (Canvas bitmap)</li>					
+						<li>Export vectors (SVG DOM)</li>
+						<li>Export bitmap (Canvas bitmap)</li>					
 					</ol>
 				</li>
 			</ol>
@@ -632,17 +638,13 @@
 
 	<div class="section" lang="en">
 		<div class="titlepage">
-			<div>
-				<div>
-					<h2 class="title" style="clear: both">
-						<a id="guideline"/>
-						Guideline for Drawing Application Technologies 
-					</h2>
-				</div>
-			</div>
+			<h2 class="title" style="clear: both">
+				<a id="guideline"/>
+				Guideline for Drawing Application Technologies 
+			</h2>
 		</div>
 		
-		<p>Based on the requirements stated above, here is our list of implementation recommendations for the current state of technologies. This is due to change in future, when better solutions become available.</p>
+		<p>Based on the requirements stated above, here are our implementation recommendations for the current state of technologies. This is due to change in future, when better solutions (SVG.toDataURL) become available.</p>
 
 		<h3 class="title">
 			<a id="guideline_demonstration"/>
@@ -651,7 +653,77 @@
 
 		<p>See our demonstration page here: <a href="http://db.cs.helsinki.fi/~paksula/svg_open_2010/demo.xhtml">http://db.cs.helsinki.fi/~paksula/svg_open_2010/demo.xhtml</a></p>
 		
-		<p>Our demonstration page shows a list of feature requirements for a complete drawing application with SVG and Canvas. Each of the requirements are implemented with most suitable methods.  As the method used might effect on the other methods (by making them no longer available for security reasons), the page shows the effects: if a method is no longer available, it is rendered as TODO in the feature list.  Refreshing the page resets the status.</p>
+		<p>Our demonstration page shows a list of feature requirements for a complete drawing application using SVG and Canvas. Each of the requirements are implemented with most suitable methods.  As the method used might make Canvas write-only, the page warns you if this would happen (orange background) and if it has happened (gray background).  Refreshing the page resets the status.</p>
+		
+		<!-- TODO: here a h3? -->
+
+		<div id="demolist">
+			<ol>
+		   		<li>Draw pixel graphics with Canvas</li>
+		   		<li>Draw vector graphics with SVG</li>
+		   		<li>Interfaces between Canvas and SVG:
+		         	<ol>
+			
+						<li>One-way only transfer from Canvas: canvas→svg , canvas→svg, …
+		               		<ol>
+								<li class="will_read_canvas"><a href="javascript:CanvasToSVG.convert(canvas, svg);">Canvas toDataURL</a>. Can be used multiple times when no SVG data is written onto Canvas.</li>
+							</ol>
+						</li>
+
+						<li>One-way only transfer from SVG: svg→canvas, svg→canvas, …
+		               		<ol>
+								<li class="will_break_canvas"><a href="javascript:SVGToCanvas.convert(svg, canvas); break_now('will_read_canvas');">Our client-side implementation</a>. Canvas becomes write-only.</li>
+							</ol>
+						</li>
+
+						<li>Two-way transfer: svg→canvas→svg→canvas→svg, ..
+		               		<ol>
+								<li class="will_read_canvas"><a href="javascript:CanvasToSVG.convert(canvas, svg);">Canvas toDataURL</a>. (as in 3.a.i)</li>
+		               			<li>SVG→Canvas complete (non-safe) transfer, including possibly non-secure elements:
+		                     		<ol>
+										<li><a href="javascript:SVGToCanvas.convertServer(svg, canvas);">SVG rastrerization server</a> (with Imagemagick or similar).</li>
+										<li><a href="javascript:alert('Dear browser manufacturers, please implement it!');">Our proposed SVG.toDataURL recommendation</a>. No current client-side solution works two-way. We’re waiting for browser manufacturers.</li>
+									</ol>
+		               			</li>
+								<li>SVG→Canvas security-safe (non-image and non-foreign) elements:
+		                     		<ol>
+										<li><a href="javascript:alert('Dear browser manufacturers, please implement it!');">Our proposed SVG.toDataURL recommendation</a>. No current client-side solution works two-way. We’re waiting for browser manufacturers.</li>
+		                     			<li class="might_break_canvas"><a href="javascript:SVGToCanvas.convertCanvg(svg, canvas);">Canvg</a> (or other SVG rasterization library). Will make Canvas write-only only if the imported SVG has images from different origin, or embedded svg images. Canvg paints transparent areas from SVG as white, overwriting previous drawings on Canvas.</li>
+									</ol>
+								</li>
+							</ol>
+						</li>
+					</ol>
+				</li>
+
+
+				<li>Exporting as file
+		    		<ol>
+						<li>SVG→PNG
+		          			<ol>
+		          				<li><a href="javascript:SVGToCanvas.exportPNG(svg, export_img);">Our implementation (safe elements)</a> won't work, since SVG→Canvas→toDataURL always gives SECURITY_ERR.</li>
+		          				<li><a href="javascript:SVGToCanvas.exportPNGserver(svg, export_img);">Serverside (safe and non-safe elements)</a>.</li>
+		          				<li><a href="javascript:SVGToCanvas.exportPNGcanvg(svg, export_img);">canvg (safe elements)</a>.</li>
+		    				</ol>
+						</li>
+
+						<li>Canvas→PNG
+							<ol>
+								<li>Right-click→Save as… (if your browser supports it)</li>
+		             			<li class="will_read_canvas"><a href="javascript:export_img(canvas.toDataURL());">Canvas.toDataURL</a> (img element / new window)</li>
+							</ol>
+						</li>
+
+						<li>SVG→SVG file
+							<ol>
+								<li>Right-click→Save as… (<em>no</em> browser supports it)</li>
+								<li><a href="javascript:SVGToCanvas.exportSVG(svg, export_img);">Serialize SVG as data URL</a> (img element / new window)</li>
+							</ol>
+						</li>
+					</ol>
+				</li>
+			</ol>
+		</div>
 		
 <!--		
 		TODO: remember to include in toc if enabled!
