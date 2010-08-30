@@ -275,9 +275,54 @@ pre.sh_sourceCode .sh_value {
 
 <div class="slide">
 
-	<h2>Abstract</h2>
+	<h2>Discussion</h2>
 
-	<p>TODO</p>
+<pre>
+From: Jeff Schiller <codedread@gmail.com>
+Date: Sun, 11 Oct 2009 16:45:48 -0500
+Message-ID: <da131fde0910111445h38291f3er33534e69260936db@mail.gmail.com>
+To: David Storey <dstorey@opera.com>
+Cc: SVG IG List <public-svg-ig@w3.org>
+
+Great list!
+
+I had a couple stray ones also:
+
+* adopt html5 offline manifest attribute on top-level svg element
+<strong>* toDataUrl() on SVGDocument (mentioned at conf)</strong>
+<pre>
+
+<pre>
+From: Jon Ferraiolo <jferrai@us.ibm.com>
+Date: Sat, 3 Oct 2009 18:17:51 -0700
+To: www-svg@w3.org
+Message-ID: <OFD44165F3.7CC6EADF-ON88257645.00069E61-88257645.000720C0@us.ibm.com>
+
+
+
+At SVG Open, there was discussion today about <strong>adding Canvas's pixel grabbing APIs to SVG</strong>, with claims that SVG implementations don't necessarily retain a rendering surface. It now occurs to me that there is a CSS property ('enable-background') in the SVG 1.1 spec just for this purpose:
+</pre>
+
+<pre>
+From: Robert O'Callahan <robert@ocallahan.org>
+Date: Mon, 5 Oct 2009 09:55:42 +1300
+Message-ID: <11e306600910041355j2e448ad5oeacd68d607789dbd@mail.gmail.com>
+To: Jon Ferraiolo <jferrai@us.ibm.com>
+Cc: www-svg@w3.org
+
+On Mon, Oct 5, 2009 at 2:21 AM, Jon Ferraiolo <jferrai@us.ibm.com> wrote:
+
+> Sounds intriguing to me. Maybe:
+>
+> <svg id="aaa" canvas="true">...</svg>
+>
+
+Sorry, that wasn't what I meant. What I meant was
+var canvas = document.createElement("canvas");
+<strong>canvas.drawImage(svgElement);</strong>
+var data = canvas.getImageData(...);
+</pre>
+
 	
 </div>
 
@@ -354,7 +399,27 @@ svg_img.setAttributeNS(
 <div class="slide">
 
 	<h2>Security issues</h2>
-	
+
+<pre>
+  -------  Comment #3 From  Oliver Hunt   2009-09-16 21:35:26 PST  -------
+
+(In reply to comment #2)
+> (In reply to comment #1)
+> > We should make sure to <strong>test svg data urls to make sure they don't get through</strong>.
+> 
+> You mean <strong>something like data:text/svg,<svg>...</strong>
+> ?
+> 
+> <strong>Why shouldn't that get through?</strong>
+
+The specific issue i think is that you can do
+
+data:application/xml+svg,&lt;svg&gt;<strong>&lt;image src="evil.com"/&gt;&lt;/svg&gt;</strong> or whatever.  However i *think* we would catch that as being a multi-origin source.  I think Sam's point was that we need to have a test that ensures the correct restrictions are in place.
+
+
+
+</pre>
+
 	<ul>
 		<li>SVG can contain images from different origin, embedded SVG or even foreignObjects!
 			<ol>
@@ -434,22 +499,29 @@ imgElement.setAttribute("src", pngDataURL);
 	<h3>Compatibility</h3>
 	
 	<p>Works with current major browsers: Safari (4.1), Chrome (5.0), Firefox (3.6), Opera (10.60), IE9.</p>
+
+	
+	<p><img src="compatibility.png" /></p>
+	
 </div>
 
 
 <div class="final slide">
 
 	<h2>PARIS FINALE</h2>
-	
-	<marquee class="greet">
-		<span>Greets to…</span>
+
+
+	<marquee class="greet" scrollamount="20">
+		<span>Greetings to..</span>
 		<span>Jeff/codedread</span>
 		<span>Doug/SVG-Whiz</span>
 		<span>Andreas/carto.net</span>
 		<span>Brad/Google</span>	
-		<span>Klaus Förster</span>
-	</marquee
-	
+		<span>Klaus/foreignObject</span>
+		<span>Bianca/JSXGraph</span>
+		<span>Rob/Google</span>
+	</marquee>
+
 </div>
 
 
