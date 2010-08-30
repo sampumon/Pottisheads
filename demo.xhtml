@@ -85,7 +85,7 @@
 <body>
 	<h1>From SVG to Canvas and Back</h1>
 	
-	<dl>
+	<dl id="legend">
 		<dt>Legend (based on background-color):</dt>
 		<dd><span class="broken">This won't work anymore, because Canvas' <code>origin-clean</code> is <var>dirty</var>. Maybe you broke it?</span></dd>
 		<dd><span class="will_break_canvas">Beware! This will set Canvas' <code>origin-clean</code> <var>dirty</var>, making Canvas write-only.</span></dd>
@@ -134,7 +134,7 @@
 			
 			<li>SVG to Canvas
 				<ul>
-					<li><a href="javascript:alert('Please use your operating system\'s screen capture function, capture the SVG area, save as svg_export.png, open developer console and call: importImgToCanvas(\'/path/to/svg_export.png\')')">Manual method</a>, works nicely
+					<li><a href="javascript:alert('Please use your operating system\'s screen capture function, capture the SVG area, save as svg_export.png, open developer console and call: importImgToCanvas(\'/path/to/svg_export.png\')')">Manual method</a>
 						<ul>
 							<li>Works with all major browsers, including IE9.</li>
 							<li>This is the only way to capture <em>current</em> rendering state of SVG!</li>
@@ -149,6 +149,9 @@
 					</li>
 					<li>
 						<a href="javascript:SVGToCanvas.convertServer(svg, canvas);">Server-side conversion with Ajax</a>
+						<ul>
+							<li>Works with all major browsers, including IE9.</li>
+						</ul>
 					</li>
 					<li><a class="will_break_canvas" href="javascript:SVGToCanvas.convert(svg, canvas); break_now('will_read_canvas');">Draw SVG to Canvas with canvas.drawImage()</a>
 						<ul>

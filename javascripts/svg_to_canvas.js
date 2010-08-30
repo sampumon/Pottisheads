@@ -95,8 +95,8 @@ var SVGToCanvas = {
 		var ctx = canvas.getContext('2d');
 		var img = new Image();
 		// ff fails here, http://en.wikipedia.org/wiki/SVG#Native_support
-		var svg_xml = SVGtoDataURL.xmlSerialize(svg);
-		img.src = SVGtoDataURL.base64dataURLencode(svg_xml);
+		var svg_xml = this.xmlSerialize(svg);
+		img.src = this.base64dataURLencode(svg_xml);
 
 		img.onload = function() {
 			console.log("Exported image size " + img.width + "x" + img.height);
