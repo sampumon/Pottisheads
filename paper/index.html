@@ -4,6 +4,7 @@
 	<title>From SVG to Canvas and Back</title>
 	<meta name="description" content="In this paper we continue our previous work that was published at SVG Open 2009. By Pottisheads."/>
 	<meta name="keywords" content="svg canvas pottishead"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<style type="text/css">
 		.fail { color: orange; }
 		.comment { color: gray; }
@@ -233,7 +234,7 @@
 			SVG to Canvas
 		</h3>
 
-			<p>The idea for our SVG→Canvas method is to make use of the web browser rendering of SVG.  As the SVG is rasterized in the screen, it should be possible to use those pixels directly in Canvas.  However, no direct interface exists (see section "<a href="#recommendations">Recommendations</a>"), so we’ll use Canvas for the job.  A <a href="http://ajaxian.com/archives/todataurl-canvas-and-svg#comment-275765">comment</a> in Ajaxian.com by Andreas Ritter motivated us in this work [<a class="xref" href="#AndreasRitter">AndreasRitter</a>]</p>
+			<p>The idea for our SVG→Canvas method is to make use of the web browser rendering of SVG.  As the SVG is rasterized in the screen, it should be possible to use those pixels directly in Canvas.  However, no direct interface exists (see section "<a href="#recommendations">Recommendations</a>"), so we’ll use Canvas for the job.  A <a href="http://ajaxian.com/archives/todataurl-canvas-and-svg#comment-275765">comment on Ajaxian</a> motivated us in this work [<a class="xref" href="#AndreasRitter">AndreasRitter</a>].</p>
 
 <pre class="programlisting">function <strong>importSVG</strong>(sourceSVG, targetCanvas) {
     <span class="comment">// https://developer.mozilla.org/en/XMLSerializer</span>
@@ -260,6 +261,8 @@
 		<p>All browsers support images with data URI [<a class="xref" href="#RFC2397">RFC2397</a>].  Currently, some browsers (Webkit) support SVG images as a source for <code>img</code> elements [<a class="xref" href="#SVGimg10">SVGimg10</a>].  This feature is also in the test suite for Internet Explorer 9 [<a class="xref" href="#MSDNTest">MSDNTest</a>]. By combining these, we can transfer the serialized XML SVG data into a HTML Image element.  This HTML Image element can be used as an argument for the <code>drawImage()</code>-method of Canvas.</p>
 
 		<p>Currently (2010-08) this only works in Safari and Chrome.  Also, the SVG→Canvas transfer is write-only, as it triggers the <code>origin-clean</code> flag of Canvas as dirty, which causes that Canvas to be unreadable (until reloaded and cleared). This security issue will be discussed in the "<a href="#security_issues">Security Issues</a>" section.</p>
+		
+		<p>Further, there is no guarantee that this method renders the same image, as currently visible on SVG element. If there is SMIL animation on SVG, the animation might reset to first frame on the transferred image.</p>
 
 		<h3 class="title">
 			<a id="browser_compatibility"/>
@@ -506,18 +509,19 @@
 			For Browser Manufacturers
 		</h3>
 		
-			<p>In addition to the <code>SVG.toDataURL()</code> method presented above, we would like to see following improvements in browsers.</p>
+			<p>In addition to the <code>SVG.toDataURL()</code> method presented above, we would like to see following SVG-Canvas-cooperation improvements in browsers.</p>
 			
-			<h4>SVG save as img TODO</h4>
-			
+			<h4>Save SVG as image</h4>
+
+			<p>Right-clicking on SVG element should allow saving as image (SVG or PNG). Some browsers already support this on Canvas, but no-one on SVG.</p>
 			
 			<h4>Safari, Chrome (Webkit) and Opera</h4>
 			
-			<p>Clicking Canvas with right-click should prompt for "save as" (PNG).  This is the easiest way to export anything that has been drawn on Canvas.</p>
+			<p>Right-clicking Canvas should prompt for "save as" (PNG).  This is the easiest way to export anything that has been drawn on Canvas.</p>
 			
 			<h4>Firefox</h4>
 			
-			<p>Support for SVG files as source for HTML <code>img</code> elements (<a href="<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=276431">Bug 276431</a>)</p>
+			<p>Support for SVG files as source for HTML <code>img</code> elements (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=276431">Bug 276431</a>).</p>
 			
 			<h4>Internet Explorer</h4>
 			
@@ -673,9 +677,9 @@
 		</div>
 		
 
-		<p>The future web that is based on open web standards is not complete without fully supported vector graphics. Since the last SVG Open 2009, the popularity of SVG has not raised, but the support has become better, especially with the latest Internet Explorer 9 preview releases.</p>
+		<p>The future web, based on open HTML5 standards, is not complete without fully supported vector graphics. Since the last SVG Open 2009, the popularity of SVG has not raised, but the support has become better, especially with the latest Internet Explorer 9 preview releases.</p>
 
-		<p>The list of compatibility libraries in this paper show that  a) SVG rendering support (TODO: "API support"?) has to get better, and more interestingly  b) the interaction with different technologies, like Canvas, needs to improve as well.  If browsers would support better interaction with SVG, with such features as our proposed <code>toDataURL()</code>-method, it would make SVG less isolated.  As SVG has powerful features, the security issues that come with SVG need to be understood. The current security model is too tight for effective interaction with SVG.</p>
+		<p>The list of compatibility libraries in this paper show that  a) SVG rendering API support has to get better, and  b) the interaction with different HTML5 technologies, like Canvas, need to improve as well.  Supporting better interaction with SVG, such as our proposed <code>toDataURL()</code>-method, would make SVG less isolated.  As SVG has powerful features, the security issues that come with SVG need to be understood. The current security model is too tight for effective interaction with SVG.</p>
 	
 	</div>
 	
