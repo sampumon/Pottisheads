@@ -100,9 +100,9 @@
 		<h2>Canvas</h2>
 
 		<div class="toolbar">
-	   		<a class="will_read_canvas" href="javascript:alert('Click and drag the Canvas area with your mouse!')">pixel</a>
-			<a class="will_read_canvas" href="javascript:PixelCanvas.drawImage('gordo-small.png');">png image</a>
-			<a class="will_read_canvas" href="javascript:PixelCanvas.drawImage('gordo.svg');">svg image</a>
+	   		<a href="javascript:alert('Click and drag the Canvas area with your mouse!')">pixel</a>
+			<a href="javascript:PixelCanvas.drawImage('gordo-small.png');">png image</a>
+			<a href="javascript:PixelCanvas.drawImage('gordo.svg');">svg image</a>
 			<a class="might_break_canvas" href="javascript:SVGToCanvas.convertCanvg(svg, canvas);">import svg</a>
 			<a href="javascript:PixelCanvas.clearCanvas();">clear</a>
 		</div>
@@ -168,6 +168,13 @@
 
 			<li>Exporting as file
 	    		<ol>
+					<li>Canvas→PNG
+						<ol>
+							<li>Right-click→Save as… (Firefox supports it)</li>
+	             			<li class="will_read_canvas"><a href="javascript:export_img(canvas.toDataURL());">Canvas.toDataURL</a> (<a href="javascript:export_window(canvas.toDataURL());">new window</a>)</li>
+						</ol>
+					</li>
+					
 					<li>SVG→PNG
 	          			<ol>
 	          				<li><a href="javascript:SVGToCanvas.exportPNG(svg, export_img);">Our implementation (safe elements)</a> won't work, since SVG→Canvas→toDataURL always gives SECURITY_ERR.</li>
@@ -176,17 +183,10 @@
 	    				</ol>
 					</li>
 
-					<li>Canvas→PNG
-						<ol>
-							<li>Right-click→Save as… (Firefox supports it)</li>
-	             			<li class="will_read_canvas"><a href="javascript:export_img(canvas.toDataURL());">Canvas.toDataURL</a> (<a href="javascript:export_window(canvas.toDataURL());">new window</a>)</li>
-						</ol>
-					</li>
-					
 					<li>SVG→SVG file
 						<ol>
 							<li>Right-click→Save as… (IE9 browser supports it)</li>
-							<li><a href="javascript:SVGToCanvas.exportSVG(svg, export_img);">Serialize SVG as data url</a> (<a href="javascript:SVGToCanvas.exportSVG(svg, export_window);">new window</a>)</li>
+							<li><a href="javascript:SVGToCanvas.exportSVG(svg, export_img);">Serialize SVG as data URL</a> (<a href="javascript:SVGToCanvas.exportSVG(svg, export_window);">new window</a>)</li>
 						</ol>
 					</li>
 				</ol>
@@ -195,7 +195,7 @@
 	</div>
 	
 	<img id="export_img" alt="placeholder for exported svg/pixel data" />
-
+	
 </body>
 </html>
 
