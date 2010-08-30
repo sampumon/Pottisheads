@@ -290,15 +290,16 @@ I had a couple stray ones also:
 
 * adopt html5 offline manifest attribute on top-level svg element
 <strong>* toDataUrl() on SVGDocument (mentioned at conf)</strong>
-<pre>
+
+</pre>
+
+<h4>Another</h4>
 
 <pre>
 From: Jon Ferraiolo <jferrai@us.ibm.com>
 Date: Sat, 3 Oct 2009 18:17:51 -0700
 To: www-svg@w3.org
 Message-ID: <OFD44165F3.7CC6EADF-ON88257645.00069E61-88257645.000720C0@us.ibm.com>
-
-
 
 At SVG Open, there was discussion today about <strong>adding Canvas's pixel grabbing APIs to SVG</strong>, with claims that SVG implementations don't necessarily retain a rendering surface. It now occurs to me that there is a CSS property ('enable-background') in the SVG 1.1 spec just for this purpose:
 </pre>
@@ -323,8 +324,19 @@ var canvas = document.createElement("canvas");
 var data = canvas.getImageData(...);
 </pre>
 
+<h4>Mozilla documentation</h4>
+
+<pre>
+"Mozilla's canvas is extended with the drawWindow() method"
+.. "It is not allowed in normal HTML pages)"
+
+"With this method, it is possible to fill a hidden IFRAME with arbitrary content (e.g., CSS-styled HTML text, or <strong>SVG</strong>) and <strong>draw it into a canvas</strong>"
+
+</pre>
 	
 </div>
+
+
 
 <div class="slide">
 	<h2>Motivation</h2>
