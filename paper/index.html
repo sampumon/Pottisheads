@@ -507,7 +507,9 @@
 		
 		<p>We implemented this in our reference implementation, <a href="http://github.com/sampula/SVG.toDataURL">SVG.toDataURL.js</a>.  The library adds <code>toDataURL()</code>-method in the prototype of <code>SVGElement</code>.  For better compatibility our library provides XML serialization and base64-encoding for Internet Explorer, as <a href="https://developer.mozilla.org/en/XMLSerializer">XMLSerializer</a> and <code>btoa</code> are not provided by the browser itself.</p>
 		
-		<p>When the <code>type</code> is "<code>image/png</code>" and the option <code>keepNonSafe</code> is set, we use our method described in section "<a href="#svg_to_canvas">SVG to Canvas</a>".  Otherwise, the canvg library is used.</p>
+		<p>When the <code>type</code> is "<code>image/png</code>" and the option <code>keepNonSafe</code> is <code>true</code>, we use our method described in section "<a href="#svg_to_canvas">SVG to Canvas</a>".  This will fail, though, because of current browser security models.  When <code>keepNonSafe</code> is <code>false</code> (or missing), the canvg library is used.</p>
+		
+		<p>We're waiting for a better implementation by browser manufacturers.</p>
 		
 		
 		<h3 class="title">
