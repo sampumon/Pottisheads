@@ -59,7 +59,7 @@
 		<hr/>
 	</div>
 
-  <div class="toc"><p><b>Table of Contents TODO:check that it's final</b></p>
+  <div class="toc"><p><b>Table of Contents</b></p>
   	<dl>
   		<dt><span class="section"><a href="#introduction">Introduction</a></span></dt>
   		<dt><span class="section"><a href="#motivation">Motivation: Complete Drawing Application</a></span></dt>
@@ -233,7 +233,7 @@
 			SVG to Canvas
 		</h3>
 
-			<p>The idea for our SVG→Canvas method is to make use of the web browser rendering of SVG.  As the SVG is rasterized in the screen, it should be possible to use those pixels directly in Canvas.  However, no direct interface exists (see section "<a href="#recommendations">Recommendations</a>"), so we’ll use Canvas for the job.</p>
+			<p>The idea for our SVG→Canvas method is to make use of the web browser rendering of SVG.  As the SVG is rasterized in the screen, it should be possible to use those pixels directly in Canvas.  However, no direct interface exists (see section "<a href="#recommendations">Recommendations</a>"), so we’ll use Canvas for the job.  A <a href="http://ajaxian.com/archives/todataurl-canvas-and-svg#comment-275765">comment</a> in Ajaxian.com by Andreas Ritter motivated us in this work [<a class="xref" href="#AndreasRitter">AndreasRitter</a>]</p>
 
 <pre class="programlisting">function <strong>importSVG</strong>(sourceSVG, targetCanvas) {
     <span class="comment">// https://developer.mozilla.org/en/XMLSerializer</span>
@@ -494,7 +494,12 @@
 
 		</dl>
 
-
+		<h4>Implementation with JavaScript</h4>
+		
+		<p>We implemented this in our reference implementation, <a href="http://github.com/sampula/SVG.toDataURL">SVG.toDataURL.js</a>.  The library adds <code>toDataURL()</code>-method in the prototype of <code>SVGElement</code>.  For better compatibility our library provides XML serialization and base64-encoding for Internet Explorer, as <a href="https://developer.mozilla.org/en/XMLSerializer">XMLSerializer</a> and <code>btoa</code> are not provided by the browser itself.</p>
+		
+		<p>When the <code>type</code> is "<code>image/png</code>" and the option <code>keepNonSafe</code> is set, we use our method described in section "<a href="#svg_to_canvas">SVG to Canvas</a>".  Otherwise, the canvg library is used.</p>
+		
 		
 		<h3 class="title">
 			<a id="browser_manufacturers"/>
@@ -503,17 +508,21 @@
 		
 			<p>In addition to the <code>SVG.toDataURL()</code> method presented above, we would like to see following improvements in browsers.</p>
 			
+			<h4>SVG save as img TODO</h4>
+			
+			
 			<h4>Safari, Chrome (Webkit) and Opera</h4>
 			
 			<p>Clicking Canvas with right-click should prompt for "save as" (PNG).  This is the easiest way to export anything that has been drawn on Canvas.</p>
 			
 			<h4>Firefox</h4>
 			
-			<p>Support for SVG files as source for HTML <code>img</code> elements.</p>
+			<p>Support for SVG files as source for HTML <code>img</code> elements. TODO linkki</p>
 			
 			<h4>Internet Explorer</h4>
 			
 			<p>An XML serializer (<a href="https://developer.mozilla.org/en/XMLSerializer">XMLSerializer</a>) is needed for the browser to allow easy exporting of dynamic SVG data.</p>
+			
 			
 
 	</div>
@@ -830,15 +839,30 @@
 						</span>
 						<br/>
 						<span class="url">
-							<a href="http://samples.msdn.microsoft.com/ietestcenter/html5/canvas_harness.htm?url=canvas-images-drawImage-001
-">http://samples.msdn.microsoft.com/ietestcenter/html5/canvas_harness.htm?url=canvas-images-drawImage-001
+							<a href="http://samples.msdn.microsoft.com/ietestcenter/html5/canvas_harness.htm?url=canvas-images-drawImage-001">http://samples.msdn.microsoft.com/ietestcenter/html5/canvas_harness.htm?url=canvas-images-drawImage-001
 </a></span>
 
 					</p>
 				</div>
 
 				
-							
+				<div class="biblioentry">
+					<a id="AndreasRitter"/>
+					<p>[<abbr class="abbrev">AndreasRitter</abbr>] 
+								
+						<span class="title"><i>Comment by Andreas Ritter in Ajaxian</i></span>
+						<br/>
+						<span class="publisher">
+							<span class="publishername">Andreas Ritter in Ajaxian</span>
+						</span>
+						<br/>
+						<span class="url">
+							<a href="http://ajaxian.com/archives/todataurl-canvas-and-svg#comment-275765">http://ajaxian.com/archives/todataurl-canvas-and-svg#comment-275765</a></span>
+
+					</p>
+				</div>
+
+				
 			</div>
 
 	</body>
