@@ -333,6 +333,8 @@ var data = canvas.getImageData(...);
 "With this method, it is possible to fill a hidden IFRAME with arbitrary content (e.g., CSS-styled HTML text, or <strong>SVG</strong>) and <strong>draw it into a canvas</strong>"
 
 </pre>
+
+	<h4>So let's do this right now!</h4>
 	
 </div>
 
@@ -437,6 +439,8 @@ data:application/xml+svg,&lt;svg&gt;<strong>&lt;image src="evil.com"/&gt;&lt;/sv
 		</li>
 	</ul>
 
+	<h4>Let's see how that looks like!</h4>
+	
 </div>
 
 
@@ -446,8 +450,9 @@ data:application/xml+svg,&lt;svg&gt;<strong>&lt;image src="evil.com"/&gt;&lt;/sv
 	
 	<ul>
 		<li>Canvas' <code>origin-clean</code> gets dirty even with an <em>empty</em> SVG!</li>
-		<li>There's no reason to ban Canvas because of <code>rect</code> and <code>circle</code> elements</li>
-		<li>Is this a bug, laziness or or over-cautioness from browser manufacturers?</li>
+		<li>There's no reason to ban Canvas because of <code>rect</code> and <code>circle</code> elements (and it's not in the spec).</li>
+		<li>Even in the presentations here, rasterizing SVG to PNG is a common use case - it's being done server-side!</li>
+		<li>This would get SVG out of the box, make it accessible for <code>&lt;canvas&gt;</code> demos & hacks & stuff</li>
 	</ul>
 	
 </div>
@@ -456,7 +461,7 @@ data:application/xml+svg,&lt;svg&gt;<strong>&lt;image src="evil.com"/&gt;&lt;/sv
 <div class="slide">
 	<h2>Proposal: SVG.toDataURL()</h2>
 	
-	<p>Motivated by missing functionality and bad security model:</p>
+	<p>Motivated by missing functionality and security issues:</p>
 	
 <pre class="sh_javascript">
 SVG.toDataURL( [<abbr title="MIME type of the exported data">type</abbr>],
@@ -475,7 +480,7 @@ SVG.toDataURL( [<abbr title="MIME type of the exported data">type</abbr>],
 			<dt><dfn is="keepOutsideViewport"><code>keepOutsideViewport</code></dfn></dt>
 			<dd>Export all drawn content, even if not visible.</dd>
 		</dl>
-		
+	
 </div>
 
 
@@ -488,7 +493,11 @@ SVG.toDataURL( [<abbr title="MIME type of the exported data">type</abbr>],
 		
 	<ul>
 		<li>Cross-browser SVG to XML serialization with base64 encoding (for IE9)</li>
-		<li>Uses <code>canvg</code> for drawing SVG onto Canvas (to circumvent security model)</li>
+		<li>Uses <code>canvg</code> for drawing SVG onto Canvas (to circumvent security model)
+			<ul>
+				<li>But <code>canvg</code> needs to implement the whole spec!</li>
+			</ul>
+		</li>
 	</ul>
 		
 <pre class="sh_javascript">
