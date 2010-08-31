@@ -388,20 +388,24 @@ svg_img.setAttributeNS(
 <div class="slide">
 	<h2>SVG to Canvas client-side</h2>
 
-	<ol>
-		<li>Serialize the SVG DOM as XML
-		<pre>…&lt;circle style="fill: rgb(187, 173, 3);" cx="236" cy="228" r="36"/&gt;…</pre></li>
-		
-		<li>Base64-encode the XML as data URL
-		<pre>data:image/svg+xml;base64,PHN2ZyB4bWxucz…</pre></li>
-		<li>and use <code>canvas.drawImage(above_data_url)</code></li>
-	</ol>
-	
+<pre class="sh_javascript">
+// Serialize the SVG DOM as XML
+svg_xml = (new XMLSerializer())
+  .serializeToString(svg);
+
+// Base64-encode the XML as data URL
+img.src = "data:image/svg+xml;base64,"
+  + btoa(svg_xml);
+
+// Draw the svg-in-img into Canvas
+canvas.ctx.drawImage(img);
+</pre>
+
 	<h4>Works in all browsers that</h4>
 	
 	<ul>
 		<li>support SVG in HTML <code>img</code> element…<br />(Safari, Chrome, IE9, Opera)</li>
-		<li>…and allow it for Canvas.drawImage<br />(Safari, Chrome).</li>
+		<li>…and allow it for Canvas.drawImage()<br />(Safari, Chrome).</li>
 	</ul>
 	
 </div>
