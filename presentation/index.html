@@ -358,10 +358,10 @@ var data = canvas.getImageData(...);
 	<h2>Canvas to SVG</h2>
 
 <pre class="sh_javascript">
-// get base64 encoded png from Canvas
+// Get base64-encoded PNG from Canvas
 var png_dataurl = canvas.toDataURL();
 
-// include into svg image element
+// Include into SVG image element
 svg_img.setAttributeNS(
          "http://www.w3.org/1999/xlink",
          "xlink:href",
@@ -397,7 +397,7 @@ svg_xml = (new XMLSerializer())
 img.src = "data:image/svg+xml;base64,"
   + btoa(svg_xml);
 
-// Draw the svg-in-img into Canvas
+// Draw the SVG-in-img into Canvas
 canvas.ctx.drawImage(img);
 </pre>
 
