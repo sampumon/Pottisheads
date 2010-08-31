@@ -1976,16 +1976,18 @@ if(!Array.indexOf){
 			var isFirstRender = true;
 			var draw = function() {
 				// set canvas size
-				if (e.style('width').hasValue()) {
-					ctx.canvas.width = e.style('width').Length.toPixels(ctx.canvas.parentNode.clientWidth);
-				}
-				if (e.style('height').hasValue()) {
-					ctx.canvas.height = e.style('height').Length.toPixels(ctx.canvas.parentNode.clientHeight);
-				}
+				// COMMENT-OUT-HACK 1/2 TO KEEP ORIGINAL CANVAS DRAWINGS
+				// if (e.style('width').hasValue()) {
+				// 	ctx.canvas.width = e.style('width').Length.toPixels(ctx.canvas.parentNode.clientWidth);
+				// }
+				// if (e.style('height').hasValue()) {
+				// 	ctx.canvas.height = e.style('height').Length.toPixels(ctx.canvas.parentNode.clientHeight);
+				// }
 				svg.ViewPort.SetCurrent(ctx.canvas.clientWidth, ctx.canvas.clientHeight);			
 			
 				// clear and render
-				//ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
+				// COMMENT-OUT-HACK 2/2 TO KEEP ORIGINAL CANVAS DRAWINGS
+				// ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
 				e.render(ctx);
 				if (isFirstRender) {
 					isFirstRender = false;
