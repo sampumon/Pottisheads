@@ -54,6 +54,17 @@
 			window.open(data_url);
 		}
 		
+		function importImgToCanvas(img_src) {
+			var ctx = canvas.getContext('2d');
+			var img = new Image();
+			img.src = img_src;
+
+			img.onload = function() {
+				console.log("Exported image size " + img.width + "x" + img.height);
+				ctx.drawImage(img, 0, 0);
+			}			
+		}
+		
 		function break_now(klass) {
 			// TODO: efekti
 			$("." + klass).addClass("broken");
@@ -140,11 +151,17 @@
 						</ol>
 					</li>
          		
-					<li>Two-way transfer: svg→canvas→svg→canvas→svg, ..
+					<li>Two-way transfer: svg→canvas→svg→canvassvg, ..
 	               		<ol>
-							<li class="will_read_canvas"><a href="javascript:CanvasToSVG.convert(canvas, svg);">Canvas toDataURL</a>. (as in 3.a.i)</li>
+							<li class="will_read_canvas">Canvas→SVG: <a href="javascript:CanvasToSVG.convert(canvas, svg);">Canvas toDataURL</a>. (as in 3.a.i)</li>
 	               			<li>SVG→Canvas complete (non-safe) transfer, including possibly non-secure elements:
 	                     		<ol>
+									<li><a href="javascript:alert('Please use your operating system\'s screen capture function, capture the SVG area, save as svg_export.png, open developer console and call: importImgToCanvas(\'/path/to/svg_export.png\')')">Manual method</a>
+										<ul>
+											<li>Works with all major browsers, including IE9.</li>
+											<li>This is the only way to capture <em>current</em> rendering state of SVG!</li>
+										</ul>
+									</li>
 									<li><a href="javascript:SVGToCanvas.convertServer(svg, canvas);">SVG rastrerization server</a> (with Imagemagick or similar).</li>
 									<li><a href="javascript:alert('Dear browser manufacturers, please implement it!');">Our proposed SVG.toDataURL recommendation</a>. No current client-side solution works two-way. We’re waiting for browser manufacturers.</li>
 								</ol>
@@ -170,13 +187,14 @@
 	    		<ol>
 					<li>Canvas→PNG
 						<ol>
-							<li>Right-click→Save as… (Firefox supports it)</li>
-	             			<li class="will_read_canvas"><a href="javascript:export_img(canvas.toDataURL());">Canvas.toDataURL</a> (<a href="javascript:export_window(canvas.toDataURL());">new window</a>)</li>
+							<li>Right-click→Save as… (Firefox supports it).</li>
+	             			<li class="will_read_canvas"><a href="javascript:export_img(canvas.toDataURL());">Canvas.toDataURL</a> (<a href="javascript:export_window(canvas.toDataURL());">new window</a>).</li>
 						</ol>
 					</li>
 					
 					<li>SVG→PNG
 	          			<ol>
+							<li><a href="javascript:alert('Please use your operating system\'s screen capture function to capture the SVG area ^____^')">Manual method</a>.</li>
 	          				<li><a href="javascript:SVGToCanvas.exportPNG(svg, export_img);">Our implementation (safe elements)</a> won't work, since SVG→Canvas→toDataURL always gives SECURITY_ERR.</li>
 	          				<li><a href="javascript:SVGToCanvas.exportPNGserver(svg, export_img);">Serverside (safe and non-safe elements)</a>.</li>
 	          				<li><a href="javascript:SVGToCanvas.exportPNGcanvg(svg, export_img);">canvg (safe elements)</a>.</li>
@@ -185,8 +203,8 @@
 
 					<li>SVG→SVG file
 						<ol>
-							<li>Right-click→Save as… (IE9 browser supports it)</li>
-							<li><a href="javascript:SVGToCanvas.exportSVG(svg, export_img);">Serialize SVG as data URL</a> (<a href="javascript:SVGToCanvas.exportSVG(svg, export_window);">new window</a>)</li>
+							<li>Right-click→Save as… (IE9 browser supports it).</li>
+							<li><a href="javascript:SVGToCanvas.exportSVG(svg, export_img);">Serialize SVG as data URL</a> (<a href="javascript:SVGToCanvas.exportSVG(svg, export_window);">new window</a>).</li>
 						</ol>
 					</li>
 				</ol>

@@ -53,17 +53,6 @@
 			window.open(data_url);
 		}
 		
-		function importImgToCanvas(img_src) {
-			var ctx = canvas.getContext('2d');
-			var img = new Image();
-			img.src = img_src;
-
-			img.onload = function() {
-				console.log("Exported image size " + img.width + "x" + img.height);
-				ctx.drawImage(img, 0, 0);
-			}			
-		}
-		
 		function break_now(klass) {
 			// TODO: efekti
 			$("." + klass).addClass("broken");
@@ -134,12 +123,6 @@
 			
 			<li>SVG to Canvas
 				<ul>
-					<li><a href="javascript:alert('Please use your operating system\'s screen capture function, capture the SVG area, save as svg_export.png, open developer console and call: importImgToCanvas(\'/path/to/svg_export.png\')')">Manual method</a>
-						<ul>
-							<li>Works with all major browsers, including IE9.</li>
-							<li>This is the only way to capture <em>current</em> rendering state of SVG!</li>
-						</ul>
-						</li>
 					<li><a class="might_break_canvas" href="javascript:SVGToCanvas.convertCanvg(svg, canvas);">SVG.toDataURL('image/png');</a>
 						<ul>
 							<li>Emulated with <a href="http://code.google.com/p/canvg/">canvg</a>.</li>
