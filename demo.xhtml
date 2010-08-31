@@ -74,14 +74,7 @@
 <body>
 	<h1>From SVG to Canvas and Back (demo)</h1>
 	
-	<dl id="legend">
-		<dt>Legend (based on background-color):</dt>
-		<dd><span class="broken">This won't work anymore, because Canvas' <code>origin-clean</code> is <var>dirty</var>. Maybe you broke it?</span></dd>
-		<dd><span class="will_break_canvas">Beware! This will set Canvas' <code>origin-clean</code> <var>dirty</var>, making Canvas write-only.</span></dd>
-		<dd><span class="might_break_canvas_legend">This <em>might</em> set Canvas' <code>origin-clean</code> <var>dirty</var>, depending on whether you're transferring images inside SVG data.</span></dd>
-	</dl>
-	
-	<div id="svgarea">
+	<div id="svgarea_flow">
 		<h2>SVG</h2>
 
 		<div class="toolbar">
@@ -95,7 +88,7 @@
 		<svg id="svg" width="500" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" />
 	</div>
 
-	<div id="canvasarea">
+	<div id="canvasarea_flow">
 		<h2>Canvas</h2>
 
 		<div class="toolbar">
@@ -174,6 +167,13 @@
 	</div>
 
 	<img id="export_img" alt="placeholder for exported svg/pixel data"/>
+	
+	<dl id="legend">
+		<dt>Legend (based on background-color):</dt>
+		<dd><span class="broken">This won't work anymore, because Canvas' <code>origin-clean</code> is <var>dirty</var>. Maybe you broke it?</span></dd>
+		<dd><span class="will_break_canvas">Beware! This will set Canvas' <code>origin-clean</code> <var>dirty</var>, making Canvas write-only.</span></dd>
+		<dd><span class="might_break_canvas_legend">This <em>might</em> set Canvas' <code>origin-clean</code> <var>dirty</var>, depending on whether you're transferring images inside SVG data.</span></dd>
+	</dl>
 	
 	<p>Dare to look <a href="demo-full.xhtml">the full demo page</a>?</p>
 	

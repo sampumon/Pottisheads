@@ -1,10 +1,11 @@
 body { margin-right: 1em; }
-
+	 
 /* 2010 demo list */
 #demolist {
 	margin-right: 2em;
 	/* this will fix the background-colors flooding over floats */
 	overflow: hidden;
+	clear: left;
 }
 
 /* main vs. area for svg and canvas */
@@ -12,6 +13,12 @@ svg, canvas { border: 1px solid silver; }
 #svgarea, #canvasarea {
 	float: right;
 	clear: right;
+	margin-left: 2em;
+}
+
+/* for the smaller demo.xhtml */
+#svgarea_flow, #canvasarea_flow {
+	float: left;
 	margin-left: 2em;
 }
 
