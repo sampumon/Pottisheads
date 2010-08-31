@@ -348,8 +348,10 @@ var data = canvas.getImageData(...);
 	<ul>
 		<li>Play with Canvas (it's HTML5 time)</li>
 		<li>Save the visible image as PNG (and as SVG!)</li>
-		
 	</ul>
+	
+	<li>Even in the SVG Open 2010 presentations, rasterizing SVG to PNG is a common use case – it's being done server-side!</li>
+	
 </div>
 
 
@@ -450,9 +452,8 @@ data:application/xml+svg,&lt;svg&gt;<strong>&lt;image src="evil.com"/&gt;&lt;/sv
 	
 	<ul>
 		<li>Canvas' <code>origin-clean</code> gets dirty even with an <em>empty</em> SVG!</li>
-		<li>There's no reason to ban Canvas because of <code>rect</code> and <code>circle</code> elements (and it's not in the spec).</li>
-		<li>Even in the presentations here, rasterizing SVG to PNG is a common use case - it's being done server-side!</li>
-		<li>This would get SVG out of the box, make it accessible for <code>&lt;canvas&gt;</code> demos & hacks & stuff</li>
+		<li>There's no reason to lock Canvas because of (SVG) <code>rect</code> and <code>circle</code> elements (and it's not in the Canvas specification).</li>
+		<li>Unlocking would get SVG out of the box, make it accessible for Canvas demos &amp; hacks &amp; stuff</li>
 	</ul>
 	
 </div>
@@ -495,7 +496,7 @@ SVG.toDataURL( [<abbr title="MIME type of the exported data">type</abbr>],
 		<li>Cross-browser SVG to XML serialization with base64 encoding (for IE9)</li>
 		<li>Uses <code>canvg</code> for drawing SVG onto Canvas (to circumvent security model)
 			<ul>
-				<li>But <code>canvg</code> needs to implement the whole spec!</li>
+				<li>But <code>canvg</code> needs to implement all of SVG specification!</li>
 			</ul>
 		</li>
 	</ul>
